@@ -1,0 +1,35 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		gradlePluginPortal()
+		maven { url "https://repo.spring.io/plugins-release" }
+	}
+}
+
+plugins {
+	id 'java'
+	id 'java-library'
+	id "idea" apply true
+	id "org.liquibase.gradle" version "${liquibasePluginVersion}" apply false
+	id 'org.springframework.boot' version "${springBoot}" apply false
+	id 'io.spring.dependency-management' version "${dependencyManagement}" apply false
+}
+
+allprojects {
+	group = 'com.ikons'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '11'
+}
+
+subprojects {
+	apply plugin: 'java'
+
+	repositories {
+		mavenCentral()
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}

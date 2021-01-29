@@ -1,0 +1,13 @@
+
+${AnsiColor.GREEN} ______ ${AnsiColor.RED} __    __   ______   __    __   ______
+${AnsiColor.GREEN}/      |${AnsiColor.RED}/  |  /  | /      \ /  \  /  | /      \
+${AnsiColor.GREEN}$$$$$$/ ${AnsiColor.RED}$$ | /$$/ /$$$$$$  |$$  \ $$ |/$$$$$$  |
+${AnsiColor.GREEN}  $$ |  ${AnsiColor.RED}$$ |/$$/  $$ |  $$ |$$$  \$$ |$$ \__$$/
+${AnsiColor.GREEN}  $$ |  ${AnsiColor.RED}$$  $$<   $$ |  $$ |$$$$  $$ |$$      \
+${AnsiColor.GREEN}  $$ |  ${AnsiColor.RED}$$$$$  \  $$ |  $$ |$$ $$ $$ | $$$$$$  |
+${AnsiColor.GREEN} _$$ |_ ${AnsiColor.RED}$$ |$$  \ $$ \__$$ |$$ |$$$$ |/  \__$$ |
+${AnsiColor.GREEN}/ $$   |${AnsiColor.RED}$$ | $$  |$$    $$/ $$ | $$$ |$$    $$/
+${AnsiColor.GREEN}$$$$$$/ ${AnsiColor.RED}$$/   $$/  $$$$$$/  $$/   $$/  $$$$$$/
+
+${AnsiColor.BRIGHT_BLUE}:: IKONS 🤓  :: Running Spring Boot ${spring-boot.version} ::
+:: https://www.ikons.al ::${AnsiColor.DEFAULT}

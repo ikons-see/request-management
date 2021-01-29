@@ -1,0 +1,59 @@
+plugins {
+    id 'java-library' apply true
+    id 'org.springframework.boot' apply true
+    id 'io.spring.dependency-management' apply true
+    id 'maven-publish' apply true
+}
+
+java {
+    registerFeature('ikons') {
+        usingSourceSet(sourceSets.main)
+    }
+    registerFeature('springboot') {
+        usingSourceSet(sourceSets.main)
+    }
+}
+
+dependencies {
+//    ikonsSBImplementation 'com.fasterxml.jackson.datatype:'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    springbootImplementation 'org.springframework.boot:spring-boot-starter-web'
+    springbootImplementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    springbootImplementation 'org.springframework.boot:spring-boot-starter-security'
+    springbootImplementation 'org.springframework.boot:spring-boot-starter-undertow'
+    ikonsApi 'org.liquibase:liquibase-core'
+    ikonsApi 'org.apache.commons:commons-lang3'
+    ikonsApi "io.jsonwebtoken:jjwt-impl:${jjwtVersion}"
+    ikonsApi "io.jsonwebtoken:jjwt-api:${jjwtVersion}"
+    ikonsApi "io.jsonwebtoken:jjwt-jackson:${jjwtVersion}"
+    ikonsApi "com.fasterxml.jackson.datatype:jackson-datatype-hppc"
+    ikonsApi "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+    ikonsApi "com.fasterxml.jackson.module:jackson-module-jaxb-annotations"
+    ikonsApi "com.fasterxml.jackson.datatype:jackson-datatype-hibernate5"
+    ikonsApi "com.fasterxml.jackson.core:jackson-annotations"
+    ikonsApi "com.fasterxml.jackson.core:jackson-databind"
+    api "net.logstash.logback:logstash-logback-encoder:${logStashVersion}"
+    implementation 'org.springframework:spring-context-support'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-autoconfigure'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+}
+
+bootRun {
+    enabled = false
+}
+
+bootJar {
+    enabled = false
+}
+
+jar {
+    archiveBaseName = rootProject.name + '-' + project.name
+    enabled = true
+}
+
+// compileJava.inputs.files(processResources)
+compileJava.dependsOn(processResources)

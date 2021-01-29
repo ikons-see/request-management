@@ -1,0 +1,129 @@
+//apply plugin: 'org.springframework.boot'
+//apply plugin: 'io.spring.dependency-management'
+//apply plugin: 'org.liquibase.gradle'
+plugins {
+	id 'org.springframework.boot' apply true
+	id 'io.spring.dependency-management' apply true
+	id 'org.liquibase.gradle' apply true
+}
+
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+if (project.hasProperty("prod")) {
+	apply from: "gradle/profile.prod.gradle"
+} else {
+	apply from: "gradle/profile.dev.gradle"
+}
+
+if (!project.hasProperty("runList")) {
+	project.ext.runList = "main"
+}
+
+project.ext.diffChangelogFile = "src/main/resources/config/liquibase/changelog/" + new Date().format("yyyyMMddHHmmss") + "_changelog.xml"
+
+liquibase {
+	activities {
+		main {
+			driver "org.mariadb.jdbc.Driver"
+			url "jdbc:mariadb://localhost:3306/RequestManagement"
+			username "root"
+			password ""
+			changeLogFile "src/main/resources/config/liquibase/master.xml"
+			defaultSchemaName ""
+			referenceUrl "hibernate:spring:com.ikons.requestmanagement.dataprovider.database.entity?dialect=org.hibernate.dialect.MariaDB103Dialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+			logLevel "debug"
+			classpath "src/main/resources/"
+		}
+		diffLog {
+			driver "org.mariadb.jdbc.Driver"
+			url "jdbc:mariadb://localhost:3306/RequestManagement"
+			username "root"
+			password ""
+			changeLogFile project.ext.diffChangelogFile
+			referenceUrl "hibernate:spring:com.ikons.requestmanagement.dataprovider.database.entity?dialect=org.hibernate.dialect.MariaDB103Dialect&hibernate.physical_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringPhysicalNamingStrategy&hibernate.implicit_naming_strategy=org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy"
+			defaultSchemaName ""
+			logLevel "debug"
+			classpath "$buildDir/classes/java/main"
+		}
+	}
+
+	runList = project.ext.runList
+}
+
+dependencies {
+	implementation(project(":core")) {
+		capabilities {
+			requireCapability("com.ikons:core-ikons")
+		}
+	}
+	implementation "org.springframework.boot:spring-boot-loader-tools"
+	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation ("org.springframework.boot:spring-boot-starter-web") {
+		exclude module: "spring-boot-starter-tomcat"
+	}
+	implementation "org.springframework.boot:spring-boot-starter-undertow"
+	implementation "org.springframework.boot:spring-boot-starter-logging"
+	implementation "org.springframework.boot:spring-boot-starter-thymeleaf"
+	implementation "org.springframework.boot:spring-boot-starter-mail"
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor  'org.projectlombok:lombok'
+	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+	implementation "org.zalando:problem-spring-web:${zalandoProblemSpringVersion}"
+	annotationProcessor 'org.projectlombok:lombok'
+	implementation "javax.cache:cache-api"
+	implementation "javax.transaction:javax.transaction-api"
+	implementation "javax.annotation:javax.annotation-api"
+	implementation "org.ehcache:ehcache"
+	implementation 'org.hibernate:hibernate-core'
+	implementation 'org.hibernate:hibernate-jcache'
+	implementation "org.hibernate:hibernate-entitymanager"
+	implementation "org.hibernate.validator:hibernate-validator"
+	implementation "com.zaxxer:HikariCP"
+	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
+	liquibaseRuntime "org.mariadb.jdbc:mariadb-java-client"
+	liquibaseRuntime "org.liquibase:liquibase-core"
+	liquibaseRuntime "org.liquibase.ext:liquibase-hibernate5:${liquibaseHibernateVersion}"
+	liquibaseRuntime sourceSets.main.compileClasspath
+//	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+	testImplementation ("org.springframework.boot:spring-boot-starter-test") {
+		exclude group: "org.junit.vintage", module: "junit-vintage-engine"
+	}
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+	testImplementation 'org.springframework.security:spring-security-test'
+	testImplementation "com.h2database:h2"
+}
+
+test {
+	useJUnitPlatform()
+}
+
+defaultTasks "bootRun"
+
+springBoot {
+	mainClass = "com.ikons.requestmanagement.RequestManagementApplication"
+}
+
+bootJar {
+	archiveBaseName = rootProject.name + "-" + project.name
+	launchScript()
+}
+
+task cleanResources(type: Delete) {
+	delete "build/resources"
+}
+
+
+compileJava.dependsOn processResources
+processResources.dependsOn bootBuildInfo
