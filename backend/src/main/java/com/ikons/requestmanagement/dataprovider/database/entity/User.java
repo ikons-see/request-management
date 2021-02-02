@@ -18,8 +18,10 @@ import java.util.Set;
 @Entity
 @Table(name = "ik_user")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Getter
-@Setter
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class User extends AbstractAuditingEntity{
   private static final long serialVersionUID = 1L;
 
