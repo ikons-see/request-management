@@ -29,7 +29,7 @@ import { DefaultColumnComponent } from './components/table/default-column/defaul
 import { AddRequestModalComponent } from './pages/requester/add-request-modal/add-request-modal.component';
 import { ViewDetailsModalComponent } from './pages/requester/view-details-modal/view-details-modal.component';
 import { EditDetailsModalComponent } from './pages/requester/edit-details-modal/edit-details-modal.component';
-import { DeleteDetailsModalComponent } from './pages/requester/delete-details-modal/delete-details-modal.component';
+import { DeleteRequestModalComponent } from './pages/requester/delete-request-modal/delete-request-modal.component';
 
 import * as requestsReducer from './store/requests-reducer';
 import { RequestsManagementEffects } from './store/requests-effects';
@@ -45,6 +45,7 @@ import { AddResourcesComponent } from './pages/requester/add-request-modal/add-r
 import { AddGeneralInfoComponent } from './pages/requester/add-request-modal/add-general-info/add-general-info.component';
 import { EditGeneralInfoComponent } from './pages/requester/edit-details-modal/edit-general-info/edit-general-info.component';
 import { EditResourcesComponent } from './pages/requester/edit-details-modal/edit-resources/edit-resources.component';
+import { CloseRequestModalComponent } from './pages/requester/close-request-modal/close-request-modal.component';
 
 export interface ApplicationState {
   [requestsReducer.featureKey]: requestsReducer.State
@@ -73,7 +74,7 @@ const effects = [
     AddRequestModalComponent,
     ViewDetailsModalComponent,
     EditDetailsModalComponent,
-    DeleteDetailsModalComponent,
+    DeleteRequestModalComponent,
     PaginationComponent,
     DateColumnComponent,
     LoadingViewComponent,
@@ -85,7 +86,8 @@ const effects = [
     AddResourcesComponent,
     AddGeneralInfoComponent,
     EditGeneralInfoComponent,
-    EditResourcesComponent
+    EditResourcesComponent,
+    CloseRequestModalComponent
   ],
   imports: [
     BrowserModule,
@@ -121,7 +123,7 @@ const effects = [
     AddRequestModalComponent,
     ViewDetailsModalComponent,
     EditDetailsModalComponent,
-    DeleteDetailsModalComponent
+    DeleteRequestModalComponent
   ],
   bootstrap: [AppComponent]
 })

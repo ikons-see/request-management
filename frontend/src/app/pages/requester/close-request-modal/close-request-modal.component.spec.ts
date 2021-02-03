@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DeleteDetailsModalComponent } from './delete-details-modal.component';
+import { CloseRequestModalComponent } from './close-request-modal.component';
 
-describe('DeleteDetailsModalComponent', () => {
-  let component: DeleteDetailsModalComponent;
-  let fixture: ComponentFixture<DeleteDetailsModalComponent>;
+describe('CloseRequestModalComponent', () => {
+  let component: CloseRequestModalComponent;
+  let fixture: ComponentFixture<CloseRequestModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DeleteDetailsModalComponent ]
+      declarations: [ CloseRequestModalComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(DeleteDetailsModalComponent);
+    fixture = TestBed.createComponent(CloseRequestModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

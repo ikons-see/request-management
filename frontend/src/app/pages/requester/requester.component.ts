@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { ApplicationState } from 'src/app/app.module';
-import { openAddRequestModal, openDeleteRequestModal, openEditRequestModal, openViewDetailsModal, pageChanged, requestData } from '../../store/requests-actions';
+import { openAddRequestModal, openCloseRequestModal, openDeleteRequestModal, openEditRequestModal, openViewDetailsModal, pageChanged, requestData } from '../../store/requests-actions';
 import { getCurrentPage, getLoadingRequests, getRequestsError, getRequestsList, getTotalNumber } from '../../store/requests-reducer';
 import { ColumnType, DropdownColumn, NavigationTab, TableConfig } from '../../types/data-types';
 import { RequestDetails } from '../../types/request-types';
@@ -71,7 +71,8 @@ export class RequesterComponent implements OnInit {
         },
         {
           text: 'Close',
-          icon: 'fa-close'
+          icon: 'fa-close',
+          onClick: (e) => this.closeRequest(e)
         }
       ]
     }
@@ -142,5 +143,9 @@ export class RequesterComponent implements OnInit {
 
   deleteRequest(e) {
     this.store.dispatch(openDeleteRequestModal({requestId: e}));
+  }
+
+  closeRequest(e) {
+    this.store.dispatch(openCloseRequestModal({requestId: e}));
   }
 }

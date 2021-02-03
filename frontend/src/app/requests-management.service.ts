@@ -14,10 +14,10 @@ export class RequestsManagementService {
     }
 
     getRequestsList(page: number): Observable<RequestsListResponse> {
-      const request = {
-          page: page,
-          size: 10
-      };
+        const request = {
+            page: page,
+            size: 10
+        };
         //return this.httpClient.post<RequestsListResponse>(`requests-management/api/my-requests`, request);
         return of(
             {
@@ -73,7 +73,7 @@ export class RequestsManagementService {
                 ],
                 total: 2
             }
-            );
+        );
     }
 
     addNewRequest(request: AddRequest): Observable<void> {
@@ -81,13 +81,20 @@ export class RequestsManagementService {
     }
 
     updateRequest(request: UpdateRequest): Observable<void> {
-        return this.httpClient.post<void>(`requests-management/api/update-request`, request); 
+        return this.httpClient.post<void>(`requests-management/api/update-request`, request);
     }
 
     deleteRequest(requestId: number): Observable<void> {
         const request = {
             requestId: requestId
         };
-        return this.httpClient.post<void>(`requests-management/api/delete-request`, request); 
+        return this.httpClient.post<void>(`requests-management/api/delete-request`, request);
+    }
+
+    closeRequest(requestId: number): Observable<void> {
+        const request = {
+            requestId: requestId
+        };
+        return this.httpClient.post<void>(`requests-management/api/close-request`, request);
     }
 }
