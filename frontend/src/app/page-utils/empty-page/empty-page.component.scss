@@ -1,0 +1,29 @@
+.empty-page-ct {
+  text-align: center;
+  color: #63646B;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: center;
+
+  .menu-item-view {
+    display: inline-block;
+    text-align: left;
+    max-width: 425px;
+  }
+
+  .icon-ct {
+    font-size: 76px;
+    text-align: center;
+    color: #B3B5BA;
+  }
+
+  .msg-title {
+    padding: 5px 0;
+    font-size: 17px;
+    font-weight: 500;
+  }
+
+  .msg-details {
+    text-align: center;
+  }
+}

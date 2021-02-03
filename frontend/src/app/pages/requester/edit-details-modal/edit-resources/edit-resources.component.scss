@@ -1,0 +1,107 @@
+form {
+    width: -webkit-fill-available;
+    padding: 1.5rem;
+
+    .form-group {
+        margin-bottom: 1rem;
+
+        label {
+            font-weight: 500;
+        }
+    }
+
+    .missing-value {
+        display: block;
+        font-style: italic;
+        color: #808080;
+        margin-left: 1rem;
+    }
+
+    .initial-container {
+        display: flex;
+
+        .total-container {
+            margin-right: 2rem;
+        }
+
+        .seniority-container {
+            width: 40%;
+        }
+    }
+}
+
+.resources-form {
+    margin-bottom: 0 !important;
+}
+
+.resources-container {
+    padding: 1.5rem;
+    padding-top: 0;
+
+    .card {
+        margin-bottom: .5rem;
+        cursor: pointer;
+
+        .card-header {
+            background-color: #FAFAFA;
+            border: 1px solid #F5F5F5;
+            display: flex;
+
+            .attr-holder {
+                // background: white;
+                padding: .5rem;
+                border-radius: 7px;
+                margin-right: 1rem;
+                min-width: 100px;
+                text-align: center;
+            }
+
+            .attr-title {
+                font-weight: 700;
+                margin-right: 1rem;
+            }
+
+            .icon {
+                align-self: center;
+                margin-right: 2rem;
+            }
+
+            .skill-span {
+                background-color: #ebf5ff;
+                padding: .25rem;
+                border-radius: 10px;
+                margin-right: 1rem;
+            }
+
+            .skills-holder {
+                margin-top: .5rem;
+                margin-bottom: 1rem;
+            }
+
+            .remove {
+                margin-left: auto;
+                height: 25px;
+                width: 30px;
+                align-self: center;
+                display: flex;
+                justify-content: center;
+
+                i {
+                    align-self: center;
+                }
+            }
+        }
+
+        .card-block {
+            margin-bottom: 0 !important;
+             background-color: white !important;
+        }
+    }
+}
+
+.form-control-feedback {
+    margin-bottom: .5rem;
+    font-style: italic;
+    font-weight: 100;
+    color: red;
+}

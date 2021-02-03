@@ -1,0 +1,22 @@
+.error-view-item {
+    text-align: center;
+    color: #fd397a;
+    .menu-item-view {
+      display: inline-block;
+      text-align: left;
+      max-width: 425px;
+    }
+    .icon-ct {
+      font-size: 76px;
+      padding-top: 20px;
+      text-align: center;
+    }
+    .msg-title {
+      padding: 5px 0;
+      font-size: 17px;
+      font-weight: 500;
+    }
+    .msg-details {
+        text-align: center;
+    }
+  }

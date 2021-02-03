@@ -1,0 +1,15 @@
+<app-modal [title]="title + requestId" [buttons]="buttons">
+    <div class="tabs-container">
+        <app-tabs [tabs]="tabs" [activeId]="activeId" [disable]="true">
+            <div slot="content" [ngSwitch]="activeId">
+                <ng-container *ngSwitchCase="'0'">
+                    <app-edit-general-info [formGroup]="generalInfoForm" #general>
+                    </app-edit-general-info>
+                </ng-container>
+                <ng-container *ngSwitchCase="'1'" class="resource-container">
+                    <app-edit-resources [formGroup]="resourcesForm" [resources]="requestRsc" #resources></app-edit-resources>
+                </ng-container>
+            </div>
+        </app-tabs>
+    </div>
+</app-modal>

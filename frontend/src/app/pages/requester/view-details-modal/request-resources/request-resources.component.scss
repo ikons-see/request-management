@@ -1,0 +1,8 @@
+:host ::ng-deep .kt-portlet {
+    padding: 2rem;
+    min-height: 500px;
+}
+
+:host ::ng-deep th:nth-child(3) {
+    text-align: center !important;
+}

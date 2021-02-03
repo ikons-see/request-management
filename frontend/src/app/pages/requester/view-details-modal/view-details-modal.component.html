@@ -1,0 +1,14 @@
+<app-modal [title]="title + requestId" [buttons]="buttons">
+    <div class="tabs-container">
+        <app-tabs [tabs]="tabs" [activeId]="activeId">
+            <div slot="content" [ngSwitch]="activeId">
+                <ng-container *ngSwitchCase="'0'">
+                    <app-request-info [request]="request"></app-request-info>
+                </ng-container>
+                <ng-container *ngSwitchCase="'1'" class="resource-container">
+                    <app-request-resources [resources]="request.resources"></app-request-resources>
+                </ng-container>
+            </div>
+        </app-tabs>
+    </div>
+</app-modal>

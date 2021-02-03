@@ -1,0 +1,12 @@
+POST http://localhost:8080/api/authenticate HTTP/1.1
+content-type: application/json
+
+{
+    "username": "user",
+    "password": "user",
+    "rememberMe": false
+}
+
+### get list of users
+GET http://localhost:8080/api/users HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfUkVRVUVTVEVSIiwiZXhwIjoxNjEyNDM1MDEzfQ.CNviWotA7S1IEFsZRq_JFocZRubtU0mEUyLBMLCSerrbZlCxMVp9vZLyfqbHxs_Wylqz_wBEOQlUhJMQbSyNwg

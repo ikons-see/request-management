@@ -1,0 +1,79 @@
+<form class="form-group resources-form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="initial-container">
+        <div class="form-group total-container">
+            <label for="total">Total</label>
+            <input id="total" type="number" class="form-control" formControlName="total" min="1">
+        </div>
+        <div class="form-group seniority-container">
+            <label for="seniority">Seniority</label>
+            <ng-select [items]="seniorities"
+                       bindLabel="seniority"
+                       placeholder="Select item"
+                       multiple="false"
+                       [searchable]="false"
+                       maxSelectedItems='1'
+                       formControlName='seniority'>
+            </ng-select>
+        </div>
+    </div>
+    <div class="form-control-feedback" *ngIf="total().errors?.min">
+        *The total input has to be larger or equal to 1
+     </div>
+    
+    <div class="form-group">
+        <label for="skills">Skills</label>
+        <ng-select [items]="skills" 
+                   bindLabel="skills" 
+                   placeholder="Select item" 
+                   multiple="true"
+                   [searchable]="true" 
+                   formControlName="skills">
+        </ng-select>
+    </div>
+    <div class="form-group">
+        <label for="note">Notes</label>
+        <textarea id="note" class="form-control" formControlName="note"></textarea>
+    </div>
+    <div class="form-control-feedback" *ngIf="submittedForm && note().invalid">
+        *This field is required
+     </div>
+        <button class="btn btn-outline-secondary" type="submit" [disabled]="!formGroup.valid">
+            Add resource
+        </button>
+</form>
+
+<div class="resources-container">
+    <div class="card" *ngFor="let item of resources; let i = index">
+        <div class="card-header" id="headingOne" (click)="isCollapsed[i] = !isCollapsed[i]">
+            <span class="icon" *ngIf="isCollapsed[i]">
+                <i class="fa fa-angle-down"></i>
+            </span>
+            <span class="icon" *ngIf="!isCollapsed[i]">
+                <i class="fa fa-angle-up"></i>
+            </span>
+            <div class="attr-holder">
+                <span class="attr-title">Total:</span>
+                <span>{{item.total}}</span>
+            </div>
+            <div class="attr-holder">
+                <span class="attr-title">Seniority:</span>
+                <span>{{item.seniority}}</span>
+            </div>
+            <button class="btn btn-danger remove" title="Remove">
+                <i class="fa fa-close" (click)="removeResource(i)"></i>
+            </button>
+        </div>
+        <div id="collapseBasic" [collapse]="isCollapsed[i]">
+            <div class="well well-lg card card-block card-header">
+                <div class="skills-holder" *ngIf="item.skills.length > 0">
+                    <span class="attr-title">Skills:</span>
+                    <span class="skill-span" *ngFor="let skill of item.skills">{{skill}}</span>
+                </div>
+                <div *ngIf="item.note">
+                    <span class="attr-title">Notes:</span>
+                    <span>{{item.note}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

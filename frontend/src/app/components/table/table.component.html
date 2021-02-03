@@ -1,0 +1,42 @@
+<div class="kt-portlet">
+    <div class="kt-portlet__body kt-portlet__body--fit">
+        <div *ngIf="!data">No records</div>
+        <div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--scroll kt-datatable--loaded">
+            <table class="table dataTables " *ngIf="data">
+                <thead class="kt-datatable__head">
+                    <tr class="kt-datatable__row">
+                        <th *ngFor="let col of columns" [class.sortable]="col.sortable">
+                            {{col.text}}
+                        </th>
+                    </tr>
+                </thead>
+                <tbody class="kt-datatable__body ps ps--active-y">
+                    <tr *ngFor="let datum of data; let rowIndex = index;" class="row-hover"
+                        [class.clickable]="rowClickable">
+                        <td *ngFor="let col of columns;" class="kt-datatable__cell kt-datatable__cell--sort"
+                            (click)="onRowClick(datum, col)" [className]="col.type">
+                            <ng-container [ngSwitch]="col.type">
+                                <app-dropdown-column *ngSwitchCase="columnType.DROPDOWN"
+                                    [dropdown]="getDropdownConfig(datum, col)"  [value]="getFormattedValue(datum, col)"></app-dropdown-column>
+                                <app-date-column *ngSwitchCase="columnType.DATE"
+                                    [value]="getFormattedValue(datum, col)"></app-date-column>
+                                <app-default-column *ngSwitchDefault [value]="getFormattedValue(datum, col)">
+                                </app-default-column>
+                            </ng-container>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <span *ngIf="data && data.length == 0" class="noData"> 
+                No records found
+            </span>
+        </div>
+    </div>
+</div>
+
+<app-pagination *ngIf="totalItems"
+                [totalItems]="totalItems" 
+                (pageChanged)="setPage($event)" 
+                [itemsPerPage]="itemsPerPage"
+                [page]="currentPage">
+</app-pagination>

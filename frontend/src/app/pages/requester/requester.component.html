@@ -1,0 +1,23 @@
+<app-page [navigationTabs]="tabs" [loading]="loading$ | async">
+    <div class="page-actions">
+        <button class="btn btn-dark shadow-none" (click)="addRequestModal()">
+            <i class="fa fa-plus"></i>
+            Add request
+        </button>
+    </div>
+    <ng-container *ngIf="(requests$ | async).length > 0 && (errorMessage$ | async) == null">
+        <app-table [columns]="tableConfiguration.columns" 
+                   [data]="requests$ | async" 
+                   [currentPage]="currentPage$ | async"
+                   [totalItems]="totalNumber$ | async"
+                   (pageChanged)="pageChanged($event)">
+        </app-table>
+    </ng-container>
+
+    <app-error-view *ngIf="errorMessage$ | async"></app-error-view>
+
+    <ng-template *ngIf="(requests$ | async).length == 0 && (errorMessage$ | async) == null">
+        <app-empty-page icon="fa-info-circle" title="No records found for your requests list" 
+            subtitle="Try adding a new request to your list"></app-empty-page>
+    </ng-template>
+</app-page>
