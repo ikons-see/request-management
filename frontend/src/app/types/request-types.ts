@@ -36,5 +36,5 @@ export interface AddRequest {
 
 export interface UpdateRequest extends RequestDetails {
     newResources: Array<Resource>;
-    deletedResources: Array<number>;
+    deletedResourceIds: Array<number>;
 }

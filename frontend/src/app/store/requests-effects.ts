@@ -11,6 +11,9 @@ import {
     addNewRequest,
     addRequestFailure,
     addRequestSuccess,
+    deleteRequest,
+    deleteRequestFailure,
+    deleteRequestSuccess,
     openAddRequestModal,
     openDeleteRequestModal,
     openEditRequestModal,
@@ -27,6 +30,7 @@ import { ViewDetailsModalComponent } from "../pages/requester/view-details-modal
 import { AddRequestModalComponent } from "../pages/requester/add-request-modal/add-request-modal.component";
 import { EditDetailsModalComponent } from "../pages/requester/edit-details-modal/edit-details-modal.component";
 import { DeleteDetailsModalComponent } from "../pages/requester/delete-details-modal/delete-details-modal.component";
+import { getCurrentPage } from "./requests-reducer";
 
 
 @Injectable()
@@ -100,7 +104,9 @@ export class RequestsManagementEffects {
 
     closeAddRequestModal$ = createEffect(() => this.actions$.pipe(
         ofType(addRequestSuccess,
-            updateRequestSuccess),
+            updateRequestSuccess,
+            deleteRequestSuccess,
+            deleteRequestFailure),
         tap(() => {
             this.modalService.hide();
         })
@@ -123,12 +129,13 @@ export class RequestsManagementEffects {
 
     onRequestUpdate$ = createEffect(() => this.actions$.pipe(
         ofType(updateRequest),
-        switchMap((action) => {
+        withLatestFrom(this.store.select(getCurrentPage)),
+        switchMap(([action, page]) => {
             return this.requestsService.updateRequest(action.request)
                 .pipe(
                     mergeMap(res => [
                         updateRequestSuccess(),
-                        requestData({page: 1})]),
+                        requestData({ page: page })]),
                     catchError((error: HttpErrorResponse) =>
                         of(updateRequestFailure({ errorMessage: error.message }),
                         ))
@@ -149,4 +156,21 @@ export class RequestsManagementEffects {
             });
         })
     ), { dispatch: false });
+
+    onDeleteRequest$ = createEffect(() => this.actions$.pipe(
+        ofType(deleteRequest),
+        withLatestFrom(this.store.select(getCurrentPage)),
+        switchMap(([action, page]) => {
+            return this.requestsService.deleteRequest(action.requestId)
+                .pipe(
+                    mergeMap(res => [
+                        deleteRequestSuccess(),
+                        requestData({ page: page })
+                    ]),
+                    catchError((error: HttpErrorResponse) =>
+                        of(deleteRequestFailure({ errorMessage: error.message }),
+                        ))
+                );
+        })
+    ));
 }

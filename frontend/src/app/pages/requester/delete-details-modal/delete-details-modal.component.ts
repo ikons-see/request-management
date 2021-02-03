@@ -1,4 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ApplicationState } from 'src/app/app.module';
+import { deleteRequest } from 'src/app/store/requests-actions';
 import { ButtonConfiguration, ButtonType } from 'src/app/types/data-types';
 
 @Component({
@@ -16,7 +20,8 @@ export class DeleteDetailsModalComponent implements OnInit {
 
   buttons: Array<ButtonConfiguration>;
 
-  constructor() {
+  constructor(private store: Store<ApplicationState>,
+    public bsModalRef: BsModalRef) {
     this.initButtons();
    }
 
@@ -27,7 +32,8 @@ export class DeleteDetailsModalComponent implements OnInit {
     this.buttons = [
       {
         text: "Cancel",
-        type: ButtonType.SECONDARY
+        type: ButtonType.SECONDARY,
+        onClick: (e) => this.closeModal()
       },
       {
         text: "Continue",
@@ -38,7 +44,10 @@ export class DeleteDetailsModalComponent implements OnInit {
   }
 
   deleteRequest() {
-    console.log('Deleting request');
+    this.store.dispatch(deleteRequest({requestId: this.requestId}));
   }
 
+  closeModal() {
+    this.bsModalRef.hide();
+  }
 }

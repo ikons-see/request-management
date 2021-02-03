@@ -22,3 +22,6 @@ export const updateRequestFailure = createAction(`[${featureKey}] updateRequestF
 export const pageChanged = createAction(`[${featureKey}] pageChanged`, props<{ page: number }>());
 
 export const openDeleteRequestModal = createAction(`[${featureKey}] openDeleteRequestModal`, props<{requestId: number}>());
+export const deleteRequest = createAction(`[${featureKey}] deleteRequest`, props<{requestId: number}>());
+export const deleteRequestSuccess = createAction(`[${featureKey}] deleteRequestSuccess`);
+export const deleteRequestFailure = createAction(`[${featureKey}] deleteRequestFailure`, props<{ errorMessage: string }>());

@@ -83,4 +83,11 @@ export class RequestsManagementService {
     updateRequest(request: UpdateRequest): Observable<void> {
         return this.httpClient.post<void>(`requests-management/api/update-request`, request); 
     }
+
+    deleteRequest(requestId: number): Observable<void> {
+        const request = {
+            requestId: requestId
+        };
+        return this.httpClient.post<void>(`requests-management/api/delete-request`, request); 
+    }
 }
