@@ -9,6 +9,7 @@ import com.ikons.requestmanagement.core.usecase.CannotDeserializeException;
 import com.ikons.requestmanagement.core.usecase.request.CreateRequest;
 import com.ikons.requestmanagement.core.usecase.request.GetRequest;
 import com.ikons.requestmanagement.core.usecase.request.exception.MissingRequestException;
+import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity;
 import com.ikons.requestmanagement.dataprovider.database.entity.ResourceEntity;
 import com.ikons.requestmanagement.dataprovider.database.repository.RequestRepository;
@@ -28,11 +29,13 @@ public class RequestManagementImpl implements GetRequest, CreateRequest {
 
     private final RequestRepository requestRepository;
     private final ResourceRepository resourceRepository;
+    private final UserManagement userManagement;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public RequestManagementImpl(final RequestRepository requestRepository, final ResourceRepository resourcesRepository) {
+    public RequestManagementImpl(final RequestRepository requestRepository, final ResourceRepository resourcesRepository, final UserManagement userManagement) {
         this.requestRepository = requestRepository;
         this.resourceRepository = resourcesRepository;
+        this.userManagement = userManagement;
     }
 
     @Override
@@ -50,13 +53,13 @@ public class RequestManagementImpl implements GetRequest, CreateRequest {
                 .notes(otherNotes)
                 .resources(new ArrayList<>())
                 .build();
+        //entity.setCreatedBy(userId);
 
         requestRepository.save(entity);
 
         if (resources != null) {
 
-            for (Resource resources1 : resources
-            ) {
+            for (Resource resources1 : resources) {
                 ResourceEntity resourcesEntity = null;
                 try {
                     resourcesEntity = ResourceEntity.builder()
@@ -106,8 +109,11 @@ public class RequestManagementImpl implements GetRequest, CreateRequest {
     }
 
     private RequestDetails mapRequestDetails(final RequestEntity requestEntity) {
+       // final User userEntity = userManagement.getUser(requestEntity.getCreatedBy());
+
         return RequestDetails.builder()
                 .requestId(requestEntity.getRequestId())
+                //.displayName(requestEntity.getcr)
                 .areaOfInterest(requestEntity.getAreaOfInterest())
                 .status(requestEntity.getStatus())
                 .endDate(requestEntity.getEndDate())

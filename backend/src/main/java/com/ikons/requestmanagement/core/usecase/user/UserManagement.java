@@ -34,4 +34,8 @@ public interface UserManagement {
     Optional<UserDTO> getUserWithAuthorities();
 
     List<String> getAuthorities();
+
+    List<User> getAdministrators();
+
+    User getUser(long userId);
 }

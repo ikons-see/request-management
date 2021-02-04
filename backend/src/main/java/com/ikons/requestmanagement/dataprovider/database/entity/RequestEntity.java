@@ -1,5 +1,6 @@
 package com.ikons.requestmanagement.dataprovider.database.entity;
 
+import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -8,12 +9,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 @Table(name = "ik_request")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Data
@@ -21,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString(exclude = {"resources"})
 public class RequestEntity extends AbstractAuditingEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -48,6 +44,6 @@ public class RequestEntity extends AbstractAuditingEntity {
     @Column
     private String notes;
 
-    @OneToMany(targetEntity = ResourceEntity.class, mappedBy = "request", cascade = CascadeType.REMOVE)
+    @OneToMany(fetch = FetchType.EAGER, targetEntity = ResourceEntity.class, mappedBy = "request", cascade = CascadeType.ALL)
     private List<ResourceEntity> resources;
 }

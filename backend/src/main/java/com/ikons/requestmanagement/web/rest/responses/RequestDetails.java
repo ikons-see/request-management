@@ -16,6 +16,7 @@ import java.util.List;
 public class RequestDetails {
     private long requestId;
     private String areaOfInterest;
+    private String displayName;
     private String status;
     private Date startDate;
     private Date endDate;
