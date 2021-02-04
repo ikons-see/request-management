@@ -1,0 +1,17 @@
+<div *ngIf="!arrayValues" class="default-container">
+    {{value}}
+</div>
+
+<!-- <div *ngIf="arrayValues" class="array-container">
+    <ul>
+        <li *ngFor="let item of value">
+            <span>{{item}}</span>
+        </li>
+    </ul>
+</div> -->
+
+<div class="parent" *ngIf="arrayValues">
+    <div class="child" *ngFor="let item of value">
+        {{item}}
+    </div>
+  </div>

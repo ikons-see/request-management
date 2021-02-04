@@ -1,0 +1,18 @@
+<ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-success" role="tablist">
+    <li class="nav-item" *ngFor="let tab of tabs" 
+                         [class.active]="tab.id === activeId" 
+                         [class.disabled]="tab.id != activeId && disable">
+      <a class="nav-link" data-toggle="tab"  role="tab" href="javascript:" (click)="handleClick($event, tab)"
+         aria-selected="true">
+        {{tab.name}}
+      </a>
+    </li>
+    <li class="actions">
+      <ng-content select="[slot='actions']"></ng-content>
+    </li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active">
+      <ng-content select="[slot='content']"></ng-content>
+    </div>
+  </div>

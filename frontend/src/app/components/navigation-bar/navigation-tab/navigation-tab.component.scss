@@ -1,0 +1,30 @@
+.nav-link {
+    color: #F2F3F8 !important;
+}
+
+.nav-item {
+    min-width: 150px;
+    text-align: center;
+    a {
+        padding: 1rem;
+        font-size: 14px;
+    }
+
+    i {
+        padding-right: .5rem;
+    }
+}
+
+.nav-item:hover {
+    a {
+        color: #585F6F !important;
+    }
+}
+
+.active {
+    background-color: #252A35;
+    border-bottom: 4px solid #FFFFFF;
+    a {
+        color: white !important;
+    }
+}

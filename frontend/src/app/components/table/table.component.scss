@@ -1,0 +1,85 @@
+:host {
+  height: 100%;
+  width: 100%;
+}
+
+.kt-portlet {
+  overflow: visible !important;
+}
+
+.kt-datatable__head {
+  th {
+    border: none;
+  }
+}
+
+.kt-portlet__body {
+
+  .table {
+    margin-bottom: 0rem;
+    background-color: #FFFFFF;
+
+    tr {
+      cursor: pointer;
+    }
+
+    tr>td {
+      white-space: nowrap;
+      vertical-align: top;
+    }
+
+    tr>td:first-child,
+    tr>th:first-child {
+      padding-left: 3rem;
+      //width: 40%;
+    }
+
+    tr>th:last-child {
+      text-align: center;
+    }
+
+    tr>td:last-child {
+      text-align: center;
+    }
+  }
+}
+
+.kt-pagination {
+  padding: 2rem;
+}
+
+.clickable {
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.row-hover:hover {
+  background-color: #fafafa;
+
+  &.clickable {
+    background-color: #e6e6e6;
+  }
+}
+
+.kt-datatable__cell {
+  vertical-align: middle;
+}
+
+.kt-datatable.kt-datatable--default {
+  margin-bottom: 0;
+}
+
+.checkbox {
+  width: 50px;
+}
+
+.noData {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem 0;
+  font-size: large;
+  margin-top: 1rem;
+  font-style: italic;
+  font-weight: 100;
+}

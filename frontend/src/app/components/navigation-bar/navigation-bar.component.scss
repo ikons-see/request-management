@@ -1,0 +1,16 @@
+.navbar {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+    padding: 0rem 1rem;
+    background-color: #1C202A !important;
+    align-items: flex-end;
+}
+
+.navbar-brand {
+    img {
+        vertical-align: top;
+        width: 150px;
+        height: 60px;
+    }
+
+    padding: 0;
+}

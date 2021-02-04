@@ -1,0 +1,5 @@
+<li class="nav-item" [class.active]="tab.tabId == activeTab">
+    <a class="nav-link" href="javascript:">
+        <i *ngIf="tab.icon" class="fa + {{tab.icon}}"></i> {{tab.tabName}}
+    </a>
+</li>

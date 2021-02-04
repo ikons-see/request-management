@@ -1,0 +1,20 @@
+<div class="modal-header">
+    <h5 class="modal-title pull-left">{{title}}</h5>
+    <button type="button"
+            class="close pull-right"
+            aria-label="Close"
+            (click)="bsModalRef.hide()">
+    </button>
+</div>
+<div class="modal-body">
+    <div class="row content-body">
+        <ng-content>
+        </ng-content>
+    </div>
+</div>
+<div class="modal-footer">
+    <button *ngFor="let btn of buttons" class="btn btn-pill {{btn.type}}" (click)="handleClick($event, btn)">
+        <i class="fa {{btn.icon}}"></i>
+        {{btn.text}}
+    </button>
+</div>

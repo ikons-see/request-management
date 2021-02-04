@@ -1,0 +1,10 @@
+<app-navigation-bar [tabs]="navigationTabs"></app-navigation-bar>
+
+<div class="page-container">
+  <ng-container *ngIf="!loading; else loadingView">
+    <ng-content></ng-content>
+  </ng-container>
+  <ng-template #loadingView>
+    <app-loading-view></app-loading-view>
+  </ng-template>
+</div>
