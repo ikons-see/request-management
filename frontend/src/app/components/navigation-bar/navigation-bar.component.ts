@@ -12,6 +12,7 @@ export class NavigationBarComponent implements OnInit {
   tabs: Array<NavigationTab>;
 
   activeTab: string = '0';
+  isNavbarCollapsed: boolean = false;
   
   constructor() { }
 

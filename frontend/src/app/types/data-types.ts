@@ -2,6 +2,7 @@ export interface NavigationTab {
     tabName: string;
     tabId: string;
     icon?: string;
+    onClick?: (value?: any) => void;
 }
 
 export enum ColumnType {
@@ -87,5 +88,8 @@ export interface Tab {
     id: string;
     name: string;
     onClick?: (value?: any) => void;
-  }
+}
 
+export interface JWTToken {
+    id_token: string;
+}
