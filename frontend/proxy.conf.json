@@ -2,5 +2,10 @@
   "/requests-management/api": {
     "__local__target": "http://localhost:9000",
     "target": "http://localhost:8080"
+  },
+
+  "/api": {
+    "__local__target": "http://localhost:9000",
+    "target": "http://localhost:8080"
   }
 }

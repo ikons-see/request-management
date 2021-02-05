@@ -1,9 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
 @import "~@ng-select/ng-select/themes/default.theme.css";
 
-html, body {
+html,
+body {
     margin: 0;
     height: 100%;
 }
 
-bs-datepicker-container { z-index: 3000; }
+bs-datepicker-container {
+    z-index: 3000;
+}
