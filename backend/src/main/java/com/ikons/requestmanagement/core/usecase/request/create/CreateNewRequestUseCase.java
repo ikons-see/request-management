@@ -1,10 +1,11 @@
-package com.ikons.requestmanagement.core.usecase.request;
+package com.ikons.requestmanagement.core.usecase.request.create;
 
 
-import com.ikons.requestmanagement.core.dto.UserDTO;
 import com.ikons.requestmanagement.core.entity.AreaOfInterest;
 import com.ikons.requestmanagement.core.entity.RequestMailContent;
 import com.ikons.requestmanagement.core.entity.Resource;
+import com.ikons.requestmanagement.core.usecase.request.GetRequest;
+import com.ikons.requestmanagement.core.usecase.request.RequestActionNotification;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import com.ikons.requestmanagement.dataprovider.database.entity.User;
 import com.ikons.requestmanagement.web.rest.responses.RequestDetails;
@@ -33,7 +34,7 @@ public class CreateNewRequestUseCase {
         final long requestId = createRequest.createNewRequest(areaOfInterest, startDate, endDate, projectDescription, otherNotes, userId, resources);
          final List<User> administrators = userManagement.getAdministrators();
          final RequestMailContent requestMailContent = generate(requestId);
-         requestActionNotification.sendRequestCreationEmail(administrators, requestMailContent);
+//         requestActionNotification.sendRequestCreationEmail(administrators, requestMailContent);
     }
     private RequestMailContent generate(final long requestId) {
         final RequestDetails requestDetails = getRequest.getRequestDetails(requestId);

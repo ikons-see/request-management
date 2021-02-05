@@ -6,26 +6,31 @@ import com.ikons.requestmanagement.core.entity.AreaOfInterest;
 import com.ikons.requestmanagement.core.entity.RequestStatus;
 import com.ikons.requestmanagement.core.entity.Resource;
 import com.ikons.requestmanagement.core.usecase.CannotDeserializeException;
-import com.ikons.requestmanagement.core.usecase.request.CreateRequest;
+import com.ikons.requestmanagement.core.usecase.request.close.CloseRequestProvider;
+import com.ikons.requestmanagement.core.usecase.request.create.CreateRequest;
 import com.ikons.requestmanagement.core.usecase.request.GetRequest;
+import com.ikons.requestmanagement.core.usecase.request.delete.DeleteRequestProvider;
 import com.ikons.requestmanagement.core.usecase.request.exception.MissingRequestException;
+import com.ikons.requestmanagement.core.usecase.request.update.UpdateRequestProvider;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity;
 import com.ikons.requestmanagement.dataprovider.database.entity.ResourceEntity;
 import com.ikons.requestmanagement.dataprovider.database.repository.RequestRepository;
 import com.ikons.requestmanagement.dataprovider.database.repository.ResourceRepository;
 import com.ikons.requestmanagement.web.rest.requests.PaginationParams;
+import com.ikons.requestmanagement.web.rest.requests.RequestUpdate;
 import com.ikons.requestmanagement.web.rest.responses.RequestDetails;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
 
 @Log4j2
 @Service
-public class RequestManagementImpl implements GetRequest, CreateRequest {
+public class RequestManagementImpl implements GetRequest, UpdateRequestProvider, CloseRequestProvider, DeleteRequestProvider, CreateRequest {
 
     private final RequestRepository requestRepository;
     private final ResourceRepository resourceRepository;
@@ -55,25 +60,31 @@ public class RequestManagementImpl implements GetRequest, CreateRequest {
                 .build();
         //entity.setCreatedBy(userId);
 
+        createNewResources(resources, entity);
+
         requestRepository.save(entity);
 
-        if (resources != null) {
-
-            for (Resource resources1 : resources) {
-                ResourceEntity resourcesEntity = null;
-                try {
-                    resourcesEntity = ResourceEntity.builder()
-                            .request(entity)
-                            .seniority(resources1.getSeniority()).skills(objectMapper.writeValueAsString(resources1.getSkills())).notes(resources1.getNotes()).total(resources1.getTotal()).build();
-                } catch (JsonProcessingException e) {
-                    log.catching(e);
-                }
-                entity.getResources().add(resourcesEntity);
-            }
-
-            requestRepository.save(entity);
-        }
         return entity.getRequestId();
+    }
+
+    private void createNewResources(List<Resource> resources, RequestEntity entity) {
+        if (resources != null) {
+            final List<ResourceEntity> resourcesEntities = resources.stream().map(resource -> {
+                final ResourceEntity resourceEntity = new ResourceEntity();
+                resourceEntity.setRequest(entity);
+                resourceEntity.setSeniority(resource.getSeniority());
+                try {
+                    resourceEntity.setSkills(objectMapper.writeValueAsString(resource.getSkills()));
+                } catch (JsonProcessingException e) {
+                    e.printStackTrace();
+                }
+                resourceEntity.setNotes(resource.getNotes());
+                resourceEntity.setTotal(resource.getTotal());
+                return resourceEntity;
+            }).collect(Collectors.toList());
+
+            entity.getResources().addAll(resourcesEntities);
+        }
     }
 
     @Override
@@ -125,6 +136,7 @@ public class RequestManagementImpl implements GetRequest, CreateRequest {
                         .map(a -> {
                             try {
                                 return Resource.builder()
+                                        .resourceId(a.getResourceId())
                                         .seniority(a.getSeniority())
                                         .skills(a.getSkills() == null ? Collections.emptyList() : objectMapper.readValue(a.getSkills(), List.class))
                                         .notes(a.getNotes())
@@ -137,5 +149,43 @@ public class RequestManagementImpl implements GetRequest, CreateRequest {
                 .build();
     }
 
+    @Override
+    @Transactional
+    public void update(final RequestUpdate requestUpdate) {
+        Optional<RequestEntity> requestEntity = requestRepository.findById(requestUpdate.getRequestId());
+
+        requestEntity.ifPresent(entity -> {
+            entity.setAreaOfInterest(requestUpdate.getAreaOfInterest().toString());
+            entity.setStatus(String.valueOf(RequestStatus.UPDATED));
+            entity.setStartDate(requestUpdate.getStartDate());
+            entity.setEndDate(requestUpdate.getEndDate());
+            entity.setNotes(requestUpdate.getNotes());
+            entity.setProjectDescription(requestUpdate.getProjectDescription());
+
+            deleteResources(requestUpdate.getDeletedResourceIds());
+            createNewResources(requestUpdate.getNewResources(), entity);
+
+        });
+    }
+
+    public void deleteResources(List<Long> deletedResourceIds) {
+        if (deletedResourceIds != null && !deletedResourceIds.isEmpty()) {
+            resourceRepository.deleteByResourceIdIn(deletedResourceIds);
+        }
+    }
+
+    @Override
+
+    public void close(final Long requestId) {
+        requestRepository.findById(requestId).ifPresent(requestEntity -> {
+            requestEntity.setStatus(RequestStatus.CLOSED.toString());
+            requestRepository.save(requestEntity);
+        });
+    }
+
+    @Override
+    public void delete(final Long requestId) {
+        requestRepository.findById(requestId).ifPresent(requestRepository::delete);
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.ikons.requestmanagement.core.usecase.request;
+package com.ikons.requestmanagement.core.usecase.request.create;
 
 import com.ikons.requestmanagement.core.entity.AreaOfInterest;
 import com.ikons.requestmanagement.core.entity.Resource;
