@@ -11,9 +11,9 @@ import java.util.List;
 @Repository
 public interface RequestRepository extends CrudRepository<RequestEntity, Long> {
 
-    List<RequestEntity> findByCreatedBy(long userId, Pageable pageable);
+    List<RequestEntity> findByCreatedBy(String userId, Pageable pageable);
 
     List<RequestEntity> findAll(Pageable pageable);
 
-    long countByCreatedBy(long userId);
+    long countByCreatedBy(String userId);
 }

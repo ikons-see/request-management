@@ -35,7 +35,6 @@ public interface UserManagement {
 
     List<String> getAuthorities();
 
-    List<User> getAdministrators();
+    List<String> getAdministratorsEmails();
 
-    User getUser(long userId);
 }

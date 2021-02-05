@@ -1,4 +1,4 @@
-package com.ikons.requestmanagement.web.rest.responses;
+package com.ikons.requestmanagement.core.dto;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestsResponse {
-    private List<RequestDetails> requestResponses;
+public class RequestsDTO {
+    private List<RequestDetailsDTO> requestResponses;
     private long total;
 }
