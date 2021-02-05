@@ -5,6 +5,7 @@ import com.ikons.requestmanagement.core.dto.UserDTO;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import com.ikons.requestmanagement.core.usecase.user.exception.EmailAlreadyUsedException;
 import com.ikons.requestmanagement.core.usecase.user.exception.InvalidPasswordException;
+import com.ikons.requestmanagement.core.usecase.user.exception.MissingUserException;
 import com.ikons.requestmanagement.core.usecase.user.exception.UsernameAlreadyUsedException;
 import com.ikons.requestmanagement.dataprovider.database.entity.Authority;
 import com.ikons.requestmanagement.dataprovider.database.entity.User;
@@ -281,6 +282,17 @@ public class UserManagementImpl implements UserManagement {
     @Transactional(readOnly = true)
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<User> getAdministrators() {
+        return userRepository.findAllByAuthoritiesNameIn(Collections.singletonList("ROLE_ADMIN"));
+    }
+
+    @Override
+    public User getUser(long userId) {
+        final User userEntity = userRepository.findById(userId).orElseThrow(() -> new MissingUserException(userId));
+        return userEntity;
     }
 
     /**
