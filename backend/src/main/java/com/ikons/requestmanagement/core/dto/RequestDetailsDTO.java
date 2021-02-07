@@ -1,6 +1,6 @@
-package com.ikons.requestmanagement.web.rest.responses;
+package com.ikons.requestmanagement.core.dto;
 
-import com.ikons.requestmanagement.core.entity.Resource;
+import com.ikons.requestmanagement.core.dto.ResourceDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,7 +13,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestDetails {
+public class RequestDetailsDTO {
     private long requestId;
     private String areaOfInterest;
     private String displayName;
@@ -22,5 +22,5 @@ public class RequestDetails {
     private Date endDate;
     private String notes;
     private String projectDescription;
-    private List<Resource> resources;
+    private List<ResourceDTO> resources;
 }
