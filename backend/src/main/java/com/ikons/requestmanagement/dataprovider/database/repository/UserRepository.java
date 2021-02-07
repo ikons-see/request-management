@@ -37,4 +37,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
   Optional<User> findOneWithAuthoritiesByEmailIgnoreCase(String email);
 
   Page<User> findAllByLoginNot(Pageable pageable, String login);
+
+  List<User> findAllByAuthoritiesNameIn(List<String> role);
 }

@@ -1,0 +1,26 @@
+.status-container {
+    width: 100px;
+    text-align: center;
+    color: white;
+}
+
+.status {
+    font-weight: 500;
+    border-radius: 10px;
+}
+
+.created {
+    background-color: #7BB4A2;
+}
+
+.pending {
+    background-color: #CCCE8C;
+}
+
+.rejected {
+    background-color: #BC8E9D;
+}
+
+.closed {
+    background-color: #8EA9BC;
+}

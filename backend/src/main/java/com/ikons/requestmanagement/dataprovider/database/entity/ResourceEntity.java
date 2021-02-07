@@ -30,7 +30,7 @@ public class ResourceEntity implements Serializable {
     @Column
     private Integer total;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")
     private RequestEntity request;
 }

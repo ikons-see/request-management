@@ -1,0 +1,104 @@
+ .portlet__body {
+     //  display: flex;
+     padding-top: 1.5rem;
+     padding-right: 50px;
+     padding-left: 2rem;
+     border-bottom: 1px solid #e9ecef;
+ }
+
+ .portlet-title {
+    padding: 0;
+    margin-left: 0;
+    margin-bottom: 1rem;
+    color: #CCCCCC;
+}
+
+ form {
+     margin-bottom: 1rem;
+     background-color: white;
+ }
+
+ .form-group {
+     display: inline-grid;
+     padding-right: 15px;
+     margin-right: 1.5rem;
+     min-width: 200px;
+
+     .scrollable-menu {
+         height: auto;
+         max-height: 200px;
+         overflow-x: hidden;
+     }
+
+     .selected-item,
+     .selected-item:hover {
+         background-color: #4E5972;
+         color: whitesmoke;
+     }
+
+     input {
+         border-radius: 5px;
+     }
+
+     i {
+         margin-right: .5rem;
+     }
+
+     ul {
+         width: -webkit-fill-available;
+     }
+
+     button {
+         text-align: left;
+
+         i {
+             float: right;
+         }
+     }
+
+     .btn-group {
+         height: calc(2.95rem + 2px);
+         min-width: 280px;
+
+         .dropdown-text {
+             float: left;
+             padding-right: .5rem;
+         }
+
+         .dropdown-icon {
+             float: right;
+         }
+
+         ul {
+             width: -webkit-fill-available;
+         }
+     }
+
+     .users-dropdown {
+         min-width: 200px;
+     }
+ }
+
+ .form__actions {
+     display: flex;
+     padding-bottom: 15px;
+     padding-right: 20px;
+     padding-top: 15px;
+     justify-content: flex-end;
+
+     .btn {
+         border-radius: 4px;
+     }
+
+     .btn-outline-secondary {
+         margin-right: 15px;
+     }
+ }
+
+ h3 {
+     font-family: Poppins;
+     font-weight: inherit;
+     padding-top: 1rem;
+     font-size: large;
+     margin-left: 15px;
+ }

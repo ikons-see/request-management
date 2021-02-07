@@ -2,22 +2,23 @@ package com.ikons.requestmanagement.dataprovider.database.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ikons.requestmanagement.core.entity.AreaOfInterest;
-import com.ikons.requestmanagement.core.entity.RequestStatus;
-import com.ikons.requestmanagement.core.entity.Resource;
+import com.ikons.requestmanagement.core.dto.AreaOfInterestDTO;
+import com.ikons.requestmanagement.core.dto.RequestStatusDTO;
+import com.ikons.requestmanagement.core.dto.ResourceDTO;
 import com.ikons.requestmanagement.core.usecase.CannotDeserializeException;
-import com.ikons.requestmanagement.core.usecase.request.CreateRequest;
+import com.ikons.requestmanagement.core.usecase.request.newrequest.CreateRequest;
 import com.ikons.requestmanagement.core.usecase.request.GetRequest;
+import com.ikons.requestmanagement.core.usecase.request.updaterequest.UpdateRequest;
 import com.ikons.requestmanagement.core.usecase.request.exception.MissingRequestException;
+import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity;
 import com.ikons.requestmanagement.dataprovider.database.entity.ResourceEntity;
 import com.ikons.requestmanagement.dataprovider.database.repository.RequestRepository;
 import com.ikons.requestmanagement.dataprovider.database.repository.ResourceRepository;
-import com.ikons.requestmanagement.web.rest.requests.PaginationParams;
-import com.ikons.requestmanagement.web.rest.responses.RequestDetails;
+import com.ikons.requestmanagement.core.dto.RequestDetailsDTO;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.PageRequest;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -28,35 +29,37 @@ public class RequestManagementImpl implements GetRequest, CreateRequest {
 
     private final RequestRepository requestRepository;
     private final ResourceRepository resourceRepository;
+    private final UserManagement userManagement;
     private static final ObjectMapper objectMapper = new ObjectMapper();
 
-    public RequestManagementImpl(final RequestRepository requestRepository, final ResourceRepository resourcesRepository) {
+    public RequestManagementImpl(final RequestRepository requestRepository, final ResourceRepository resourcesRepository, final UserManagement userManagement) {
         this.requestRepository = requestRepository;
         this.resourceRepository = resourcesRepository;
+        this.userManagement = userManagement;
     }
 
     @Override
-    public long createNewRequest(final AreaOfInterest areaOfInterest, final Date startDate, final Date endDate,
+    public long createNewRequest(final AreaOfInterestDTO areaOfInterest, final Date startDate, final Date endDate,
                                  final String projectDescription, final String otherNotes,
-                                 final Long userId,
-                                 final List<Resource> resources
+                                 final String user,
+                                 final List<ResourceDTO> resources
     ) {
         final RequestEntity entity = RequestEntity.builder()
                 .areaOfInterest(areaOfInterest.name())
                 .startDate(startDate)
                 .endDate(endDate)
-                .status(RequestStatus.CREATED.toString())
+                .status(RequestStatusDTO.CREATED.name())
                 .projectDescription(projectDescription)
                 .notes(otherNotes)
                 .resources(new ArrayList<>())
                 .build();
+        entity.setCreatedBy(user);
 
         requestRepository.save(entity);
 
         if (resources != null) {
 
-            for (Resource resources1 : resources
-            ) {
+            for (ResourceDTO resources1 : resources) {
                 ResourceEntity resourcesEntity = null;
                 try {
                     resourcesEntity = ResourceEntity.builder()
@@ -74,14 +77,14 @@ public class RequestManagementImpl implements GetRequest, CreateRequest {
     }
 
     @Override
-    public RequestDetails getRequestDetails(final long requestId) {
+    public RequestDetailsDTO getRequestDetails(final long requestId) {
         final RequestEntity requestEntity = requestRepository.findById(requestId).orElseThrow(() -> new MissingRequestException(requestId));
         return mapRequestDetails(requestEntity);
     }
 
     @Override
-    public List<RequestDetails> getAllRequests(final PaginationParams paginationParams) {
-        final List<RequestEntity> requestEntities = requestRepository.findAll(PageRequest.of(paginationParams.getPage() - 1, paginationParams.getSize()));
+    public List<RequestDetailsDTO> getAllRequests(final Pageable pageable) {
+        final List<RequestEntity> requestEntities = requestRepository.findAll(pageable);
         return requestEntities.stream().filter(Objects::nonNull).map(a -> {
             return mapRequestDetails(a);
         }).collect(Collectors.toList());
@@ -93,21 +96,23 @@ public class RequestManagementImpl implements GetRequest, CreateRequest {
     }
 
     @Override
-    public long countUserRequests(final Long userId) {
+    public long countUserRequests(final String userId) {
         return requestRepository.countByCreatedBy(userId);
     }
 
     @Override
-    public List<RequestDetails> getUserRequests(final Long userId, final PaginationParams paginationParams) {
-        final List<RequestEntity> requestEntities = requestRepository.findByCreatedBy(userId, PageRequest.of(paginationParams.getPage() - 1, paginationParams.getSize()));
+    public List<RequestDetailsDTO> getUserRequests(final String userId, final Pageable pageable) {
+        final List<RequestEntity> requestEntities = requestRepository.findByCreatedBy(userId, pageable);
         return requestEntities.stream().filter(Objects::nonNull).map(a -> {
             return mapRequestDetails(a);
         }).collect(Collectors.toList());
     }
 
-    private RequestDetails mapRequestDetails(final RequestEntity requestEntity) {
-        return RequestDetails.builder()
+    private RequestDetailsDTO mapRequestDetails(final RequestEntity requestEntity) {
+
+        return RequestDetailsDTO.builder()
                 .requestId(requestEntity.getRequestId())
+                .displayName(requestEntity.getCreatedBy())
                 .areaOfInterest(requestEntity.getAreaOfInterest())
                 .status(requestEntity.getStatus())
                 .endDate(requestEntity.getEndDate())
@@ -118,7 +123,7 @@ public class RequestManagementImpl implements GetRequest, CreateRequest {
                         .filter(Objects::nonNull)
                         .map(a -> {
                             try {
-                                return Resource.builder()
+                                return ResourceDTO.builder()
                                         .seniority(a.getSeniority())
                                         .skills(a.getSkills() == null ? Collections.emptyList() : objectMapper.readValue(a.getSkills(), List.class))
                                         .notes(a.getNotes())

@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { DatePipe } from '@angular/common';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -45,6 +45,10 @@ import { AddResourcesComponent } from './pages/requester/add-request-modal/add-r
 import { AddGeneralInfoComponent } from './pages/requester/add-request-modal/add-general-info/add-general-info.component';
 import { EditGeneralInfoComponent } from './pages/requester/edit-details-modal/edit-general-info/edit-general-info.component';
 import { EditResourcesComponent } from './pages/requester/edit-details-modal/edit-resources/edit-resources.component';
+import { AuthInterceptor } from './endpoint/interceptors/token-interceptor.service';
+import { AuthExpiredInterceptor } from './endpoint/interceptors/auth-expired.interceptor';
+import { FiltersPanelComponent } from './pages/requester/filters-panel/filters-panel.component';
+import { StatusColumnComponent } from './components/table/status-column/status-column.component';
 import { CloseRequestModalComponent } from './pages/requester/close-request-modal/close-request-modal.component';
 
 export interface ApplicationState {
@@ -87,6 +91,8 @@ const effects = [
     AddGeneralInfoComponent,
     EditGeneralInfoComponent,
     EditResourcesComponent,
+    FiltersPanelComponent,
+    StatusColumnComponent,
     CloseRequestModalComponent
   ],
   imports: [
@@ -117,7 +123,17 @@ const effects = [
   ],
   providers: [
     BsModalRef,
-    DatePipe
+    DatePipe,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthExpiredInterceptor,
+      multi: true
+    },
   ],
   entryComponents: [
     AddRequestModalComponent,

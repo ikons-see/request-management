@@ -1,8 +1,9 @@
-package com.ikons.requestmanagement.core.usecase.request;
+package com.ikons.requestmanagement.core.usecase.request.getrequests;
 
-import com.ikons.requestmanagement.web.rest.requests.PaginationParams;
-import com.ikons.requestmanagement.web.rest.responses.RequestsResponse;
+import com.ikons.requestmanagement.core.usecase.request.GetRequest;
+import com.ikons.requestmanagement.core.dto.RequestsDTO;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -10,14 +11,14 @@ import org.springframework.stereotype.Service;
 public class ListRequestsUseCase {
     private final GetRequest getRequest;
 
-    public RequestsResponse getAllRequests(final PaginationParams paginationParams) {
-        return RequestsResponse.builder()
+    public RequestsDTO getAllRequests(final Pageable paginationParams) {
+        return RequestsDTO.builder()
                 .requestResponses(getRequest.getAllRequests(paginationParams))
                 .total(getRequest.countAllRequests()).build();
     }
 
-    public RequestsResponse getUserRequests(final Long loggedUser, final PaginationParams paginationParams) {
-        return RequestsResponse.builder()
+    public RequestsDTO getUserRequests(final String loggedUser, final Pageable paginationParams) {
+        return RequestsDTO.builder()
                 .requestResponses(getRequest.getUserRequests(loggedUser, paginationParams))
                 .total(getRequest.countUserRequests(loggedUser)).build();
     }

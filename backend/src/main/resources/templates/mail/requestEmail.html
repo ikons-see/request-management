@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:lang="${#locale.language}" lang="en">
+<head>
+    <title th:text="#{email.request.title}">JHipster creation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<div style="...">
+
+    <div align="center">
+        <p align="left">
+            A new request has been created with the below information:<br>
+            Request created by: <span th:text="${request.displayName}"/><br>
+            Area of interest: <span th:text="${request.areaOfInterest}"/><br>
+            Request id: <span th:text="${request.requestId}"/><br>
+            Project description: <span th:text="${request.projectDescription}"/><br>
+            Start date: <span th:text="${request.startDate}"/><br>
+            End date: <span th:text="${request.endDate}"/><br>
+        <table class="header1">
+            <tr>
+                <th>Resource number</th>
+                <th>Seniority</th>
+                <th>Skills</th>
+                <th>Notes</th>
+            </tr>
+            <tr th:each="item: ${request.resources}">
+                <td th:text="${item.total}"/>
+                <td th:text="${item.seniority}"/>
+                <td th:text="${item.skills}"/>
+                <td th:text="${item.notes}"/>
+            </tr>
+        </table>
+
+        </p>
+        <div>
+            <div align="center">
+                <br>
+                <footer align="center" style="color:dimgray">
+                    This is an automatically generated email, please do not reply
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

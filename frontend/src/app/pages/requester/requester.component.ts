@@ -2,8 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { ApplicationState } from 'src/app/app.module';
-import { openAddRequestModal, openCloseRequestModal, openDeleteRequestModal, openEditRequestModal, openViewDetailsModal, pageChanged, requestData } from '../../store/requests-actions';
-import { getCurrentPage, getLoadingRequests, getRequestsError, getRequestsList, getTotalNumber } from '../../store/requests-reducer';
+import {
+  logoutRequest,
+  openAddRequestModal,
+  openCloseRequestModal,
+  openDeleteRequestModal,
+  openEditRequestModal,
+  openViewDetailsModal,
+  pageChanged,
+  requestData
+} from '../../store/requests-actions';
+import {
+  getCurrentPage,
+  getErrorMessage,
+  getLoadingRequests,
+  getRequestsList,
+  getTotalNumber
+} from '../../store/requests-reducer';
 import { ColumnType, DropdownColumn, NavigationTab, TableConfig } from '../../types/data-types';
 import { RequestDetails } from '../../types/request-types';
 
@@ -21,6 +36,7 @@ export class RequesterComponent implements OnInit {
   currentPage$: Observable<number>;
   errorMessage$: Observable<string>;
   loading$: Observable<boolean>;
+  showFilters: boolean = false;
 
   private subscriptions: Subscription[] = [];
 
@@ -32,7 +48,7 @@ export class RequesterComponent implements OnInit {
     this.requests$ = this.store.select(getRequestsList);
     this.totalNumber$ = this.store.select(getTotalNumber);
     this.loading$ = this.store.select(getLoadingRequests);
-    this.errorMessage$ = this.store.select(getRequestsError);
+    this.errorMessage$ = this.store.select(getErrorMessage);
   }
 
   ngOnInit(): void {
@@ -40,7 +56,7 @@ export class RequesterComponent implements OnInit {
   }
 
   loadData(page: number) {
-    this.store.dispatch(requestData({page}));
+    this.store.dispatch(requestData({ page }));
   }
 
   tabClicked(e) {
@@ -87,7 +103,7 @@ export class RequesterComponent implements OnInit {
           text: 'Area of interest'
         },
         {
-          type: ColumnType.STRING,
+          type: ColumnType.STATUS,
           field: 'status',
           text: 'Status'
         },
@@ -120,8 +136,13 @@ export class RequesterComponent implements OnInit {
       {
         tabName: 'Sign Out',
         tabId: '1',
-        icon: 'fa-user'
+        icon: 'fa-user',
+        onClick: (e) => this.signOut()
       }];
+  }
+
+  toogleFiltersPanel() {
+    this.showFilters = !this.showFilters;
   }
 
   addRequestModal() {
@@ -130,19 +151,23 @@ export class RequesterComponent implements OnInit {
 
   pageChanged(page: number) {
     this.loadData(page);
-    this.store.dispatch(pageChanged({page: page}));
+    this.store.dispatch(pageChanged({ page: page }));
   }
 
   openDetailsModal(e) {
-    this.store.dispatch(openViewDetailsModal({requestId: e}))
+    this.store.dispatch(openViewDetailsModal({ requestId: e }))
   }
 
   openEditRequestModal(e) {
-    this.store.dispatch(openEditRequestModal({requestId: e}));
+    this.store.dispatch(openEditRequestModal({ requestId: e }));
   }
 
   deleteRequest(e) {
-    this.store.dispatch(openDeleteRequestModal({requestId: e}));
+    this.store.dispatch(openDeleteRequestModal({ requestId: e }));
+  }
+
+  signOut() {
+    this.store.dispatch(logoutRequest());
   }
 
   closeRequest(e) {

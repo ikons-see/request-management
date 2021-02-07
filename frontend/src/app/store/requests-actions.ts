@@ -1,7 +1,10 @@
 import { createAction, props } from "@ngrx/store";
-import { AddRequest, RequestDetails, UpdateRequest } from "../types/request-types";
+import { JWTToken } from "../types/data-types";
+import { AddRequest, RequestDetails, RequestFilters, UpdateRequest } from "../types/request-types";
 
 export const featureKey = 'requests-management';
+
+export const resetMessage = createAction(`[${featureKey}] resetMessage`);
 
 export const requestData = createAction(`[${featureKey}] requestData`, props<{ page: number }>());
 export const setData = createAction(`[${featureKey}] setData`, props<{ requests: Array<RequestDetails>, totalNumber: number }>());
@@ -30,3 +33,16 @@ export const openCloseRequestModal = createAction(`[${featureKey}] OpenCloseRequ
 export const closeRequest = createAction(`[${featureKey}] closeRequest`, props<{requestId: number}>());
 export const closeRequestSuccess = createAction(`[${featureKey}] closeRequestSuccess`);
 export const closeRequestFailure = createAction(`[${featureKey}] closeRequestFailure`, props<{ errorMessage: string }>());
+
+export const loginRequest = createAction(`[${featureKey}] loginRequest`, props<{
+    username: string,
+    password: string,
+    rememberMe: boolean }>());
+export const loginSuccess = createAction(`[${featureKey}] loginSuccess`, props<{ token?: JWTToken }>());
+export const loginFailure = createAction(`[${featureKey}] loginFailure`, props<{ errorMessage: string }>());
+export const logoutRequest = createAction(`[${featureKey}] logoutRequest`);
+
+export const addRequestFilters = createAction(`[${featureKey}] addRequestFilters`, props<{ requestFilters: RequestFilters }>());
+export const resetRequestFilters = createAction(`[${featureKey}] resetRequestFilters`);
+
+export const rehydrateSuccess = createAction(`[${featureKey}] rehydrateSuccess`);

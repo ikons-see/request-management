@@ -2,6 +2,7 @@ export interface NavigationTab {
     tabName: string;
     tabId: string;
     icon?: string;
+    onClick?: (value?: any) => void;
 }
 
 export enum ColumnType {
@@ -9,7 +10,8 @@ export enum ColumnType {
     NUMBER = 'number',
     DATE = 'date',
     BUTTON = 'button',
-    DROPDOWN = 'dropdown'
+    DROPDOWN = 'dropdown',
+    STATUS = 'status'
 }
 
 export enum AreaOfInterest {
@@ -40,6 +42,14 @@ export enum Skills {
     Typescript = 'Typescript',
     React = 'React',
     NgRx = 'NgRx'
+}
+
+export enum RequestStatus {
+    CREATED = 'CREATED',
+    PENDING = 'PENDING',
+    CLOSED = 'CLOSED',
+    REJECTED = 'REJECTED',
+    DELETED = 'DELETED'
 }
 
 export interface Column {
@@ -87,5 +97,8 @@ export interface Tab {
     id: string;
     name: string;
     onClick?: (value?: any) => void;
-  }
+}
 
+export interface JWTToken {
+    id_token: string;
+}

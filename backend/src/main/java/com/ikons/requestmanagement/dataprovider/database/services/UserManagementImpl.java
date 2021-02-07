@@ -5,6 +5,7 @@ import com.ikons.requestmanagement.core.dto.UserDTO;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import com.ikons.requestmanagement.core.usecase.user.exception.EmailAlreadyUsedException;
 import com.ikons.requestmanagement.core.usecase.user.exception.InvalidPasswordException;
+import com.ikons.requestmanagement.core.usecase.user.exception.MissingUserException;
 import com.ikons.requestmanagement.core.usecase.user.exception.UsernameAlreadyUsedException;
 import com.ikons.requestmanagement.dataprovider.database.entity.Authority;
 import com.ikons.requestmanagement.dataprovider.database.entity.User;
@@ -282,6 +283,15 @@ public class UserManagementImpl implements UserManagement {
     public List<String> getAuthorities() {
         return authorityRepository.findAll().stream().map(Authority::getName).collect(Collectors.toList());
     }
+
+    @Override
+    public List<String> getAdministratorsEmails() {
+        List<User> administrators = userRepository.findAllByAuthoritiesNameIn(Collections.singletonList("ROLE_ADMIN"));
+        return administrators.stream().filter(Objects::nonNull).map(a -> {
+            return a.getEmail();
+        }).collect(Collectors.toList());
+    }
+
 
     /**
      * Not activated users should be automatically deleted after 3 days.

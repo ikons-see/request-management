@@ -34,4 +34,7 @@ public interface UserManagement {
     Optional<UserDTO> getUserWithAuthorities();
 
     List<String> getAuthorities();
+
+    List<String> getAdministratorsEmails();
+
 }

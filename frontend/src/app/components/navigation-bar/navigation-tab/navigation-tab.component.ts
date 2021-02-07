@@ -16,4 +16,8 @@ export class NavigationTabComponent {
   
   constructor() { }
 
+  handleClick(event, tab:NavigationTab) {
+    tab.onClick(tab.tabId);
+  }
+
 }
