@@ -10,17 +10,26 @@ import { RequestsManagementService } from "../endpoint/requests-management.servi
 import {
     addNewRequest,
     addRequestFailure,
+    addRequestFilters,
     addRequestSuccess,
     loginFailure,
     loginRequest,
     loginSuccess,
     logoutRequest,
+    closeRequest,
+    closeRequestFailure,
+    closeRequestSuccess,
+    deleteRequest,
+    deleteRequestFailure,
+    deleteRequestSuccess,
     openAddRequestModal,
+    openCloseRequestModal,
     openDeleteRequestModal,
     openEditRequestModal,
     openViewDetailsModal,
     rehydrateSuccess,
     requestData,
+    resetRequestFilters,
     setData,
     setDataFailure,
     updateRequest,
@@ -31,8 +40,11 @@ import { globalModalConfig } from "../types/data-types";
 import { ViewDetailsModalComponent } from "../pages/requester/view-details-modal/view-details-modal.component";
 import { AddRequestModalComponent } from "../pages/requester/add-request-modal/add-request-modal.component";
 import { EditDetailsModalComponent } from "../pages/requester/edit-details-modal/edit-details-modal.component";
-import { DeleteDetailsModalComponent } from "../pages/requester/delete-details-modal/delete-details-modal.component";
+import { DeleteRequestModalComponent } from "../pages/requester/delete-request-modal/delete-request-modal.component";
+import { getCurrentPage } from "./requests-reducer";
+import { CloseRequestModalComponent } from "../pages/requester/close-request-modal/close-request-modal.component";
 import { Router } from "@angular/router";
+import { getFilters } from "./requests-reducer";
 
 
 @Injectable()
@@ -52,8 +64,9 @@ export class RequestsManagementEffects {
 
     onRequestData$ = createEffect(() => this.actions$.pipe(
         ofType(requestData),
-        switchMap((action) => {
-            return this.requestsService.getRequestsList(action.page)
+        withLatestFrom(this.store.select(getFilters)),
+        switchMap(([action, filters]) => {
+            return this.requestsService.getRequestsList(action.page, filters)
                 .pipe(
                     map(res => setData({
                         totalNumber: res.total,
@@ -110,8 +123,13 @@ export class RequestsManagementEffects {
     ));
 
     closeAddRequestModal$ = createEffect(() => this.actions$.pipe(
-        ofType(addRequestSuccess,
-            updateRequestSuccess),
+        ofType(
+            addRequestSuccess,
+            updateRequestSuccess,
+            deleteRequestSuccess,
+            deleteRequestFailure,
+            closeRequestSuccess,
+            closeRequestFailure),
         tap(() => {
             this.modalService.hide();
         })
@@ -134,12 +152,13 @@ export class RequestsManagementEffects {
 
     onRequestUpdate$ = createEffect(() => this.actions$.pipe(
         ofType(updateRequest),
-        switchMap((action) => {
+        withLatestFrom(this.store.select(getCurrentPage)),
+        switchMap(([action, page]) => {
             return this.requestsService.updateRequest(action.request)
                 .pipe(
                     mergeMap(res => [
                         updateRequestSuccess(),
-                        requestData({ page: 1 })]),
+                        requestData({ page: page })]),
                     catchError((error: HttpErrorResponse) =>
                         of(updateRequestFailure({ errorMessage: error.message }),
                         ))
@@ -147,10 +166,25 @@ export class RequestsManagementEffects {
         })
     ));
 
+    onFiltersApplied$ = createEffect(() => this.actions$.pipe(
+        ofType(addRequestFilters),
+        map((action) => {
+            return requestData({ page: 1 })
+        })
+    ));
+
+    onFiltersResetd$ = createEffect(() => this.actions$.pipe(
+        ofType(resetRequestFilters),
+        map((action) => {
+            return requestData({ page: 1 })
+        })
+    ));
+
+
     openDeleteRequestModal$ = createEffect(() => this.actions$.pipe(
         ofType(openDeleteRequestModal),
         tap((action) => {
-            this.modalService.show(DeleteDetailsModalComponent, {
+            this.modalService.show(DeleteRequestModalComponent, {
                 ...globalModalConfig,
                 class: 'modal-dialog modal-dialog-centered modal-lg',
                 initialState: {
@@ -202,4 +236,53 @@ export class RequestsManagementEffects {
             return of();
         }
     }
+
+    onDeleteRequest$ = createEffect(() => this.actions$.pipe(
+        ofType(deleteRequest),
+        withLatestFrom(this.store.select(getCurrentPage)),
+        switchMap(([action, page]) => {
+            return this.requestsService.deleteRequest(action.requestId)
+                .pipe(
+                    mergeMap(res => [
+                        deleteRequestSuccess(),
+                        requestData({ page: page })
+                    ]),
+                    catchError((error: HttpErrorResponse) =>
+                        of(deleteRequestFailure({ errorMessage: error.message }),
+                        ))
+                );
+        })
+    ));
+
+
+    openCloseRequestModal$ = createEffect(() => this.actions$.pipe(
+        ofType(openCloseRequestModal),
+        tap((action) => {
+            this.modalService.show(CloseRequestModalComponent, {
+                ...globalModalConfig,
+                class: 'modal-dialog modal-dialog-centered modal-lg',
+                initialState: {
+                    requestId: action.requestId,
+                    title: 'Close Request #'
+                }
+            });
+        })
+    ), { dispatch: false });
+
+    onCloseRequest$ = createEffect(() => this.actions$.pipe(
+        ofType(closeRequest),
+        withLatestFrom(this.store.select(getCurrentPage)),
+        switchMap(([action, page]) => {
+            return this.requestsService.closeRequest(action.requestId)
+                .pipe(
+                    mergeMap(res => [
+                        closeRequestSuccess(),
+                        requestData({ page: page })
+                    ]),
+                    catchError((error: HttpErrorResponse) =>
+                        of(closeRequestFailure({ errorMessage: error.message }),
+                        ))
+                );
+        })
+    ));
 }

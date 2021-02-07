@@ -1,10 +1,16 @@
 <app-page [navigationTabs]="tabs" [loading]="loading$ | async">
     <div class="page-actions">
+        <button class="btn btn-light" (click)="toogleFiltersPanel()">
+             Add filters
+             <i class="fa fa-angle-up" *ngIf="showFilters"></i>
+             <i class="fa fa-angle-down" *ngIf="!showFilters"></i>
+        </button>
         <button class="btn btn-dark shadow-none" (click)="addRequestModal()">
             <i class="fa fa-plus"></i>
             Add request
         </button>
     </div>
+    <app-filters-panel *ngIf='showFilters'></app-filters-panel>
     <ng-container *ngIf="(requests$ | async).length > 0 && (errorMessage$ | async) == null">
         <app-table [columns]="tableConfiguration.columns" 
                    [data]="requests$ | async" 
