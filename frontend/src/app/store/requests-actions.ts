@@ -1,6 +1,6 @@
 import { createAction, props } from "@ngrx/store";
 import { JWTToken } from "../types/data-types";
-import { AddRequest, RequestDetails, UpdateRequest } from "../types/request-types";
+import { AddRequest, RequestDetails, RequestFilters, UpdateRequest } from "../types/request-types";
 
 export const featureKey = 'requests-management';
 
@@ -33,5 +33,8 @@ export const loginRequest = createAction(`[${featureKey}] loginRequest`, props<{
 export const loginSuccess = createAction(`[${featureKey}] loginSuccess`, props<{ token?: JWTToken }>());
 export const loginFailure = createAction(`[${featureKey}] loginFailure`, props<{ errorMessage: string }>());
 export const logoutRequest = createAction(`[${featureKey}] logoutRequest`);
+
+export const addRequestFilters = createAction(`[${featureKey}] addRequestFilters`, props<{ requestFilters: RequestFilters }>());
+export const resetRequestFilters = createAction(`[${featureKey}] resetRequestFilters`);
 
 export const rehydrateSuccess = createAction(`[${featureKey}] rehydrateSuccess`);

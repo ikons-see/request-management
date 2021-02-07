@@ -19,7 +19,8 @@ const routes: Routes = [
     path: 'app',
     children: [
       {path: '', redirectTo: 'requester', pathMatch: 'full'},
-      {path: 'requester', component: RequesterComponent, canActivate: [AuthenticationGuard]}
+      // {path: 'requester', component: RequesterComponent, canActivate: [AuthenticationGuard]}
+      {path: 'requester', component: RequesterComponent}
     ],
   }
 ];

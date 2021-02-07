@@ -10,6 +10,7 @@ import { RequestsManagementService } from "../endpoint/requests-management.servi
 import {
     addNewRequest,
     addRequestFailure,
+    addRequestFilters,
     addRequestSuccess,
     loginFailure,
     loginRequest,
@@ -21,6 +22,7 @@ import {
     openViewDetailsModal,
     rehydrateSuccess,
     requestData,
+    resetRequestFilters,
     setData,
     setDataFailure,
     updateRequest,
@@ -33,6 +35,7 @@ import { AddRequestModalComponent } from "../pages/requester/add-request-modal/a
 import { EditDetailsModalComponent } from "../pages/requester/edit-details-modal/edit-details-modal.component";
 import { DeleteDetailsModalComponent } from "../pages/requester/delete-details-modal/delete-details-modal.component";
 import { Router } from "@angular/router";
+import { getFilters } from "./requests-reducer";
 
 
 @Injectable()
@@ -52,8 +55,9 @@ export class RequestsManagementEffects {
 
     onRequestData$ = createEffect(() => this.actions$.pipe(
         ofType(requestData),
-        switchMap((action) => {
-            return this.requestsService.getRequestsList(action.page)
+        withLatestFrom(this.store.select(getFilters)),
+        switchMap(([action, filters]) => {
+            return this.requestsService.getRequestsList(action.page, filters)
                 .pipe(
                     map(res => setData({
                         totalNumber: res.total,
@@ -146,6 +150,21 @@ export class RequestsManagementEffects {
                 );
         })
     ));
+
+    onFiltersApplied$ = createEffect(() => this.actions$.pipe(
+        ofType(addRequestFilters),
+        map((action) => {
+            return requestData({page: 1})
+        })
+    ));
+
+    onFiltersResetd$ = createEffect(() => this.actions$.pipe(
+        ofType(resetRequestFilters),
+        map((action) => {
+            return requestData({page: 1})
+        })
+    ));
+
 
     openDeleteRequestModal$ = createEffect(() => this.actions$.pipe(
         ofType(openDeleteRequestModal),

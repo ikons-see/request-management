@@ -47,6 +47,8 @@ import { EditGeneralInfoComponent } from './pages/requester/edit-details-modal/e
 import { EditResourcesComponent } from './pages/requester/edit-details-modal/edit-resources/edit-resources.component';
 import { AuthInterceptor } from './endpoint/interceptors/token-interceptor.service';
 import { AuthExpiredInterceptor } from './endpoint/interceptors/auth-expired.interceptor';
+import { FiltersPanelComponent } from './pages/requester/filters-panel/filters-panel.component';
+import { StatusColumnComponent } from './components/table/status-column/status-column.component';
 
 export interface ApplicationState {
   [requestsReducer.featureKey]: requestsReducer.State
@@ -87,7 +89,9 @@ const effects = [
     AddResourcesComponent,
     AddGeneralInfoComponent,
     EditGeneralInfoComponent,
-    EditResourcesComponent
+    EditResourcesComponent,
+    FiltersPanelComponent,
+    StatusColumnComponent
   ],
   imports: [
     BrowserModule,
@@ -118,16 +122,16 @@ const effects = [
   providers: [
     BsModalRef,
     DatePipe,
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthExpiredInterceptor,
-      multi: true
-    },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: AuthInterceptor,
+    //   multi: true
+    // },
+    // {
+    //   provide: HTTP_INTERCEPTORS,
+    //   useClass: AuthExpiredInterceptor,
+    //   multi: true
+    // },
   ],
   entryComponents: [
     AddRequestModalComponent,

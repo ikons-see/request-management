@@ -1,0 +1,82 @@
+<form [formGroup]="formGroup">
+    <div class="portlet__body">
+        <div class="portlet-div">
+            <h3 class="portlet-title">General information</h3>
+            <div class="form-group">
+                <label>
+                    <i class="fa fa-info"></i>
+                    Request State
+                </label>
+                <ng-select [items]="statuses" bindLabel="skills" placeholder="Select item" multiple="true"
+                    [searchable]="true" formControlName="statuses">
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <label>
+                    <i class="fa fa-folder"></i>
+                    Area Of Interest
+                </label>
+                <ng-select [items]="areas" bindLabel="name" id="area-of-interest" placeholder="Select item"
+                    multiple="false" [searchable]="false" maxSelectedItems='1' formControlName="areaOfInterest">
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <label>
+                    <i class="fa fa-calendar"></i>
+                    Start Date
+                </label>
+                <input id="start-date" class="form-control" bsDatepicker formControlName="startDate">
+            </div>
+            <div class="form-group">
+                <label>
+                    <i class="fa fa-calendar"></i>
+                    End Date
+                </label>
+                <input id="end-date" class="form-control" bsDatepicker formControlName="endDate">
+            </div>
+            <div class="form-group">
+                <label>
+                    <i class="fa fa-pencil"></i>
+                    Project Description
+                </label>
+                <textarea id="project-description" class="form-control" formControlName="projectDescription" cols="50"
+                    rows="1">
+                    </textarea>
+            </div>
+        </div>
+        <div class="portlet-div">
+            <h3 class="portlet-title">Resources</h3>
+            <div class="form-group">
+                <label>
+                    <i class="fa fa-users"></i>
+                    Number of Resources
+                </label>
+                <input id="total" type="number" class="form-control" placeholder="Enter value" formControlName="total"
+                    min="1">
+            </div>
+            <div class="form-group">
+                <label>
+                    <i class="fa fa-user"></i>
+                    Seniority
+                </label>
+                <ng-select [items]="seniorities" bindLabel="seniority" placeholder="Select item" multiple="false"
+                    [searchable]="false" maxSelectedItems='1' formControlName='seniority'>
+                </ng-select>
+            </div>
+            <div class="form-group">
+                <label>
+                    <i class="fa fa-list"></i>
+                    Skills
+                </label>
+                <ng-select [items]="skills" bindLabel="skills" placeholder="Select item" multiple="true"
+                    [searchable]="true" formControlName="skills">
+                </ng-select>
+            </div>
+        </div>
+    </div>
+    <div class="divider"></div>
+    <div class="form__actions">
+        <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">Reset filters</button>
+        <button type="button" class="btn btn-outline-secondary" (click)="applyFilters()">Apply filters</button>
+    </div>
+</form>

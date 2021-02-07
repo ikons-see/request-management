@@ -35,6 +35,7 @@ export class RequesterComponent implements OnInit {
   currentPage$: Observable<number>;
   errorMessage$: Observable<string>;
   loading$: Observable<boolean>;
+  showFilters: boolean = false;
 
   private subscriptions: Subscription[] = [];
 
@@ -100,7 +101,7 @@ export class RequesterComponent implements OnInit {
           text: 'Area of interest'
         },
         {
-          type: ColumnType.STRING,
+          type: ColumnType.STATUS,
           field: 'status',
           text: 'Status'
         },
@@ -136,6 +137,10 @@ export class RequesterComponent implements OnInit {
         icon: 'fa-user',
         onClick: (e) => this.signOut()
       }];
+  }
+
+  toogleFiltersPanel() {
+    this.showFilters = !this.showFilters;
   }
 
   addRequestModal() {
