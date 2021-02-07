@@ -1,5 +1,6 @@
 package com.ikons.requestmanagement.web.rest.requests;
 
+import com.ikons.requestmanagement.core.dto.RequestStatusDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class PaginationParams {
-    private int page;
-    private int size;
+public class ChangeStatusRequest {
+    private long requestId;
+    private RequestStatusDTO requestStatus;
 }

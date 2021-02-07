@@ -1,7 +1,7 @@
 package com.ikons.requestmanagement.web.rest.requests;
 
-import com.ikons.requestmanagement.core.entity.AreaOfInterest;
-import com.ikons.requestmanagement.core.entity.Resource;
+import com.ikons.requestmanagement.core.dto.AreaOfInterestDTO;
+import com.ikons.requestmanagement.core.dto.ResourceDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,12 +17,11 @@ import java.util.List;
 public class RequestUpdate {
 
   private long requestId;
-  private AreaOfInterest areaOfInterest;
-  private String status;
+  private AreaOfInterestDTO areaOfInterest;
   private Date startDate;
   private Date endDate;
   private String projectDescription;
   private String notes;
-  private List<Resource> newResources;
+  private List<ResourceDTO> newResources;
   private List<Long> deletedResourceIds;
 }

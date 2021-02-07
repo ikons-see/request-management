@@ -1,4 +1,4 @@
-package com.ikons.requestmanagement.core.entity;
+package com.ikons.requestmanagement.core.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +12,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class RequestMailContent {
+public class RequestMailContentDTO {
 
   private String displayName;
   private String userEmail;
@@ -22,6 +22,6 @@ public class RequestMailContent {
   private Date endDate;
   private String notes;
   private String projectDescription;
-  private List<Resource> resources;
+  private List<ResourceDTO> resources;
 
 }

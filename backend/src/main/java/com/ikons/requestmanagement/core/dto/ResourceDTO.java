@@ -1,4 +1,4 @@
-package com.ikons.requestmanagement.core.entity;
+package com.ikons.requestmanagement.core.dto;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Resource {
+public class ResourceDTO {
 
     private long resourceId;
     private int total;

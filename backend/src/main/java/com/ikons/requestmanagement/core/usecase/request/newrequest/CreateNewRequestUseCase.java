@@ -1,14 +1,14 @@
-package com.ikons.requestmanagement.core.usecase.request.create;
+package com.ikons.requestmanagement.core.usecase.request.newrequest;
 
 
-import com.ikons.requestmanagement.core.entity.AreaOfInterest;
-import com.ikons.requestmanagement.core.entity.RequestMailContent;
-import com.ikons.requestmanagement.core.entity.Resource;
+import com.ikons.requestmanagement.core.dto.AreaOfInterestDTO;
+import com.ikons.requestmanagement.core.dto.RequestMailContentDTO;
+import com.ikons.requestmanagement.core.dto.ResourceDTO;
 import com.ikons.requestmanagement.core.usecase.request.GetRequest;
 import com.ikons.requestmanagement.core.usecase.request.RequestActionNotification;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import com.ikons.requestmanagement.dataprovider.database.entity.User;
-import com.ikons.requestmanagement.web.rest.responses.RequestDetails;
+import com.ikons.requestmanagement.core.dto.RequestDetailsDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,19 +26,20 @@ public class CreateNewRequestUseCase {
     private final RequestActionNotification requestActionNotification;
 
     @Transactional
-    public void createRequest(final AreaOfInterest areaOfInterest, final Date startDate, final Date endDate,
+    public void createRequest(final AreaOfInterestDTO areaOfInterest, final Date startDate, final Date endDate,
                               final String projectDescription, final String otherNotes,
-                              final Long userId,
-                              final List<Resource> resources
+                              final String user,
+                              final List<ResourceDTO> resources
     ) {
-        final long requestId = createRequest.createNewRequest(areaOfInterest, startDate, endDate, projectDescription, otherNotes, userId, resources);
-         final List<User> administrators = userManagement.getAdministrators();
-         final RequestMailContent requestMailContent = generate(requestId);
-//         requestActionNotification.sendRequestCreationEmail(administrators, requestMailContent);
+        final long requestId = createRequest.createNewRequest(areaOfInterest, startDate, endDate, projectDescription, otherNotes, user, resources);
+        final List<String> administratorsEmails = userManagement.getAdministratorsEmails();
+        final RequestMailContentDTO requestMailContent = generate(requestId);
+        requestActionNotification.sendRequestCreationEmail(administratorsEmails, requestMailContent);
     }
-    private RequestMailContent generate(final long requestId) {
-        final RequestDetails requestDetails = getRequest.getRequestDetails(requestId);
-        return RequestMailContent.builder()
+
+    private RequestMailContentDTO generate(final long requestId) {
+        final RequestDetailsDTO requestDetails = getRequest.getRequestDetails(requestId);
+        return RequestMailContentDTO.builder()
                 .requestId(requestId)
                 .areaOfInterest(requestDetails.getAreaOfInterest())
                 .startDate(requestDetails.getStartDate())

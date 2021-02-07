@@ -3,18 +3,23 @@ import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { BsModalService } from "ngx-bootstrap/modal";
-import { catchError, map, switchMap, tap, withLatestFrom, mergeMap } from 'rxjs/operators';
-import { of } from "rxjs";
+import { catchError, map, switchMap, tap, withLatestFrom, mergeMap, flatMap } from 'rxjs/operators';
+import { Observable, of } from "rxjs";
 import { ApplicationState } from "../app.module";
-import { RequestsManagementService } from "../requests-management.service";
+import { RequestsManagementService } from "../endpoint/requests-management.service";
 import {
     addNewRequest,
     addRequestFailure,
     addRequestSuccess,
+    loginFailure,
+    loginRequest,
+    loginSuccess,
+    logoutRequest,
     openAddRequestModal,
     openDeleteRequestModal,
     openEditRequestModal,
     openViewDetailsModal,
+    rehydrateSuccess,
     requestData,
     setData,
     setDataFailure,
@@ -27,6 +32,7 @@ import { ViewDetailsModalComponent } from "../pages/requester/view-details-modal
 import { AddRequestModalComponent } from "../pages/requester/add-request-modal/add-request-modal.component";
 import { EditDetailsModalComponent } from "../pages/requester/edit-details-modal/edit-details-modal.component";
 import { DeleteDetailsModalComponent } from "../pages/requester/delete-details-modal/delete-details-modal.component";
+import { Router } from "@angular/router";
 
 
 @Injectable()
@@ -35,9 +41,14 @@ export class RequestsManagementEffects {
     constructor(private actions$: Actions,
         private store: Store<ApplicationState>,
         private modalService: BsModalService,
+        private router: Router,
         private requestsService: RequestsManagementService) {
     }
 
+    rehydrateSession$ = createEffect(() => this.actions$.pipe(
+        ofType('@ngrx/effects/init'),
+        switchMap(() => this.rehydrateFunction())
+    ));
 
     onRequestData$ = createEffect(() => this.actions$.pipe(
         ofType(requestData),
@@ -128,7 +139,7 @@ export class RequestsManagementEffects {
                 .pipe(
                     mergeMap(res => [
                         updateRequestSuccess(),
-                        requestData({page: 1})]),
+                        requestData({ page: 1 })]),
                     catchError((error: HttpErrorResponse) =>
                         of(updateRequestFailure({ errorMessage: error.message }),
                         ))
@@ -149,4 +160,46 @@ export class RequestsManagementEffects {
             });
         })
     ), { dispatch: false });
+
+    processLoginRequest$ = createEffect(() => this.actions$.pipe(
+        ofType(loginRequest),
+        switchMap((action) => {
+            const username = action.username;
+            const password = action.password;
+            const remember = action.rememberMe;
+            return this.requestsService.requestToken(username, password, remember)
+                .pipe(
+                    mergeMap(response => {
+                        return [
+                            loginSuccess({})
+                        ]
+                    }),
+                    catchError((error: HttpErrorResponse) =>
+                        of(loginFailure({ errorMessage: error.message }),
+                        ))
+                )
+        })));
+
+
+    forceRedirectToAppliation$ = createEffect(() => this.actions$.pipe(
+        ofType(loginSuccess),
+        switchMap(() => this.router.navigate(['/app']))
+    ), { dispatch: false });
+
+    onLogoutRequest$ = createEffect(() => this.actions$.pipe(
+        ofType(logoutRequest),
+        switchMap(() => [
+            this.router.navigate(['login']),
+            this.requestsService.removeToken()
+        ])
+    ), { dispatch: false });
+
+    rehydrateFunction(): Observable<any> {
+        const item = localStorage.getItem('authenticated');
+        if (item) {
+            return of(rehydrateSuccess());
+        } else {
+            return of();
+        }
+    }
 }

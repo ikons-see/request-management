@@ -2,7 +2,7 @@ package com.ikons.requestmanagement.dataprovider.services;
 
 import com.ikons.config.IkonsConfiguration;
 import com.ikons.requestmanagement.core.dto.UserDTO;
-import com.ikons.requestmanagement.core.entity.RequestMailContent;
+import com.ikons.requestmanagement.core.dto.RequestMailContentDTO;
 import com.ikons.requestmanagement.core.usecase.request.RequestActionNotification;
 import com.ikons.requestmanagement.core.usecase.user.UserActionNotification;
 import com.ikons.requestmanagement.dataprovider.database.entity.User;
@@ -88,7 +88,7 @@ public class MailService implements UserActionNotification, RequestActionNotific
   }
 
   @Async
-  public void sendRequestEmailFromTemplate(List<String> emails, RequestMailContent requestMailContent, String templateName, String titleKey) {
+  public void sendRequestEmailFromTemplate(List<String> emails, RequestMailContentDTO requestMailContent, String templateName, String titleKey) {
     Locale locale = Locale.forLanguageTag("en");
     Context context = new Context(locale);
     context.setVariable(REQUEST, requestMailContent);
@@ -120,8 +120,7 @@ public class MailService implements UserActionNotification, RequestActionNotific
   }
 
   @Override
-  public void sendRequestCreationEmail(List<User> administrators, RequestMailContent requestMailContent) {
-    final List<String> emails = administrators.stream().filter(Objects::nonNull).map(a-> {return a.getEmail();}).collect(Collectors.toList());
+  public void sendRequestCreationEmail(List<String> emails, RequestMailContentDTO requestMailContent) {
     sendRequestEmailFromTemplate(emails, requestMailContent,"mail/requestEmail", "email.request.title");
   }
 }

@@ -285,15 +285,13 @@ public class UserManagementImpl implements UserManagement {
     }
 
     @Override
-    public List<User> getAdministrators() {
-        return userRepository.findAllByAuthoritiesNameIn(Collections.singletonList("ROLE_ADMIN"));
+    public List<String> getAdministratorsEmails() {
+        List<User> administrators = userRepository.findAllByAuthoritiesNameIn(Collections.singletonList("ROLE_ADMIN"));
+        return administrators.stream().filter(Objects::nonNull).map(a -> {
+            return a.getEmail();
+        }).collect(Collectors.toList());
     }
 
-    @Override
-    public User getUser(long userId) {
-        final User userEntity = userRepository.findById(userId).orElseThrow(() -> new MissingUserException(userId));
-        return userEntity;
-    }
 
     /**
      * Not activated users should be automatically deleted after 3 days.

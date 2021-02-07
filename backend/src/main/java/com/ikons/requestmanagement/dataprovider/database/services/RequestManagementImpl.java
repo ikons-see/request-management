@@ -2,27 +2,26 @@ package com.ikons.requestmanagement.dataprovider.database.services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ikons.requestmanagement.core.entity.AreaOfInterest;
-import com.ikons.requestmanagement.core.entity.RequestStatus;
-import com.ikons.requestmanagement.core.entity.Resource;
+import com.ikons.requestmanagement.core.dto.AreaOfInterestDTO;
+import com.ikons.requestmanagement.core.dto.RequestStatusDTO;
+import com.ikons.requestmanagement.core.dto.ResourceDTO;
 import com.ikons.requestmanagement.core.usecase.CannotDeserializeException;
-import com.ikons.requestmanagement.core.usecase.request.close.CloseRequestProvider;
-import com.ikons.requestmanagement.core.usecase.request.create.CreateRequest;
+import com.ikons.requestmanagement.core.usecase.request.closerequest.CloseRequest;
+import com.ikons.requestmanagement.core.usecase.request.newrequest.CreateRequest;
 import com.ikons.requestmanagement.core.usecase.request.GetRequest;
-import com.ikons.requestmanagement.core.usecase.request.delete.DeleteRequestProvider;
+import com.ikons.requestmanagement.core.usecase.request.deleterequest.DeleteRequest;
 import com.ikons.requestmanagement.core.usecase.request.exception.MissingRequestException;
-import com.ikons.requestmanagement.core.usecase.request.update.UpdateRequestProvider;
+import com.ikons.requestmanagement.core.usecase.request.updaterequest.UpdateRequest;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity;
 import com.ikons.requestmanagement.dataprovider.database.entity.ResourceEntity;
 import com.ikons.requestmanagement.dataprovider.database.repository.RequestRepository;
 import com.ikons.requestmanagement.dataprovider.database.repository.ResourceRepository;
-import com.ikons.requestmanagement.web.rest.requests.PaginationParams;
+import com.ikons.requestmanagement.core.dto.RequestDetailsDTO;
 import com.ikons.requestmanagement.web.rest.requests.RequestUpdate;
-import com.ikons.requestmanagement.web.rest.responses.RequestDetails;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
@@ -30,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @Service
-public class RequestManagementImpl implements GetRequest, UpdateRequestProvider, CloseRequestProvider, DeleteRequestProvider, CreateRequest {
+public class RequestManagementImpl implements GetRequest, UpdateRequest, CloseRequest, DeleteRequest, CreateRequest {
 
     private final RequestRepository requestRepository;
     private final ResourceRepository resourceRepository;
@@ -44,21 +43,21 @@ public class RequestManagementImpl implements GetRequest, UpdateRequestProvider,
     }
 
     @Override
-    public long createNewRequest(final AreaOfInterest areaOfInterest, final Date startDate, final Date endDate,
+    public long createNewRequest(final AreaOfInterestDTO areaOfInterest, final Date startDate, final Date endDate,
                                  final String projectDescription, final String otherNotes,
-                                 final Long userId,
-                                 final List<Resource> resources
+                                 final String user,
+                                 final List<ResourceDTO> resources
     ) {
         final RequestEntity entity = RequestEntity.builder()
                 .areaOfInterest(areaOfInterest.name())
                 .startDate(startDate)
                 .endDate(endDate)
-                .status(RequestStatus.CREATED.toString())
+                .status(RequestStatusDTO.CREATED.name())
                 .projectDescription(projectDescription)
                 .notes(otherNotes)
                 .resources(new ArrayList<>())
                 .build();
-        //entity.setCreatedBy(userId);
+        entity.setCreatedBy(user);
 
         createNewResources(resources, entity);
 
@@ -67,7 +66,7 @@ public class RequestManagementImpl implements GetRequest, UpdateRequestProvider,
         return entity.getRequestId();
     }
 
-    private void createNewResources(List<Resource> resources, RequestEntity entity) {
+    private void createNewResources(List<ResourceDTO> resources, RequestEntity entity) {
         if (resources != null) {
             final List<ResourceEntity> resourcesEntities = resources.stream().map(resource -> {
                 final ResourceEntity resourceEntity = new ResourceEntity();
@@ -76,7 +75,7 @@ public class RequestManagementImpl implements GetRequest, UpdateRequestProvider,
                 try {
                     resourceEntity.setSkills(objectMapper.writeValueAsString(resource.getSkills()));
                 } catch (JsonProcessingException e) {
-                    e.printStackTrace();
+                    log.catching(e);
                 }
                 resourceEntity.setNotes(resource.getNotes());
                 resourceEntity.setTotal(resource.getTotal());
@@ -88,14 +87,14 @@ public class RequestManagementImpl implements GetRequest, UpdateRequestProvider,
     }
 
     @Override
-    public RequestDetails getRequestDetails(final long requestId) {
+    public RequestDetailsDTO getRequestDetails(final long requestId) {
         final RequestEntity requestEntity = requestRepository.findById(requestId).orElseThrow(() -> new MissingRequestException(requestId));
         return mapRequestDetails(requestEntity);
     }
 
     @Override
-    public List<RequestDetails> getAllRequests(final PaginationParams paginationParams) {
-        final List<RequestEntity> requestEntities = requestRepository.findAll(PageRequest.of(paginationParams.getPage() - 1, paginationParams.getSize()));
+    public List<RequestDetailsDTO> getAllRequests(final Pageable pageable) {
+        final List<RequestEntity> requestEntities = requestRepository.findAll(pageable);
         return requestEntities.stream().filter(Objects::nonNull).map(a -> {
             return mapRequestDetails(a);
         }).collect(Collectors.toList());
@@ -107,24 +106,23 @@ public class RequestManagementImpl implements GetRequest, UpdateRequestProvider,
     }
 
     @Override
-    public long countUserRequests(final Long userId) {
+    public long countUserRequests(final String userId) {
         return requestRepository.countByCreatedBy(userId);
     }
 
     @Override
-    public List<RequestDetails> getUserRequests(final Long userId, final PaginationParams paginationParams) {
-        final List<RequestEntity> requestEntities = requestRepository.findByCreatedBy(userId, PageRequest.of(paginationParams.getPage() - 1, paginationParams.getSize()));
+    public List<RequestDetailsDTO> getUserRequests(final String userId, final Pageable pageable) {
+        final List<RequestEntity> requestEntities = requestRepository.findByCreatedBy(userId, pageable);
         return requestEntities.stream().filter(Objects::nonNull).map(a -> {
             return mapRequestDetails(a);
         }).collect(Collectors.toList());
     }
 
-    private RequestDetails mapRequestDetails(final RequestEntity requestEntity) {
-       // final User userEntity = userManagement.getUser(requestEntity.getCreatedBy());
+    private RequestDetailsDTO mapRequestDetails(final RequestEntity requestEntity) {
 
-        return RequestDetails.builder()
+        return RequestDetailsDTO.builder()
                 .requestId(requestEntity.getRequestId())
-                //.displayName(requestEntity.getcr)
+                .displayName(requestEntity.getCreatedBy())
                 .areaOfInterest(requestEntity.getAreaOfInterest())
                 .status(requestEntity.getStatus())
                 .endDate(requestEntity.getEndDate())
@@ -135,9 +133,10 @@ public class RequestManagementImpl implements GetRequest, UpdateRequestProvider,
                         .filter(Objects::nonNull)
                         .map(a -> {
                             try {
-                                return Resource.builder()
-                                        .resourceId(a.getResourceId())
-                                        .seniority(a.getSeniority())
+                                return ResourceDTO.builder()
+                                    .resourceId(a.getResourceId())
+
+                                    .seniority(a.getSeniority())
                                         .skills(a.getSkills() == null ? Collections.emptyList() : objectMapper.readValue(a.getSkills(), List.class))
                                         .notes(a.getNotes())
                                         .total(a.getTotal()).build();
@@ -156,7 +155,7 @@ public class RequestManagementImpl implements GetRequest, UpdateRequestProvider,
 
         requestEntity.ifPresent(entity -> {
             entity.setAreaOfInterest(requestUpdate.getAreaOfInterest().toString());
-            entity.setStatus(String.valueOf(RequestStatus.UPDATED));
+            entity.setStatus(String.valueOf(RequestStatusDTO.UPDATED));
             entity.setStartDate(requestUpdate.getStartDate());
             entity.setEndDate(requestUpdate.getEndDate());
             entity.setNotes(requestUpdate.getNotes());
@@ -178,7 +177,7 @@ public class RequestManagementImpl implements GetRequest, UpdateRequestProvider,
 
     public void close(final Long requestId) {
         requestRepository.findById(requestId).ifPresent(requestEntity -> {
-            requestEntity.setStatus(RequestStatus.CLOSED.toString());
+            requestEntity.setStatus(RequestStatusDTO.CLOSED.toString());
             requestRepository.save(requestEntity);
         });
     }
