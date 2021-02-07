@@ -1,20 +1,20 @@
 import { Action, createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
 import { RequestDetails, RequestFilters } from "../types/request-types";
 import {
-addRequestFilters,
-loginFailure,
-loginSuccess,
-logoutRequest,
-pageChanged,
-rehydrateSuccess,
-requestData,
-resetMessage,
-resetRequestFilters,
-setData,
-setDataFailure,
-deleteRequest,
-deleteRequestFailure,
-deleteRequestSuccess
+    addRequestFilters,
+    loginFailure,
+    loginSuccess,
+    logoutRequest,
+    pageChanged,
+    rehydrateSuccess,
+    requestData,
+    resetMessage,
+    resetRequestFilters,
+    setData,
+    setDataFailure,
+    deleteRequest,
+    deleteRequestFailure,
+    deleteRequestSuccess
 } from "./requests-actions";
 
 export const featureKey = 'requests-management';

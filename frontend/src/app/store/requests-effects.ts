@@ -169,14 +169,14 @@ export class RequestsManagementEffects {
     onFiltersApplied$ = createEffect(() => this.actions$.pipe(
         ofType(addRequestFilters),
         map((action) => {
-            return requestData({page: 1})
+            return requestData({ page: 1 })
         })
     ));
 
     onFiltersResetd$ = createEffect(() => this.actions$.pipe(
         ofType(resetRequestFilters),
         map((action) => {
-            return requestData({page: 1})
+            return requestData({ page: 1 })
         })
     ));
 
