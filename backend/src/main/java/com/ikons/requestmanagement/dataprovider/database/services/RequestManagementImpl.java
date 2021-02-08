@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @Service
-public class RequestManagementImpl implements GetRequest, UpdateRequest, CloseRequest, DeleteRequest, CreateRequest, UpdateRequest {
+public class RequestManagementImpl implements GetRequest, UpdateRequest, CloseRequest, DeleteRequest, CreateRequest {
 
     private final RequestRepository requestRepository;
     private final ResourceRepository resourceRepository;
@@ -129,6 +129,7 @@ public class RequestManagementImpl implements GetRequest, UpdateRequest, CloseRe
                 .startDate(requestEntity.getStartDate())
                 .projectDescription(requestEntity.getProjectDescription())
                 .notes(requestEntity.getNotes())
+                .statusNotes(requestEntity.getStatusNotes())
                 .resources(requestEntity.getResources().stream()
                         .filter(Objects::nonNull)
                         .map(a -> {
@@ -159,6 +160,7 @@ public class RequestManagementImpl implements GetRequest, UpdateRequest, CloseRe
             entity.setStartDate(requestUpdate.getStartDate());
             entity.setEndDate(requestUpdate.getEndDate());
             entity.setNotes(requestUpdate.getNotes());
+            entity.setStatusNotes(requestUpdate.getStatusNotes());
             entity.setProjectDescription(requestUpdate.getProjectDescription());
 
             deleteResources(requestUpdate.getDeletedResourceIds());
