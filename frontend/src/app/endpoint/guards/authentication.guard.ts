@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { switchMap } from 'rxjs/operators';
 import { ApplicationState } from 'src/app/app.module';
-import { isAuthenticated } from 'src/app/store/requests-reducer';
+import { isAuthenticated } from 'src/app/store/global/global-reducer';
 
 @Injectable({
     providedIn: 'root'

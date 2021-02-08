@@ -4,10 +4,6 @@
         <i class="fa fa-angle-up" *ngIf="showFilters"></i>
         <i class="fa fa-angle-down" *ngIf="!showFilters"></i>
     </button>
-    <button class="btn btn-dark shadow-none" (click)="addRequestModal()">
-        <i class="fa fa-plus"></i>
-        Add request
-    </button>
 </div>
 <app-filters-panel *ngIf='showFilters' 
                     [filters]="filters"

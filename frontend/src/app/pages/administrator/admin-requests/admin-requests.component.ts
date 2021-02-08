@@ -1,35 +1,25 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { ApplicationState } from '../../app.module';
-import {
-  addRequestFilters,
-  openAddRequestModal,
-  openCloseRequestModal,
-  openDeleteRequestModal,
-  openEditRequestModal,
-  openViewDetailsModal,
-  pageChanged,
-  requestData,
-  resetRequestFilters
-} from '../../store/requester/requester-actions';
-import {
-  getCurrentPage,
-  getErrorMessage,
-  getFilters,
-  getLoadingRequests,
-  getRequestsList,
-  getTotalNumber
-} from '../../store/requester/requester-reducer';
-import { ColumnType, DropdownColumn, TableConfig } from '../../types/data-types';
-import { RequestDetails, RequestFilters } from '../../types/request-types';
+import { ApplicationState } from '../../../app.module';
+import { addRequestFilters, openViewDetailsModal, pageChanged, requestData, resetRequestFilters } from '../../../store/administrator/administrator-actions';
+import { 
+  getCurrentPage, 
+  getErrorMessage, 
+  getFilters, 
+  getLoadingRequests, 
+  getRequestsList, 
+  getTotalNumber 
+} from '../../../store/administrator/administrator-reducer';
+import { ColumnType, DropdownColumn, TableConfig } from '../../../types/data-types';
+import { RequestDetails, RequestFilters } from '../../../types/request-types';
 
 @Component({
-  selector: 'app-requester',
-  templateUrl: './requester.component.html',
-  styleUrls: ['./requester.component.scss']
+  selector: 'app-admin-requests',
+  templateUrl: './admin-requests.component.html',
+  styleUrls: ['./admin-requests.component.scss']
 })
-export class RequesterComponent implements OnInit, OnDestroy {
+export class AdminRequestsComponent implements OnInit {
 
   tableConfiguration: TableConfig;
   requests$: Observable<Array<RequestDetails>>;
@@ -40,8 +30,8 @@ export class RequesterComponent implements OnInit, OnDestroy {
   showFilters: boolean = false;
   filters: RequestFilters;
   filtersSubscribtion: Subscription;
-
-  constructor(private store: Store<ApplicationState>) {
+  
+  constructor(private store: Store<ApplicationState>) { 
     this.loadData(1);
 
     this.currentPage$ = this.store.select(getCurrentPage);
@@ -59,10 +49,6 @@ export class RequesterComponent implements OnInit, OnDestroy {
     this.initTable();
   }
 
-  loadData(page: number) {
-    this.store.dispatch(requestData({ page }));
-  }
-
   initDropdown(): DropdownColumn {
     return {
       button: {
@@ -76,19 +62,29 @@ export class RequesterComponent implements OnInit, OnDestroy {
           onClick: (e) => this.openDetailsModal(e)
         },
         {
-          text: 'Edit',
-          icon: 'fa-edit',
-          onClick: (e) => this.openEditRequestModal(e)
+          text: 'View history',
+          icon: 'fa-history',
+          onClick: (e) => this.openViewHistoryModal(e)
         },
         {
-          text: 'Delete',
+          text: 'Take charge',
+          icon: 'fa-edit',
+          onClick: (e) => this.openTakeChargeModal(e)
+        },
+        {
+          text: 'Reject',
           icon: 'fa-trash',
-          onClick: (e) => this.deleteRequest(e)
+          onClick: (e) => this.openRejectRequestModal(e)
+        },
+        {
+          text: 'Pending information',
+          icon: 'fa-info-circle',
+          onClick: (e) => this.openPendingInfoModal(e)
         },
         {
           text: 'Close',
           icon: 'fa-close',
-          onClick: (e) => this.closeRequest(e)
+          onClick: (e) => this.openCloseModal(e)
         }
       ]
     }
@@ -127,12 +123,12 @@ export class RequesterComponent implements OnInit, OnDestroy {
     };
   }
 
-  toogleFiltersPanel() {
-    this.showFilters = !this.showFilters;
+  loadData(page: number) {
+    this.store.dispatch(requestData({ page }));
   }
 
-  addRequestModal() {
-    this.store.dispatch(openAddRequestModal());
+  toogleFiltersPanel() {
+    this.showFilters = !this.showFilters;
   }
 
   pageChanged(page: number) {
@@ -144,16 +140,24 @@ export class RequesterComponent implements OnInit, OnDestroy {
     this.store.dispatch(openViewDetailsModal({ requestId: e }))
   }
 
-  openEditRequestModal(e) {
-    this.store.dispatch(openEditRequestModal({ requestId: e }));
+  openTakeChargeModal(e) {
+    console.log('Taking in charge');
   }
 
-  deleteRequest(e) {
-    this.store.dispatch(openDeleteRequestModal({ requestId: e }));
+  openRejectRequestModal(e) {
+    console.log('Rejecting request');
   }
 
-  closeRequest(e) {
-    this.store.dispatch(openCloseRequestModal({requestId: e}));
+  openPendingInfoModal(e) {
+    console.log('Pending information');
+  }
+
+  openCloseModal(e) {
+    console.log('Closing request');
+  }
+
+  openViewHistoryModal(e) {
+    console.log('View history');
   }
 
   applyFilters(e) {
@@ -164,7 +168,5 @@ export class RequesterComponent implements OnInit, OnDestroy {
     this.store.dispatch(resetRequestFilters());
   }
 
-  ngOnDestroy() {
-    this.filtersSubscribtion.unsubscribe();
-  }
+
 }

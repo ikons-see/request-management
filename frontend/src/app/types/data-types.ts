@@ -2,7 +2,7 @@ export interface NavigationTab {
     tabName: string;
     tabId: string;
     icon?: string;
-    onClick?: (value?: any) => void;
+    href?: string;
 }
 
 export enum ColumnType {

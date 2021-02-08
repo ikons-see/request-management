@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { ApplicationState } from 'src/app/app.module';
-import { closeRequest } from 'src/app/store/requests-actions';
+import { closeRequest } from 'src/app/store/requester/requester-actions';
 import { ButtonConfiguration, ButtonType } from 'src/app/types/data-types';
 
 @Component({

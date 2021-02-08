@@ -11,7 +11,9 @@
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent" [class.collapse]="isNavbarCollapsed">
     <ul class="navbar-nav flex-row ml-md-auto">
-      <app-navigation-tab *ngFor="let tab of tabs" [tab]="tab" (click)="tabClick(tab.tabId)" [activeTab]="activeTab">
+      <app-navigation-tab *ngFor="let tab of tabs" [tab]="tab">
+      </app-navigation-tab>
+      <app-navigation-tab [tab]="signOutTab" (click)="signOut()">
       </app-navigation-tab>
     </ul>
   </div>
