@@ -111,6 +111,7 @@ public class RequestManagementImpl implements GetRequest, UpdateRequest, CloseRe
     }
 
     @Override
+    @Transactional
     public List<RequestDetailsDTO> getUserRequests(final String userId, final Pageable pageable) {
         final List<RequestEntity> requestEntities = requestRepository.findByCreatedBy(userId, pageable);
         return requestEntities.stream().filter(Objects::nonNull).map(a -> {
