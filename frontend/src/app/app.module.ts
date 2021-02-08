@@ -29,7 +29,7 @@ import { DefaultColumnComponent } from './components/table/default-column/defaul
 import { AddRequestModalComponent } from './pages/requester/add-request-modal/add-request-modal.component';
 import { ViewDetailsModalComponent } from './pages/requester/view-details-modal/view-details-modal.component';
 import { EditDetailsModalComponent } from './pages/requester/edit-details-modal/edit-details-modal.component';
-import { DeleteDetailsModalComponent } from './pages/requester/delete-details-modal/delete-details-modal.component';
+import { DeleteRequestModalComponent } from './pages/requester/delete-request-modal/delete-request-modal.component';
 
 import * as requestsReducer from './store/requests-reducer';
 import { RequestsManagementEffects } from './store/requests-effects';
@@ -47,6 +47,9 @@ import { EditGeneralInfoComponent } from './pages/requester/edit-details-modal/e
 import { EditResourcesComponent } from './pages/requester/edit-details-modal/edit-resources/edit-resources.component';
 import { AuthInterceptor } from './endpoint/interceptors/token-interceptor.service';
 import { AuthExpiredInterceptor } from './endpoint/interceptors/auth-expired.interceptor';
+import { FiltersPanelComponent } from './pages/requester/filters-panel/filters-panel.component';
+import { StatusColumnComponent } from './components/table/status-column/status-column.component';
+import { CloseRequestModalComponent } from './pages/requester/close-request-modal/close-request-modal.component';
 
 export interface ApplicationState {
   [requestsReducer.featureKey]: requestsReducer.State
@@ -75,7 +78,7 @@ const effects = [
     AddRequestModalComponent,
     ViewDetailsModalComponent,
     EditDetailsModalComponent,
-    DeleteDetailsModalComponent,
+    DeleteRequestModalComponent,
     PaginationComponent,
     DateColumnComponent,
     LoadingViewComponent,
@@ -87,7 +90,10 @@ const effects = [
     AddResourcesComponent,
     AddGeneralInfoComponent,
     EditGeneralInfoComponent,
-    EditResourcesComponent
+    EditResourcesComponent,
+    FiltersPanelComponent,
+    StatusColumnComponent,
+    CloseRequestModalComponent
   ],
   imports: [
     BrowserModule,
@@ -133,7 +139,7 @@ const effects = [
     AddRequestModalComponent,
     ViewDetailsModalComponent,
     EditDetailsModalComponent,
-    DeleteDetailsModalComponent
+    DeleteRequestModalComponent
   ],
   bootstrap: [AppComponent]
 })

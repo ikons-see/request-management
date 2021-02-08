@@ -135,7 +135,7 @@ export class EditDetailsModalComponent implements OnInit {
     let data = {
       ...this.request,
       newResources: this.resourcesCmp.getNewResources(),
-      deletedResources: this.resourcesCmp.getDeletedResources()
+      deletedResourceIds: this.resourcesCmp.getDeletedResources()
     }
     this.store.dispatch(updateRequest({request: data}));
   }

@@ -10,7 +10,8 @@ export enum ColumnType {
     NUMBER = 'number',
     DATE = 'date',
     BUTTON = 'button',
-    DROPDOWN = 'dropdown'
+    DROPDOWN = 'dropdown',
+    STATUS = 'status'
 }
 
 export enum AreaOfInterest {
@@ -41,6 +42,14 @@ export enum Skills {
     Typescript = 'Typescript',
     React = 'React',
     NgRx = 'NgRx'
+}
+
+export enum RequestStatus {
+    CREATED = 'CREATED',
+    PENDING = 'PENDING',
+    CLOSED = 'CLOSED',
+    REJECTED = 'REJECTED',
+    DELETED = 'DELETED'
 }
 
 export interface Column {

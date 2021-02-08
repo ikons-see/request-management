@@ -17,9 +17,12 @@
                             (click)="onRowClick(datum, col)" [className]="col.type">
                             <ng-container [ngSwitch]="col.type">
                                 <app-dropdown-column *ngSwitchCase="columnType.DROPDOWN"
-                                    [dropdown]="getDropdownConfig(datum, col)"  [value]="getFormattedValue(datum, col)"></app-dropdown-column>
+                                    [dropdown]="getDropdownConfig(datum, col)" [value]="getFormattedValue(datum, col)">
+                                </app-dropdown-column>
                                 <app-date-column *ngSwitchCase="columnType.DATE"
                                     [value]="getFormattedValue(datum, col)"></app-date-column>
+                                <app-status-column *ngSwitchCase="columnType.STATUS"
+                                    [value]="getFormattedValue(datum, col)"></app-status-column>
                                 <app-default-column *ngSwitchDefault [value]="getFormattedValue(datum, col)">
                                 </app-default-column>
                             </ng-container>
@@ -27,16 +30,13 @@
                     </tr>
                 </tbody>
             </table>
-            <span *ngIf="data && data.length == 0" class="noData"> 
+            <span *ngIf="data && data.length == 0" class="noData">
                 No records found
             </span>
         </div>
     </div>
 </div>
 
-<app-pagination *ngIf="totalItems"
-                [totalItems]="totalItems" 
-                (pageChanged)="setPage($event)" 
-                [itemsPerPage]="itemsPerPage"
-                [page]="currentPage">
+<app-pagination *ngIf="totalItems" [totalItems]="totalItems" (pageChanged)="setPage($event)"
+    [itemsPerPage]="itemsPerPage" [page]="currentPage">
 </app-pagination>

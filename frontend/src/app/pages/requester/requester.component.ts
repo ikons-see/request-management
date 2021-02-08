@@ -5,6 +5,7 @@ import { ApplicationState } from 'src/app/app.module';
 import {
   logoutRequest,
   openAddRequestModal,
+  openCloseRequestModal,
   openDeleteRequestModal,
   openEditRequestModal,
   openViewDetailsModal,
@@ -35,6 +36,7 @@ export class RequesterComponent implements OnInit {
   currentPage$: Observable<number>;
   errorMessage$: Observable<string>;
   loading$: Observable<boolean>;
+  showFilters: boolean = false;
 
   private subscriptions: Subscription[] = [];
 
@@ -85,7 +87,8 @@ export class RequesterComponent implements OnInit {
         },
         {
           text: 'Close',
-          icon: 'fa-close'
+          icon: 'fa-close',
+          onClick: (e) => this.closeRequest(e)
         }
       ]
     }
@@ -100,7 +103,7 @@ export class RequesterComponent implements OnInit {
           text: 'Area of interest'
         },
         {
-          type: ColumnType.STRING,
+          type: ColumnType.STATUS,
           field: 'status',
           text: 'Status'
         },
@@ -138,6 +141,10 @@ export class RequesterComponent implements OnInit {
       }];
   }
 
+  toogleFiltersPanel() {
+    this.showFilters = !this.showFilters;
+  }
+
   addRequestModal() {
     this.store.dispatch(openAddRequestModal());
   }
@@ -161,5 +168,9 @@ export class RequesterComponent implements OnInit {
 
   signOut() {
     this.store.dispatch(logoutRequest());
+  }
+
+  closeRequest(e) {
+    this.store.dispatch(openCloseRequestModal({requestId: e}));
   }
 }
