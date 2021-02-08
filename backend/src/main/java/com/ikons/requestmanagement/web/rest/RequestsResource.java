@@ -2,11 +2,17 @@ package com.ikons.requestmanagement.web.rest;
 
 import com.ikons.requestmanagement.core.criteria.RequestCriteria;
 import com.ikons.requestmanagement.core.dto.*;
+import com.ikons.requestmanagement.core.usecase.request.closerequest.CloseRequestUseCase;
+import com.ikons.requestmanagement.core.usecase.request.deleterequest.DeleteRequestUseCase;
 import com.ikons.requestmanagement.core.usecase.request.getrequests.ListRequestsUseCase;
 import com.ikons.requestmanagement.core.usecase.request.newrequest.CreateNewRequestUseCase;
+import com.ikons.requestmanagement.core.usecase.request.updaterequest.RequestStatusUseCase;
+import com.ikons.requestmanagement.core.usecase.request.updaterequest.UpdateRequestUseCase;
 import com.ikons.requestmanagement.security.AuthoritiesConstants;
 import com.ikons.requestmanagement.security.SecurityUtils;
+import com.ikons.requestmanagement.web.rest.requests.ChangeStatusRequest;
 import com.ikons.requestmanagement.web.rest.requests.RequestData;
+import com.ikons.requestmanagement.web.rest.requests.RequestUpdate;
 import com.ikons.web.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,6 +37,10 @@ public class RequestsResource {
 
   private final ListRequestsUseCase listRequestsUseCase;
   private final CreateNewRequestUseCase createNewRequestUseCase;
+  private final UpdateRequestUseCase updateRequestUseCase;
+  private final CloseRequestUseCase closeRequestUseCase;
+  private final DeleteRequestUseCase deleteRequestUseCase;
+  private final RequestStatusUseCase requestStatusUseCase;
 
   @PostMapping("/statuses")
   public List<String> getRequestStatuses() {
@@ -97,6 +107,26 @@ public class RequestsResource {
           page
       );
       return ResponseEntity.ok().headers(headers).body(page.getContent());
+  }
+
+  @PostMapping("/update-request")
+  public void updateRequest(@RequestBody final RequestUpdate requestUpdate) {
+    updateRequestUseCase.updateRequest(requestUpdate);
+  }
+
+  @PostMapping("/close-request/{requestId}")
+  public void closeRequest(@PathVariable final Long requestId) {
+    closeRequestUseCase.closeRequest(requestId);
+  }
+
+  @PostMapping("delete-request/{requestId}")
+  public void deleteRequest(@PathVariable final Long requestId) {
+    deleteRequestUseCase.deleteRequest(requestId);
+  }
+
+  @PostMapping("/change-status")
+  public void changeStatus(@RequestBody final ChangeStatusRequest changeStatusRequest) {
+    requestStatusUseCase.changeRequestStatus(changeStatusRequest);
   }
 
 }

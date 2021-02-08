@@ -29,10 +29,14 @@ import { DefaultColumnComponent } from './components/table/default-column/defaul
 import { AddRequestModalComponent } from './pages/requester/add-request-modal/add-request-modal.component';
 import { ViewDetailsModalComponent } from './pages/requester/view-details-modal/view-details-modal.component';
 import { EditDetailsModalComponent } from './pages/requester/edit-details-modal/edit-details-modal.component';
-import { DeleteDetailsModalComponent } from './pages/requester/delete-details-modal/delete-details-modal.component';
+import { DeleteRequestModalComponent } from './pages/requester/delete-request-modal/delete-request-modal.component';
 
-import * as requestsReducer from './store/requests-reducer';
-import { RequestsManagementEffects } from './store/requests-effects';
+import * as requesterReducer from './store/requester/requester-reducer';
+import * as adminReducer from './store/administrator/administrator-reducer';
+import * as globalReducer from './store/global/global-reducer';
+import { RequesterEffects } from './store/requester/requester-effects';
+import { AdministratorEffects } from './store/administrator/administrator-effects';
+import { GlobalEffects } from './store/global/global-effects';
 import { PaginationComponent } from './page-utils/pagination/pagination.component';
 import { DateColumnComponent } from './components/table/date-column/date-column.component';
 import { LoadingViewComponent } from './page-utils/loading-view/loading-view.component';
@@ -45,19 +49,32 @@ import { AddResourcesComponent } from './pages/requester/add-request-modal/add-r
 import { AddGeneralInfoComponent } from './pages/requester/add-request-modal/add-general-info/add-general-info.component';
 import { EditGeneralInfoComponent } from './pages/requester/edit-details-modal/edit-general-info/edit-general-info.component';
 import { EditResourcesComponent } from './pages/requester/edit-details-modal/edit-resources/edit-resources.component';
+import { FiltersPanelComponent } from './pages/requester/filters-panel/filters-panel.component';
+import { StatusColumnComponent } from './components/table/status-column/status-column.component';
+import { CloseRequestModalComponent } from './pages/requester/close-request-modal/close-request-modal.component';
+import { AdministratorComponent } from './pages/administrator/administrator.component';
+import { ChartsViewComponent } from './pages/administrator/charts-view/charts-view.component';
+import { AuthenticatedAppComponent } from './pages/authenticated-app/authenticated-app.component';
+import { AdminRequestsComponent } from './pages/administrator/admin-requests/admin-requests.component';
 import { AuthInterceptor } from './endpoint/interceptors/token-interceptor.service';
 import { AuthExpiredInterceptor } from './endpoint/interceptors/auth-expired.interceptor';
 
 export interface ApplicationState {
-  [requestsReducer.featureKey]: requestsReducer.State
+  [requesterReducer.featureKey]: requesterReducer.State,
+  [adminReducer.featureKey]: adminReducer.State,
+  [globalReducer.featureKey]: globalReducer.State
 }
 
 const reducers: ActionReducerMap<ApplicationState> = {
-  [requestsReducer.featureKey]: requestsReducer.reducer
+  [requesterReducer.featureKey]: requesterReducer.reducer,
+  [adminReducer.featureKey]: adminReducer.reducer,
+  [globalReducer.featureKey]: globalReducer.reducer
 }
 
 const effects = [
-  RequestsManagementEffects
+  RequesterEffects,
+  AdministratorEffects,
+  GlobalEffects
 ];
 
 @NgModule({
@@ -75,7 +92,7 @@ const effects = [
     AddRequestModalComponent,
     ViewDetailsModalComponent,
     EditDetailsModalComponent,
-    DeleteDetailsModalComponent,
+    DeleteRequestModalComponent,
     PaginationComponent,
     DateColumnComponent,
     LoadingViewComponent,
@@ -87,7 +104,14 @@ const effects = [
     AddResourcesComponent,
     AddGeneralInfoComponent,
     EditGeneralInfoComponent,
-    EditResourcesComponent
+    EditResourcesComponent,
+    FiltersPanelComponent,
+    StatusColumnComponent,
+    CloseRequestModalComponent,
+    AdministratorComponent,
+    ChartsViewComponent,
+    AuthenticatedAppComponent,
+    AdminRequestsComponent
   ],
   imports: [
     BrowserModule,
@@ -133,7 +157,7 @@ const effects = [
     AddRequestModalComponent,
     ViewDetailsModalComponent,
     EditDetailsModalComponent,
-    DeleteDetailsModalComponent
+    DeleteRequestModalComponent
   ],
   bootstrap: [AppComponent]
 })

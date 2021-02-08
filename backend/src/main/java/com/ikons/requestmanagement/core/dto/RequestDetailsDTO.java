@@ -21,6 +21,7 @@ public class RequestDetailsDTO {
     private Instant startDate;
     private Instant endDate;
     private String notes;
+    private String statusNotes;
     private String projectDescription;
     private List<ResourceDTO> resources;
 }

@@ -1,0 +1,6 @@
+<div class="status-container" [ngSwitch]="value">
+    <div *ngSwitchCase="status.CREATED" class="status created">{{value}}</div>
+    <div *ngSwitchCase="status.PENDING" class="status pending">{{value}}</div>
+    <div *ngSwitchCase="status.REJECTED" class="status rejected">{{value}}</div>
+    <div *ngSwitchCase="status.CLOSED" class="status closed">{{value}}</div>
+</div>

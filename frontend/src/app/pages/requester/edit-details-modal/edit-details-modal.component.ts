@@ -3,8 +3,8 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { ApplicationState } from 'src/app/app.module';
-import { updateRequest } from 'src/app/store/requests-actions';
-import { getRequestById } from 'src/app/store/requests-reducer';
+import { updateRequest } from 'src/app/store/requester/requester-actions';
+import { getRequestById } from 'src/app/store/requester/requester-reducer';
 import { ButtonConfiguration, ButtonType, Tab } from 'src/app/types/data-types';
 import { RequestDetails, Resource } from 'src/app/types/request-types';
 import { EditGeneralInfoComponent } from './edit-general-info/edit-general-info.component';
@@ -135,7 +135,7 @@ export class EditDetailsModalComponent implements OnInit {
     let data = {
       ...this.request,
       newResources: this.resourcesCmp.getNewResources(),
-      deletedResources: this.resourcesCmp.getDeletedResources()
+      deletedResourceIds: this.resourcesCmp.getDeletedResources()
     }
     this.store.dispatch(updateRequest({request: data}));
   }

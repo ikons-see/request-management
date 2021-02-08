@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from "rxjs";
 import { RequestsListResponse } from "../types/response-types";
-import { AddRequest, UpdateRequest } from "../types/request-types";
+import { AddRequest, RequestFilters, UpdateRequest } from "../types/request-types";
 import { JWTToken } from "../types/data-types";
 import { tap } from "rxjs/operators";
 
@@ -15,18 +15,19 @@ export class RequestsManagementService {
     constructor(private httpClient: HttpClient) {
     }
 
-    getRequestsList(page: number): Observable<RequestsListResponse> {
+    getMyRequestsList(page: number, filters: RequestFilters): Observable<RequestsListResponse> {
         const request = {
             page: page,
-            size: 10
+            size: 10,
+            filters: filters
         };
-        //return this.httpClient.post<RequestsListResponse>(`requests-management/api/my-requests`, request);
+        //return this.httpClient.post<RequestsListResponse>(`api/requests-management/my-requests`, request);
         return of(
             {
                 requestResponses: [
                     {
                         requestId: 0,
-                        areaOfInterest: 'Long inserted are of interest inp',
+                        areaOfInterest: 'INDUSTRY',
                         status: 'CREATED',
                         startDate: new Date(),
                         endDate: new Date(),
@@ -59,7 +60,135 @@ export class RequestsManagementService {
                     {
                         requestId: 1,
                         areaOfInterest: 'INDUSTRY',
+                        status: 'PENDING',
+                        startDate: new Date(),
+                        endDate: new Date(),
+                        projectDescription: 'Long project description',
+                        resources: [
+                            {
+                                total: 1,
+                                seniority: 'Medium',
+                                skills: ['Angular', 'Java']
+                            }
+                        ],
+                        note: ''
+                    },
+                    {
+                        requestId: 2,
+                        areaOfInterest: 'INDUSTRY',
+                        status: 'REJECTED',
+                        startDate: new Date(),
+                        endDate: new Date(),
+                        projectDescription: 'Long project description',
+                        resources: [
+                            {
+                                total: 1,
+                                seniority: 'Medium',
+                                skills: ['Angular', 'Java']
+                            }
+                        ],
+                        note: ''
+                    },
+                    {
+                        requestId: 3,
+                        areaOfInterest: 'INDUSTRY',
+                        status: 'CLOSED',
+                        startDate: new Date(),
+                        endDate: new Date(),
+                        projectDescription: 'Long project description',
+                        resources: [
+                            {
+                                total: 1,
+                                seniority: 'Medium',
+                                skills: ['Angular', 'Java']
+                            }
+                        ],
+                        note: ''
+                    }
+                ],
+                total: 2
+            }
+        );
+    }
+
+    getAllRequestsList(page: number, filters: RequestFilters): Observable<RequestsListResponse> {
+        const request = {
+            page: page,
+            size: 10,
+            filters: filters
+        }
+        //return this.httpClient.post<RequestsListResponse>(`api/requests-management/list-requests`, request);
+        return of(
+            {
+                requestResponses: [
+                    {
+                        requestId: 0,
+                        areaOfInterest: 'INDUSTRY',
                         status: 'CREATED',
+                        startDate: new Date(),
+                        endDate: new Date(),
+                        projectDescription: 'Long project description',
+                        resources: [
+                            {
+                                id: 1,
+                                total: 4,
+                                seniority: 'Medium',
+                                skills: ['Angular', 'Java', 'HTML', 'Typescript', 'CSS'],
+                                note: ''
+                            },
+                            {
+                                id: 2,
+                                total: 1,
+                                seniority: 'Medium',
+                                skills: ['Angular', 'Java', 'HTML', 'Typescript', 'CSS', 'Spring', 'SQL'],
+                                note: ''
+                            },
+                            {
+                                id: 3,
+                                total: 1,
+                                seniority: 'Medium',
+                                skills: ['Angular', 'Java', 'HTML', 'Typescript', 'CSS', 'Spring'],
+                                note: ''
+                            }
+                        ],
+                        note: ''
+                    },
+                    {
+                        requestId: 1,
+                        areaOfInterest: 'INDUSTRY',
+                        status: 'PENDING',
+                        startDate: new Date(),
+                        endDate: new Date(),
+                        projectDescription: 'Long project description',
+                        resources: [
+                            {
+                                total: 1,
+                                seniority: 'Medium',
+                                skills: ['Angular', 'Java']
+                            }
+                        ],
+                        note: ''
+                    },
+                    {
+                        requestId: 2,
+                        areaOfInterest: 'INDUSTRY',
+                        status: 'REJECTED',
+                        startDate: new Date(),
+                        endDate: new Date(),
+                        projectDescription: 'Long project description',
+                        resources: [
+                            {
+                                total: 1,
+                                seniority: 'Medium',
+                                skills: ['Angular', 'Java']
+                            }
+                        ],
+                        note: ''
+                    },
+                    {
+                        requestId: 3,
+                        areaOfInterest: 'INDUSTRY',
+                        status: 'CLOSED',
                         startDate: new Date(),
                         endDate: new Date(),
                         projectDescription: 'Long project description',
@@ -79,11 +208,11 @@ export class RequestsManagementService {
     }
 
     addNewRequest(request: AddRequest): Observable<void> {
-        return this.httpClient.post<void>(`requests-management/api/create-new-request`, request);
+        return this.httpClient.post<void>(`api/requests-management/create-new-request`, request);
     }
 
     updateRequest(request: UpdateRequest): Observable<void> {
-        return this.httpClient.post<void>(`requests-management/api/update-request`, request);
+        return this.httpClient.post<void>(`api/requests-management/update-request`, request);
     }
 
     requestToken(username: string, password: string, rememberMe: boolean): Observable<JWTToken> {
@@ -113,5 +242,19 @@ export class RequestsManagementService {
 
     removeToken() {
         localStorage.clear();
+    }
+
+    deleteRequest(requestId: number): Observable<void> {
+        const request = {
+            requestId: requestId
+        };
+        return this.httpClient.post<void>(`api/requests-management/delete-request`, request);
+    }
+
+    closeRequest(requestId: number): Observable<void> {
+        const request = {
+            requestId: requestId
+        };
+        return this.httpClient.post<void>(`api/requests-management/close-request`, request);
     }
 }

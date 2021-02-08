@@ -4,5 +4,6 @@ public enum RequestStatusDTO {
     CREATED,
     ON_GOING,
     PENDING,
+    UPDATED,
     CLOSED
 }

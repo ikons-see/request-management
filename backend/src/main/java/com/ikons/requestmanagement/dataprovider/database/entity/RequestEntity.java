@@ -47,6 +47,9 @@ public class RequestEntity extends AbstractAuditingEntity {
     @Column
     private String notes;
 
-    @OneToMany(fetch = FetchType.EAGER, targetEntity = ResourceEntity.class, mappedBy = "request", cascade = CascadeType.ALL)
+    @Column
+    private String statusNotes;
+
+    @OneToMany(targetEntity = ResourceEntity.class, mappedBy = "request", cascade = CascadeType.ALL)
     private List<ResourceEntity> resources;
 }

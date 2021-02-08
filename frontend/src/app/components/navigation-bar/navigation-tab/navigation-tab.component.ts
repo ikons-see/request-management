@@ -10,14 +10,7 @@ export class NavigationTabComponent {
 
   @Input()
   tab: NavigationTab;
-
-  @Input()
-  activeTab: string;
   
   constructor() { }
-
-  handleClick(event, tab:NavigationTab) {
-    tab.onClick(tab.tabId);
-  }
 
 }
