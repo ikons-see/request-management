@@ -1,5 +1,6 @@
 package com.ikons.requestmanagement.web.rest.requests;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -16,8 +17,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class RequestData {
     private AreaOfInterestDTO areaOfInterest;
-    private Date startDate;
-    private Date endDate;
+    private Instant startDate;
+    private Instant endDate;
     private String projectDescription;
     private String otherNotes;
     private List<ResourceDTO> resources;
