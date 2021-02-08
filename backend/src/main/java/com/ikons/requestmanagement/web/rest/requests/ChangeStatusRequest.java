@@ -13,4 +13,5 @@ import lombok.NoArgsConstructor;
 public class ChangeStatusRequest {
     private long requestId;
     private RequestStatusDTO requestStatus;
+    private String note;
 }

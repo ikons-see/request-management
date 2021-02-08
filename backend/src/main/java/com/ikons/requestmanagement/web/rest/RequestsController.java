@@ -6,7 +6,9 @@ import com.ikons.requestmanagement.core.dto.SeniorityDTO;
 import com.ikons.requestmanagement.core.dto.SkillsDTO;
 import com.ikons.requestmanagement.core.usecase.request.newrequest.CreateNewRequestUseCase;
 import com.ikons.requestmanagement.core.usecase.request.getrequests.ListRequestsUseCase;
+import com.ikons.requestmanagement.core.usecase.request.updaterequest.RequestStatusUseCase;
 import com.ikons.requestmanagement.security.SecurityUtils;
+import com.ikons.requestmanagement.web.rest.requests.ChangeStatusRequest;
 import com.ikons.requestmanagement.web.rest.requests.RequestData;
 import com.ikons.requestmanagement.core.dto.RequestsDTO;
 import lombok.RequiredArgsConstructor;
@@ -23,11 +25,12 @@ import java.util.stream.Stream;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/requests-management/api/request")
+@RequestMapping("api/requests-management")
 public class RequestsController {
 
     private final ListRequestsUseCase listRequestsUseCase;
     private final CreateNewRequestUseCase createNewRequestUseCase;
+    private final RequestStatusUseCase requestStatusUseCase;
 
     @PostMapping("/statuses")
     public List<String> getRequestStatuses() {
@@ -76,5 +79,8 @@ public class RequestsController {
         return listRequestsUseCase.getAllRequests(pageable);
     }
 
-
+    @PostMapping("/change-status")
+    public void changeStatus(@RequestBody final ChangeStatusRequest changeStatusRequest) {
+        requestStatusUseCase.changeRequestStatus(changeStatusRequest);
+    }
 }

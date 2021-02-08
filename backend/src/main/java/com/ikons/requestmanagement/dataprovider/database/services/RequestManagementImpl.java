@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 
 @Log4j2
 @Service
-public class RequestManagementImpl implements GetRequest, CreateRequest {
+public class RequestManagementImpl implements GetRequest, CreateRequest, UpdateRequest {
 
     private final RequestRepository requestRepository;
     private final ResourceRepository resourceRepository;
@@ -136,5 +136,13 @@ public class RequestManagementImpl implements GetRequest, CreateRequest {
                 .build();
     }
 
+
+    @Override
+    public void changeStatus(final long requestId, final RequestStatusDTO requestStatus, final String note) {
+        final RequestEntity requestEntity = requestRepository.findById(requestId).orElseThrow(() -> new MissingRequestException(requestId));
+        requestEntity.setStatus(requestStatus.name());
+        requestEntity.setStatusNotes(note);
+        requestRepository.save(requestEntity);
+    }
 
 }
