@@ -97,7 +97,7 @@ export class RequesterEffects {
         })
     ));
 
-    closeAddRequestModal$ = createEffect(() => this.actions$.pipe(
+    closeModal$ = createEffect(() => this.actions$.pipe(
         ofType(
             addRequestSuccess,
             updateRequestSuccess,

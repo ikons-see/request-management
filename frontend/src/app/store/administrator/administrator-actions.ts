@@ -1,4 +1,5 @@
 import { createAction, props } from "@ngrx/store";
+import { RequestStatus } from "../../types/data-types";
 import { RequestDetails, RequestFilters } from "../../types/request-types";
 
 export const featureKey = 'administrator';
@@ -13,3 +14,7 @@ export const resetRequestFilters = createAction(`[${featureKey}] resetRequestFil
 export const pageChanged = createAction(`[${featureKey}] pageChanged`, props<{ page: number }>());
 
 export const openViewDetailsModal = createAction(`[${featureKey}] openViewDetailsModal`, props<{ requestId: number }>());
+export const openChangeStatusModal = createAction(`[${featureKey}] openChangeStatusModal`, props<{ requestId: number, status: RequestStatus }>());
+export const changeRequestStatus = createAction(`[${featureKey}] changeRequestStatus`, props<{ requestId: number, status: RequestStatus, notes: string}>());
+export const changeRequestSuccess = createAction(`[${featureKey}] changeRequestSuccesss`);
+export const changeRequestFailure = createAction(`[${featureKey}] changeRequestFailure`, props<{ errorMessage: string }>());

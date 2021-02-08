@@ -58,6 +58,8 @@ import { AuthenticatedAppComponent } from './pages/authenticated-app/authenticat
 import { AdminRequestsComponent } from './pages/administrator/admin-requests/admin-requests.component';
 import { AuthInterceptor } from './endpoint/interceptors/token-interceptor.service';
 import { AuthExpiredInterceptor } from './endpoint/interceptors/auth-expired.interceptor';
+import { ChangeStatusModalComponent } from './pages/administrator/admin-requests/change-status-modal/change-status-modal.component';
+import { RequestHistoryModalComponent } from './pages/administrator/admin-requests/request-history-modal/request-history-modal.component';
 
 export interface ApplicationState {
   [requesterReducer.featureKey]: requesterReducer.State,
@@ -111,7 +113,9 @@ const effects = [
     AdministratorComponent,
     ChartsViewComponent,
     AuthenticatedAppComponent,
-    AdminRequestsComponent
+    AdminRequestsComponent,
+    ChangeStatusModalComponent,
+    RequestHistoryModalComponent
   ],
   imports: [
     BrowserModule,
