@@ -7,7 +7,6 @@ import com.ikons.requestmanagement.core.dto.ResourceDTO;
 import com.ikons.requestmanagement.core.usecase.request.GetRequest;
 import com.ikons.requestmanagement.core.usecase.request.RequestActionNotification;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
-import com.ikons.requestmanagement.dataprovider.database.entity.User;
 import com.ikons.requestmanagement.core.dto.RequestDetailsDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

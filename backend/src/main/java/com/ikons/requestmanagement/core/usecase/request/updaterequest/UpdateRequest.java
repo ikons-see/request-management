@@ -7,5 +7,5 @@ public interface UpdateRequest {
 
     void update(final RequestUpdate requestUpdate);
 
-//    void changeStatus(long requestId, RequestStatusDTO requestStatus);
+    void changeStatus(final long requestId, final RequestStatusDTO requestStatus, final String note);
 }
