@@ -22,6 +22,7 @@ public class RequestUpdate {
   private Date endDate;
   private String projectDescription;
   private String notes;
+  private String statusNotes;
   private List<ResourceDTO> newResources;
   private List<Long> deletedResourceIds;
 }

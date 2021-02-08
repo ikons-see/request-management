@@ -9,7 +9,9 @@ import com.ikons.requestmanagement.core.usecase.request.deleterequest.DeleteRequ
 import com.ikons.requestmanagement.core.usecase.request.newrequest.CreateNewRequestUseCase;
 import com.ikons.requestmanagement.core.usecase.request.getrequests.ListRequestsUseCase;
 import com.ikons.requestmanagement.core.usecase.request.updaterequest.UpdateRequestUseCase;
+import com.ikons.requestmanagement.core.usecase.request.updaterequest.RequestStatusUseCase;
 import com.ikons.requestmanagement.security.SecurityUtils;
+import com.ikons.requestmanagement.web.rest.requests.ChangeStatusRequest;
 import com.ikons.requestmanagement.web.rest.requests.RequestData;
 import com.ikons.requestmanagement.core.dto.RequestsDTO;
 import com.ikons.requestmanagement.web.rest.requests.RequestUpdate;
@@ -27,7 +29,7 @@ import java.util.stream.Stream;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/requests-management/api/request")
+@RequestMapping("api/requests-management")
 public class RequestsController {
 
     private final ListRequestsUseCase listRequestsUseCase;
@@ -35,6 +37,7 @@ public class RequestsController {
     private final UpdateRequestUseCase updateRequestUseCase;
     private final CloseRequestUseCase closeRequestUseCase;
     private final DeleteRequestUseCase deleteRequestUseCase;
+    private final RequestStatusUseCase requestStatusUseCase;
 
     @PostMapping("/statuses")
     public List<String> getRequestStatuses() {
@@ -98,4 +101,8 @@ public class RequestsController {
         deleteRequestUseCase.deleteRequest(requestId);
     }
 
+    @PostMapping("/change-status")
+    public void changeStatus(@RequestBody final ChangeStatusRequest changeStatusRequest) {
+        requestStatusUseCase.changeRequestStatus(changeStatusRequest);
+    }
 }

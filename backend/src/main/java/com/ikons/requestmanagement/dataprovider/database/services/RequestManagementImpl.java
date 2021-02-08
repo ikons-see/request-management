@@ -93,6 +93,7 @@ public class RequestManagementImpl implements GetRequest, UpdateRequest, CloseRe
     }
 
     @Override
+    @Transactional
     public List<RequestDetailsDTO> getAllRequests(final Pageable pageable) {
         final List<RequestEntity> requestEntities = requestRepository.findAll(pageable);
         return requestEntities.stream().filter(Objects::nonNull).map(a -> {
@@ -111,6 +112,7 @@ public class RequestManagementImpl implements GetRequest, UpdateRequest, CloseRe
     }
 
     @Override
+    @Transactional
     public List<RequestDetailsDTO> getUserRequests(final String userId, final Pageable pageable) {
         final List<RequestEntity> requestEntities = requestRepository.findByCreatedBy(userId, pageable);
         return requestEntities.stream().filter(Objects::nonNull).map(a -> {
@@ -129,6 +131,7 @@ public class RequestManagementImpl implements GetRequest, UpdateRequest, CloseRe
                 .startDate(requestEntity.getStartDate())
                 .projectDescription(requestEntity.getProjectDescription())
                 .notes(requestEntity.getNotes())
+                .statusNotes(requestEntity.getStatusNotes())
                 .resources(requestEntity.getResources().stream()
                         .filter(Objects::nonNull)
                         .map(a -> {
@@ -159,6 +162,7 @@ public class RequestManagementImpl implements GetRequest, UpdateRequest, CloseRe
             entity.setStartDate(requestUpdate.getStartDate());
             entity.setEndDate(requestUpdate.getEndDate());
             entity.setNotes(requestUpdate.getNotes());
+            entity.setStatusNotes(requestUpdate.getStatusNotes());
             entity.setProjectDescription(requestUpdate.getProjectDescription());
 
             deleteResources(requestUpdate.getDeletedResourceIds());
@@ -185,6 +189,14 @@ public class RequestManagementImpl implements GetRequest, UpdateRequest, CloseRe
     @Override
     public void delete(final Long requestId) {
         requestRepository.findById(requestId).ifPresent(requestRepository::delete);
+    }
+
+    @Override
+    public void changeStatus(final long requestId, final RequestStatusDTO requestStatus, final String note) {
+        final RequestEntity requestEntity = requestRepository.findById(requestId).orElseThrow(() -> new MissingRequestException(requestId));
+        requestEntity.setStatus(requestStatus.name());
+        requestEntity.setStatusNotes(note);
+        requestRepository.save(requestEntity);
     }
 
 }
