@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from "rxjs";
 import { RequestsListResponse } from "../types/response-types";
-import { AddRequest, RequestFilters, UpdateRequest } from "../types/request-types";
+import { AddRequest, ChangeStatusRequest, RequestFilters, UpdateRequest } from "../types/request-types";
 import { JWTToken } from "../types/data-types";
 import { tap } from "rxjs/operators";
 
@@ -55,7 +55,7 @@ export class RequestsManagementService {
                                 note: ''
                             }
                         ],
-                        note: ''
+                        notes: ''
                     },
                     {
                         requestId: 1,
@@ -71,7 +71,7 @@ export class RequestsManagementService {
                                 skills: ['Angular', 'Java']
                             }
                         ],
-                        note: ''
+                        notes: ''
                     },
                     {
                         requestId: 2,
@@ -87,7 +87,7 @@ export class RequestsManagementService {
                                 skills: ['Angular', 'Java']
                             }
                         ],
-                        note: ''
+                        notes: ''
                     },
                     {
                         requestId: 3,
@@ -103,10 +103,43 @@ export class RequestsManagementService {
                                 skills: ['Angular', 'Java']
                             }
                         ],
-                        note: ''
+                        notes: '',
+                        statusNotes: 'Closed for testing purposes'
+                    },
+                    {
+                        requestId: 4,
+                        areaOfInterest: 'INDUSTRY',
+                        status: 'ON_GOING',
+                        startDate: new Date(),
+                        endDate: new Date(),
+                        projectDescription: 'Long project description',
+                        resources: [
+                            {
+                                total: 1,
+                                seniority: 'Medium',
+                                skills: ['Angular', 'Java']
+                            }
+                        ],
+                        notes: ''
+                    },
+                    {
+                        requestId: 5,
+                        areaOfInterest: 'INDUSTRY',
+                        status: 'UPDATED',
+                        startDate: new Date(),
+                        endDate: new Date(),
+                        projectDescription: 'Long project description',
+                        resources: [
+                            {
+                                total: 1,
+                                seniority: 'Medium',
+                                skills: ['Angular', 'Java']
+                            }
+                        ],
+                        notes: ''
                     }
                 ],
-                total: 2
+                total: 6
             }
         );
     }
@@ -256,5 +289,9 @@ export class RequestsManagementService {
             requestId: requestId
         };
         return this.httpClient.post<void>(`api/requests-management/close-request`, request);
+    }
+
+    changeRequestStatus(request: ChangeStatusRequest) {
+        return this.httpClient.post<void>(`api/requests-management/change-status`, request);
     }
 }

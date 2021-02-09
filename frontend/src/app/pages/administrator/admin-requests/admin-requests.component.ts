@@ -2,16 +2,23 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
 import { ApplicationState } from '../../../app.module';
-import { addRequestFilters, openViewDetailsModal, pageChanged, requestData, resetRequestFilters } from '../../../store/administrator/administrator-actions';
-import { 
-  getCurrentPage, 
-  getErrorMessage, 
-  getFilters, 
-  getLoadingRequests, 
-  getRequestsList, 
-  getTotalNumber 
+import {
+  addRequestFilters,
+  openChangeStatusModal,
+  openViewDetailsModal,
+  pageChanged,
+  requestData,
+  resetRequestFilters
+} from '../../../store/administrator/administrator-actions';
+import {
+  getCurrentPage,
+  getErrorMessage,
+  getFilters,
+  getLoadingRequests,
+  getRequestsList,
+  getTotalNumber
 } from '../../../store/administrator/administrator-reducer';
-import { ColumnType, DropdownColumn, TableConfig } from '../../../types/data-types';
+import { ColumnType, DropdownColumn, RequestStatus, TableConfig } from '../../../types/data-types';
 import { RequestDetails, RequestFilters } from '../../../types/request-types';
 
 @Component({
@@ -30,8 +37,8 @@ export class AdminRequestsComponent implements OnInit {
   showFilters: boolean = false;
   filters: RequestFilters;
   filtersSubscribtion: Subscription;
-  
-  constructor(private store: Store<ApplicationState>) { 
+
+  constructor(private store: Store<ApplicationState>) {
     this.loadData(1);
 
     this.currentPage$ = this.store.select(getCurrentPage);
@@ -69,22 +76,22 @@ export class AdminRequestsComponent implements OnInit {
         {
           text: 'Take charge',
           icon: 'fa-edit',
-          onClick: (e) => this.openTakeChargeModal(e)
+          onClick: (e) => this.openChangeStatusModal(e, RequestStatus.ON_GOING)
         },
         {
           text: 'Reject',
           icon: 'fa-trash',
-          onClick: (e) => this.openRejectRequestModal(e)
+          onClick: (e) => this.openChangeStatusModal(e, RequestStatus.REJECTED)
         },
         {
           text: 'Pending information',
           icon: 'fa-info-circle',
-          onClick: (e) => this.openPendingInfoModal(e)
+          onClick: (e) => this.openChangeStatusModal(e, RequestStatus.PENDING)
         },
         {
           text: 'Close',
           icon: 'fa-close',
-          onClick: (e) => this.openCloseModal(e)
+          onClick: (e) => this.openChangeStatusModal(e, RequestStatus.CLOSED)
         }
       ]
     }
@@ -140,20 +147,8 @@ export class AdminRequestsComponent implements OnInit {
     this.store.dispatch(openViewDetailsModal({ requestId: e }))
   }
 
-  openTakeChargeModal(e) {
-    console.log('Taking in charge');
-  }
-
-  openRejectRequestModal(e) {
-    console.log('Rejecting request');
-  }
-
-  openPendingInfoModal(e) {
-    console.log('Pending information');
-  }
-
-  openCloseModal(e) {
-    console.log('Closing request');
+  openChangeStatusModal(e, status: RequestStatus) {
+    this.store.dispatch(openChangeStatusModal({ requestId: e, status }));
   }
 
   openViewHistoryModal(e) {
@@ -161,7 +156,7 @@ export class AdminRequestsComponent implements OnInit {
   }
 
   applyFilters(e) {
-    this.store.dispatch(addRequestFilters({requestFilters: e}));
+    this.store.dispatch(addRequestFilters({ requestFilters: e }));
   }
 
   resetFilters() {
