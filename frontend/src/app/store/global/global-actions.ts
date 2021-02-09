@@ -1,4 +1,5 @@
 import { createAction, props } from "@ngrx/store";
+import { RegisterUserRequest } from "../../types/request-types";
 import { JWTToken } from "../../types/data-types";
 
 export const featureKey = 'global';
@@ -14,3 +15,7 @@ export const loginRequest = createAction(`[${featureKey}] loginRequest`, props<{
 export const loginSuccess = createAction(`[${featureKey}] loginSuccess`, props<{ token?: JWTToken }>());
 export const loginFailure = createAction(`[${featureKey}] loginFailure`, props<{ errorMessage: string }>());
 export const logoutRequest = createAction(`[${featureKey}] logoutRequest`);
+
+export const registerUser = createAction(`[${featureKey}] registerUser`, props<{ userData: RegisterUserRequest }>());
+export const registerUserSuccess = createAction(`[${featureKey}] registerUserSuccess`);
+export const registerUserFailure = createAction(`[${featureKey}] registerUserFailure`, props<{ errorMessage: string }>());
