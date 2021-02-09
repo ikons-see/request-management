@@ -78,10 +78,7 @@ export class RequestsManagementService {
     }
 
     closeRequest(requestId: number): Observable<void> {
-        const request = {
-            requestId: requestId
-        };
-        return this.httpClient.post<void>(`api/requests-management/close-request`, request);
+        return this.httpClient.get<void>(`api/requests-management/close-request/${requestId}`);
     }
 
     changeRequestStatus(request: ChangeStatusRequest) {
