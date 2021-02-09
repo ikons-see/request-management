@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NavigationTab } from 'src/app/types/data-types';
 
 @Component({
@@ -11,16 +11,25 @@ export class NavigationBarComponent implements OnInit {
   @Input()
   tabs: Array<NavigationTab>;
 
-  activeTab: string = '0';
-  isNavbarCollapsed: boolean = false;
-  
-  constructor() { }
+  @Output()
+  signingOut = new EventEmitter();
 
-  ngOnInit(): void {
+  signOutTab: NavigationTab;
+
+  isNavbarCollapsed: boolean = false;
+
+  constructor() { 
   }
 
-  tabClick(id) {
-    this.activeTab = id;
+  ngOnInit(): void {
+    this.signOutTab = {
+      tabName: 'Sign out',
+      tabId: String(this.tabs.length)
+    }
+  }
+
+  signOut() {
+    this.signingOut.emit();
   }
 
 }

@@ -1,20 +1,26 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnChanges, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
-import { ApplicationState } from 'src/app/app.module';
-import { addRequestFilters, resetRequestFilters } from 'src/app/store/requests-actions';
-import { getFilters } from 'src/app/store/requests-reducer';
-import { AreaOfInterest, RequestStatus, Seniority, Skills } from 'src/app/types/data-types';
-import { RequestFilters } from 'src/app/types/request-types';
+import { RequestFilters } from '../../../types/request-types';
+import { ApplicationState } from '../../../app.module';
+import { AreaOfInterest, RequestStatus, Seniority, Skills } from '../../../types/data-types';
 
 @Component({
   selector: 'app-filters-panel',
   templateUrl: './filters-panel.component.html',
   styleUrls: ['./filters-panel.component.scss']
 })
-export class FiltersPanelComponent implements OnInit {
+export class FiltersPanelComponent implements OnInit, OnChanges {
+
+  @Input()
+  filters: RequestFilters;
+
+  @Output()
+  addFilters = new EventEmitter<RequestFilters>();
+
+  @Output()
+  removeFilters = new EventEmitter();
 
   formGroup: FormGroup;
   areas = Object.values(AreaOfInterest);
@@ -39,20 +45,19 @@ export class FiltersPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.store.select(getFilters).pipe(take(1)).subscribe(value => {
-      this.formGroup.patchValue({...value});
-    });
+    this.formGroup.patchValue({...this.filters});
+  }
+
+  ngOnChanges() {
+    this.formGroup.patchValue({...this.filters});
   }
 
   applyFilters() {
-    this.store.dispatch(addRequestFilters({requestFilters: this.formGroup.value}));
+    this.addFilters.emit(this.formGroup.value);
   }
 
   resetFilters() {
-    this.store.dispatch(resetRequestFilters());
-    this.store.select(getFilters).pipe(take(1)).subscribe(value => {
-      this.formGroup.patchValue({...value});
-    });
+    this.removeFilters.emit();
   }
 
 }

@@ -2,7 +2,7 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ApplicationState } from 'src/app/app.module';
-import { addNewRequest } from 'src/app/store/requests-actions';
+import { addNewRequest } from 'src/app/store/requester/requester-actions';
 import { AreaOfInterest, ButtonConfiguration, ButtonType, Tab } from 'src/app/types/data-types';
 import { Resource } from 'src/app/types/request-types';
 import { AddGeneralInfoComponent } from './add-general-info/add-general-info.component';

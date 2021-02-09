@@ -1,6 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
+import { RequestStatus } from 'src/app/types/data-types';
 import { RequestDetails } from 'src/app/types/request-types';
 
 @Component({
@@ -14,7 +15,8 @@ export class RequestInfoComponent implements OnInit {
   request: RequestDetails;
   
   formGroup: FormGroup;
-  
+  statuses = RequestStatus;
+
   constructor(private formBuilder: FormBuilder,
     private datePipe: DatePipe) { }
 
@@ -28,7 +30,8 @@ export class RequestInfoComponent implements OnInit {
       startDate: this.datePipe.transform(this.request.startDate, 'dd MMM yyyy'),
       endDate: this.datePipe.transform(this.request.endDate, 'dd MMM yyyy'),
       projectDescription: this.request.projectDescription,
-      notes: this.request.note
+      notes: this.request.notes,
+      closingNotes: this.request.statusNotes ? this.request.statusNotes : null
     });
   }
 

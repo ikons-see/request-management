@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NavigationTab } from 'src/app/types/data-types';
 
 @Component({
@@ -13,10 +13,16 @@ export class PageComponent implements OnInit {
 
   @Input()
   navigationTabs: Array<NavigationTab>;
+
+  @Output()
+  signingOut = new EventEmitter();
   
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  signOut() {
+    this.signingOut.emit();
+  }
 }

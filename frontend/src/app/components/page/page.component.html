@@ -1,4 +1,4 @@
-<app-navigation-bar [tabs]="navigationTabs"></app-navigation-bar>
+<app-navigation-bar [tabs]="navigationTabs" (signingOut)="signOut()"></app-navigation-bar>
 
 <div class="page-container">
   <ng-container *ngIf="!loading; else loadingView">

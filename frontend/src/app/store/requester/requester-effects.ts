@@ -1,21 +1,25 @@
 import { HttpErrorResponse } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { BsModalService } from "ngx-bootstrap/modal";
-import { catchError, map, switchMap, tap, withLatestFrom, mergeMap, flatMap } from 'rxjs/operators';
-import { Observable, of } from "rxjs";
-import { ApplicationState } from "../app.module";
-import { RequestsManagementService } from "../endpoint/requests-management.service";
+import { catchError, map, switchMap, tap, withLatestFrom, mergeMap, take } from 'rxjs/operators';
+import { of } from "rxjs";
+import { ApplicationState } from "../../app.module";
+import { RequestsManagementService } from "../../endpoint/requests-management.service";
+import { globalModalConfig } from "../../types/data-types";
+import { AddRequestModalComponent } from "../../pages/requester/add-request-modal/add-request-modal.component";
+import { EditDetailsModalComponent } from "../../pages/requester/edit-details-modal/edit-details-modal.component";
+import { DeleteRequestModalComponent } from "../../pages/requester/delete-request-modal/delete-request-modal.component";
+import { getCurrentPage, getRequestById } from "./requester-reducer";
+import { CloseRequestModalComponent } from "../../pages/requester/close-request-modal/close-request-modal.component";
+import { getFilters } from "./requester-reducer";
 import {
     addNewRequest,
     addRequestFailure,
     addRequestFilters,
     addRequestSuccess,
-    loginFailure,
-    loginRequest,
-    loginSuccess,
-    logoutRequest,
     closeRequest,
     closeRequestFailure,
     closeRequestSuccess,
@@ -27,7 +31,6 @@ import {
     openDeleteRequestModal,
     openEditRequestModal,
     openViewDetailsModal,
-    rehydrateSuccess,
     requestData,
     resetRequestFilters,
     setData,
@@ -35,20 +38,11 @@ import {
     updateRequest,
     updateRequestFailure,
     updateRequestSuccess
-} from "./requests-actions";
-import { globalModalConfig } from "../types/data-types";
-import { ViewDetailsModalComponent } from "../pages/requester/view-details-modal/view-details-modal.component";
-import { AddRequestModalComponent } from "../pages/requester/add-request-modal/add-request-modal.component";
-import { EditDetailsModalComponent } from "../pages/requester/edit-details-modal/edit-details-modal.component";
-import { DeleteRequestModalComponent } from "../pages/requester/delete-request-modal/delete-request-modal.component";
-import { getCurrentPage } from "./requests-reducer";
-import { CloseRequestModalComponent } from "../pages/requester/close-request-modal/close-request-modal.component";
-import { Router } from "@angular/router";
-import { getFilters } from "./requests-reducer";
-
+} from "./requester-actions";
+import { ViewDetailsModalComponent } from "src/app/pages/requester/view-details-modal/view-details-modal.component";
 
 @Injectable()
-export class RequestsManagementEffects {
+export class RequesterEffects {
 
     constructor(private actions$: Actions,
         private store: Store<ApplicationState>,
@@ -57,16 +51,11 @@ export class RequestsManagementEffects {
         private requestsService: RequestsManagementService) {
     }
 
-    rehydrateSession$ = createEffect(() => this.actions$.pipe(
-        ofType('@ngrx/effects/init'),
-        switchMap(() => this.rehydrateFunction())
-    ));
-
     onRequestData$ = createEffect(() => this.actions$.pipe(
         ofType(requestData),
         withLatestFrom(this.store.select(getFilters)),
         switchMap(([action, filters]) => {
-            return this.requestsService.getRequestsList(action.page, filters)
+            return this.requestsService.getMyRequestsList(action.page, filters)
                 .pipe(
                     map(res => setData({
                         totalNumber: res.total,
@@ -78,20 +67,6 @@ export class RequestsManagementEffects {
                 );
         })
     ));
-
-    openViewDetailsModal$ = createEffect(() => this.actions$.pipe(
-        ofType(openViewDetailsModal),
-        tap((action) => {
-            this.modalService.show(ViewDetailsModalComponent, {
-                ...globalModalConfig,
-                class: 'modal-dialog modal-dialog-centered modal-lg',
-                initialState: {
-                    requestId: action.requestId,
-                    title: 'View details for request #'
-                }
-            });
-        })
-    ), { dispatch: false });
 
     openAddRequestModal$ = createEffect(() => this.actions$.pipe(
         ofType(openAddRequestModal),
@@ -122,7 +97,7 @@ export class RequestsManagementEffects {
         })
     ));
 
-    closeAddRequestModal$ = createEffect(() => this.actions$.pipe(
+    closeModal$ = createEffect(() => this.actions$.pipe(
         ofType(
             addRequestSuccess,
             updateRequestSuccess,
@@ -195,48 +170,6 @@ export class RequestsManagementEffects {
         })
     ), { dispatch: false });
 
-    processLoginRequest$ = createEffect(() => this.actions$.pipe(
-        ofType(loginRequest),
-        switchMap((action) => {
-            const username = action.username;
-            const password = action.password;
-            const remember = action.rememberMe;
-            return this.requestsService.requestToken(username, password, remember)
-                .pipe(
-                    mergeMap(response => {
-                        return [
-                            loginSuccess({})
-                        ]
-                    }),
-                    catchError((error: HttpErrorResponse) =>
-                        of(loginFailure({ errorMessage: error.message }),
-                        ))
-                )
-        })));
-
-
-    forceRedirectToAppliation$ = createEffect(() => this.actions$.pipe(
-        ofType(loginSuccess),
-        switchMap(() => this.router.navigate(['/app']))
-    ), { dispatch: false });
-
-    onLogoutRequest$ = createEffect(() => this.actions$.pipe(
-        ofType(logoutRequest),
-        switchMap(() => [
-            this.router.navigate(['login']),
-            this.requestsService.removeToken()
-        ])
-    ), { dispatch: false });
-
-    rehydrateFunction(): Observable<any> {
-        const item = localStorage.getItem('authenticated');
-        if (item) {
-            return of(rehydrateSuccess());
-        } else {
-            return of();
-        }
-    }
-
     onDeleteRequest$ = createEffect(() => this.actions$.pipe(
         ofType(deleteRequest),
         withLatestFrom(this.store.select(getCurrentPage)),
@@ -253,7 +186,6 @@ export class RequestsManagementEffects {
                 );
         })
     ));
-
 
     openCloseRequestModal$ = createEffect(() => this.actions$.pipe(
         ofType(openCloseRequestModal),
@@ -285,4 +217,21 @@ export class RequestsManagementEffects {
                 );
         })
     ));
+
+    openViewDetailsModal$ = createEffect(() => this.actions$.pipe(
+        ofType(openViewDetailsModal),
+        tap((action) => {
+            let details = null;
+            this.store.select(getRequestById, action.requestId).pipe(take(1)).subscribe(value => { details = value });
+            this.modalService.show(ViewDetailsModalComponent, {
+                ...globalModalConfig,
+                class: 'modal-dialog modal-dialog-centered modal-lg',
+                initialState: {
+                    requestId: action.requestId,
+                    title: 'View details for request #',
+                    details: details
+                }
+            });
+        })
+    ), { dispatch: false });
 }
