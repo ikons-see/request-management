@@ -219,17 +219,23 @@ public class UserManagementImpl implements UserManagement {
     }
 
     @Override
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
-        SecurityUtils.getCurrentUserLogin()
+    public void updateAuthenticatedUser(UserDTO userDTO) {
+      Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
+      if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
+        throw new EmailAlreadyUsedException();
+      }
+      userRepository.findOneByLogin(userDTO.getLogin()).orElseThrow(() -> new RuntimeException("User could not be found"));
+
+      SecurityUtils.getCurrentUserLogin()
                 .flatMap(userRepository::findOneByLogin)
                 .ifPresent(user -> {
-                    user.setFirstName(firstName);
-                    user.setLastName(lastName);
-                    if (email != null) {
-                        user.setEmail(email.toLowerCase());
+                    user.setFirstName(userDTO.getFirstName());
+                    user.setLastName(userDTO.getLastName());
+                    if (userDTO.getEmail() != null) {
+                        user.setEmail(userDTO.getEmail().toLowerCase());
                     }
-                    user.setLangKey(langKey);
-                    user.setImageUrl(imageUrl);
+                    user.setLangKey(userDTO.getLangKey());
+                    user.setImageUrl(userDTO.getImageUrl());
                     this.clearUserCaches(user);
                     log.debug("Changed Information for User: {}", user);
                 });

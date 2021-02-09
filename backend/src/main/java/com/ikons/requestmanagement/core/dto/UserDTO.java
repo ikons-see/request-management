@@ -1,5 +1,6 @@
 package com.ikons.requestmanagement.core.dto;
 import com.ikons.requestmanagement.config.Constants;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,8 @@ import java.util.stream.Collectors;
  */
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserDTO {
 
   private Long id;

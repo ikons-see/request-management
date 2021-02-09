@@ -18,3 +18,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfU
 {
   status: {notEquals: created},
 }
+
+###
+GET http://localhost:8080/api/account HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfUkVRVUVTVEVSIiwiZXhwIjoxNjEyOTcwOTg1fQ.QanC9VazRv1CfWYwtCJ6_41nMtP99R-CeJydBrcl4KbsoL-Tu9NKn8sG5QT63rhVn4AhjSJCog9SBW_sUxCv7g

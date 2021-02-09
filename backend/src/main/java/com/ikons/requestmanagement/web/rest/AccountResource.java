@@ -1,35 +1,70 @@
 package com.ikons.requestmanagement.web.rest;
 
 import com.ikons.requestmanagement.core.dto.UserDTO;
+import com.ikons.requestmanagement.core.usecase.user.UserUseCase;
 import com.ikons.requestmanagement.dataprovider.database.mapper.UserMapper;
 import com.ikons.requestmanagement.dataprovider.database.repository.UserRepository;
 import com.ikons.requestmanagement.security.SecurityUtils;
+import com.ikons.requestmanagement.web.vm.ManagedUserVM;
+import com.ikons.requestmanagement.web.vm.PasswordChangeVM;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Objects;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/account")
+@RequestMapping("/api/")
 public class AccountResource {
 
-  private final UserRepository userRepository;
+  private final UserUseCase userUseCase;
 
-  public AccountResource(UserRepository userRepository) {
-    this.userRepository = userRepository;
+  @Value("${spring.application.name}")
+  private String applicationName;
+
+  public AccountResource(UserUseCase userUseCase) {
+    this.userUseCase = userUseCase;
   }
 
-  @GetMapping("/")
-  public ResponseEntity<UserDTO> getAccountInfo() {
-    Optional<UserDTO> account = SecurityUtils.getCurrentUserLogin().map(
-        login -> userRepository.findOneWithAuthoritiesByLogin(login)
-            .filter(user -> !Objects.isNull(user))
-            .map(user -> UserMapper.userToUserDTO(user))
-        .get()
-    );
-    return ResponseEntity.of(account);
+  @PostMapping("/register")
+  @ResponseStatus(HttpStatus.CREATED)
+  public void registerAccount(@Valid @RequestBody ManagedUserVM managedUserVM) {
+    this.userUseCase.registerUser(managedUserVM, managedUserVM.getPassword());
   }
+
+  /**
+   * {@code GET /activate} : activate the registered user.
+   */
+  @GetMapping("/activate")
+  public void activateAccount(@RequestParam(value = "key") String key) {
+    userUseCase.activate(key);
+  }
+
+  /**
+   * {@code GET  /account} : get the current user.
+   */
+  @GetMapping("/account")
+  public UserDTO getAccount() {
+    return userUseCase.getAuthenticatedUser();
+  }
+
+  /**
+   * {@code POST  /account} : update the current user information.
+   */
+  @PostMapping("/account")
+  public void saveAccount(@Valid @RequestBody UserDTO userDTO){
+    userUseCase.updateAuthenticatedUser(userDTO);
+  }
+
+  /**
+   * {@code POST  /account/change-password} : changes the current user's password.
+   */
+  @PostMapping(path = "/account/change-password")
+  public void changePassword(@RequestBody PasswordChangeVM passwordChange) {
+    userUseCase.changePassword(passwordChange.getCurrentPassword(), passwordChange.getNewPassword());
+  }
+
 }
