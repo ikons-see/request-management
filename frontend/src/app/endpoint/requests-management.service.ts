@@ -84,6 +84,6 @@ export class RequestsManagementService {
     }
 
     registerUser(request: RegisterUserRequest) {
-        return this.httpClient.post<void>(`api/requests-management/register-user`, request);
+        return this.httpClient.post<void>(`api/register`, request);
     }
 }
