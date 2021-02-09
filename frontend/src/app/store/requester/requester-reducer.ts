@@ -28,7 +28,6 @@ export const initialState: State = {
         areaOfInterest: '',
         startDate: null,
         endDate: null,
-        projectDescription: '',
         total: null,
         seniority: '',
         skills: []

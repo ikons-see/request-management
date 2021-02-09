@@ -21,127 +21,7 @@ export class RequestsManagementService {
             size: 10,
             filters: filters
         };
-        //return this.httpClient.post<RequestsListResponse>(`api/requests-management/my-requests`, request);
-        return of(
-            {
-                requestResponses: [
-                    {
-                        requestId: 0,
-                        areaOfInterest: 'INDUSTRY',
-                        status: 'CREATED',
-                        startDate: new Date(),
-                        endDate: new Date(),
-                        projectDescription: 'Long project description',
-                        resources: [
-                            {
-                                id: 1,
-                                total: 4,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java', 'HTML', 'Typescript', 'CSS'],
-                                note: ''
-                            },
-                            {
-                                id: 2,
-                                total: 1,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java', 'HTML', 'Typescript', 'CSS', 'Spring', 'SQL'],
-                                note: ''
-                            },
-                            {
-                                id: 3,
-                                total: 1,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java', 'HTML', 'Typescript', 'CSS', 'Spring'],
-                                note: ''
-                            }
-                        ],
-                        notes: ''
-                    },
-                    {
-                        requestId: 1,
-                        areaOfInterest: 'INDUSTRY',
-                        status: 'PENDING',
-                        startDate: new Date(),
-                        endDate: new Date(),
-                        projectDescription: 'Long project description',
-                        resources: [
-                            {
-                                total: 1,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java']
-                            }
-                        ],
-                        notes: ''
-                    },
-                    {
-                        requestId: 2,
-                        areaOfInterest: 'INDUSTRY',
-                        status: 'REJECTED',
-                        startDate: new Date(),
-                        endDate: new Date(),
-                        projectDescription: 'Long project description',
-                        resources: [
-                            {
-                                total: 1,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java']
-                            }
-                        ],
-                        notes: ''
-                    },
-                    {
-                        requestId: 3,
-                        areaOfInterest: 'INDUSTRY',
-                        status: 'CLOSED',
-                        startDate: new Date(),
-                        endDate: new Date(),
-                        projectDescription: 'Long project description',
-                        resources: [
-                            {
-                                total: 1,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java']
-                            }
-                        ],
-                        notes: '',
-                        statusNotes: 'Closed for testing purposes'
-                    },
-                    {
-                        requestId: 4,
-                        areaOfInterest: 'INDUSTRY',
-                        status: 'ON_GOING',
-                        startDate: new Date(),
-                        endDate: new Date(),
-                        projectDescription: 'Long project description',
-                        resources: [
-                            {
-                                total: 1,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java']
-                            }
-                        ],
-                        notes: ''
-                    },
-                    {
-                        requestId: 5,
-                        areaOfInterest: 'INDUSTRY',
-                        status: 'UPDATED',
-                        startDate: new Date(),
-                        endDate: new Date(),
-                        projectDescription: 'Long project description',
-                        resources: [
-                            {
-                                total: 1,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java']
-                            }
-                        ],
-                        notes: ''
-                    }
-                ],
-                total: 6
-            }
-        );
+        return this.httpClient.post<RequestsListResponse>(`api/requests-management/my-requests`, request);
     }
 
     getAllRequestsList(page: number, filters: RequestFilters): Observable<RequestsListResponse> {
@@ -150,94 +30,7 @@ export class RequestsManagementService {
             size: 10,
             filters: filters
         }
-        //return this.httpClient.post<RequestsListResponse>(`api/requests-management/list-requests`, request);
-        return of(
-            {
-                requestResponses: [
-                    {
-                        requestId: 0,
-                        areaOfInterest: 'INDUSTRY',
-                        status: 'CREATED',
-                        startDate: new Date(),
-                        endDate: new Date(),
-                        projectDescription: 'Long project description',
-                        resources: [
-                            {
-                                id: 1,
-                                total: 4,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java', 'HTML', 'Typescript', 'CSS'],
-                                note: ''
-                            },
-                            {
-                                id: 2,
-                                total: 1,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java', 'HTML', 'Typescript', 'CSS', 'Spring', 'SQL'],
-                                note: ''
-                            },
-                            {
-                                id: 3,
-                                total: 1,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java', 'HTML', 'Typescript', 'CSS', 'Spring'],
-                                note: ''
-                            }
-                        ],
-                        note: ''
-                    },
-                    {
-                        requestId: 1,
-                        areaOfInterest: 'INDUSTRY',
-                        status: 'PENDING',
-                        startDate: new Date(),
-                        endDate: new Date(),
-                        projectDescription: 'Long project description',
-                        resources: [
-                            {
-                                total: 1,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java']
-                            }
-                        ],
-                        note: ''
-                    },
-                    {
-                        requestId: 2,
-                        areaOfInterest: 'INDUSTRY',
-                        status: 'REJECTED',
-                        startDate: new Date(),
-                        endDate: new Date(),
-                        projectDescription: 'Long project description',
-                        resources: [
-                            {
-                                total: 1,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java']
-                            }
-                        ],
-                        note: ''
-                    },
-                    {
-                        requestId: 3,
-                        areaOfInterest: 'INDUSTRY',
-                        status: 'CLOSED',
-                        startDate: new Date(),
-                        endDate: new Date(),
-                        projectDescription: 'Long project description',
-                        resources: [
-                            {
-                                total: 1,
-                                seniority: 'Medium',
-                                skills: ['Angular', 'Java']
-                            }
-                        ],
-                        note: ''
-                    }
-                ],
-                total: 2
-            }
-        );
+        return this.httpClient.post<RequestsListResponse>(`api/requests-management/list-requests`, request);
     }
 
     addNewRequest(request: AddRequest): Observable<void> {
@@ -266,7 +59,7 @@ export class RequestsManagementService {
 
     saveToken(token: JWTToken) {
         localStorage.setItem('authenticated', 'true');
-        localStorage.setItem('access_token', JSON.stringify(token.id_token));
+        localStorage.setItem('access_token', token.id_token);
     }
 
     getToken() {

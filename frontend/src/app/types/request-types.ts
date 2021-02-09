@@ -20,7 +20,7 @@ export interface RequestDetails {
     status: string;
     startDate: Date;
     endDate: Date;
-    notes?: string;
+    note?: string;
     statusNotes?: string;
     projectDescription: string;
     resources: Array<Resource>;
@@ -48,7 +48,6 @@ export interface RequestFilters {
     areaOfInterest: string;
     startDate: Date;
     endDate: Date;
-    projectDescription: string;
     total: number;
     seniority: string;
     skills: Array<string>;
