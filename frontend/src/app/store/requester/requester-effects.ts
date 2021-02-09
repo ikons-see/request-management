@@ -55,7 +55,7 @@ export class RequesterEffects {
         ofType(requestData),
         withLatestFrom(this.store.select(getFilters)),
         switchMap(([action, filters]) => {
-            return this.requestsService.getMyRequestsList(action.page, filters)
+            return this.requestsService.getMyRequestsList(action.page)
                 .pipe(
                     map(res => setData({
                         totalNumber: res.total,

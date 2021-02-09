@@ -15,20 +15,18 @@ export class RequestsManagementService {
     constructor(private httpClient: HttpClient) {
     }
 
-    getMyRequestsList(page: number, filters: RequestFilters): Observable<RequestsListResponse> {
+    getMyRequestsList(page: number): Observable<RequestsListResponse> {
         const request = {
             page: page,
-            size: 10,
-            filters: filters
+            size: 10
         };
         return this.httpClient.post<RequestsListResponse>(`api/requests-management/my-requests`, request);
     }
 
-    getAllRequestsList(page: number, filters: RequestFilters): Observable<RequestsListResponse> {
+    getAllRequestsList(page: number): Observable<RequestsListResponse> {
         const request = {
             page: page,
-            size: 10,
-            filters: filters
+            size: 10
         }
         return this.httpClient.post<RequestsListResponse>(`api/requests-management/list-requests`, request);
     }
