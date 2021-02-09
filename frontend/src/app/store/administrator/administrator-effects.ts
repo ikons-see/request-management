@@ -39,7 +39,7 @@ export class AdministratorEffects {
         ofType(requestData),
         withLatestFrom(this.store.select(getFilters)),
         switchMap(([action, filters]) => {
-            return this.requestsService.getAllRequestsList(action.page, filters)
+            return this.requestsService.getAllRequestsList(action.page)
                 .pipe(
                     map(res => setData({
                         totalNumber: res.total,
