@@ -48,7 +48,6 @@ export interface RequestFilters {
     areaOfInterest: string;
     startDate: Date;
     endDate: Date;
-    projectDescription: string;
     total: number;
     seniority: string;
     skills: Array<string>;

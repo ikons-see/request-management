@@ -59,7 +59,7 @@ export class RequestsManagementService {
 
     saveToken(token: JWTToken) {
         localStorage.setItem('authenticated', 'true');
-        localStorage.setItem('access_token', JSON.stringify(token.id_token));
+        localStorage.setItem('access_token', token.id_token);
     }
 
     getToken() {

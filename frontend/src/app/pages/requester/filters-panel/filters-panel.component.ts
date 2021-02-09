@@ -37,7 +37,6 @@ export class FiltersPanelComponent implements OnInit, OnChanges {
       areaOfInterest: [''],
       startDate: [''],
       endDate: [''],
-      projectDescription: [''],
       total: [''],
       seniority: [''],
       skills: ['']
