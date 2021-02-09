@@ -20,7 +20,7 @@ export interface RequestDetails {
     status: string;
     startDate: Date;
     endDate: Date;
-    note?: string;
+    notes?: string;
     statusNotes?: string;
     projectDescription: string;
     resources: Array<Resource>;
