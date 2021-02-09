@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient } from '@angular/common/http';
 import { Observable, of } from "rxjs";
 import { RequestsListResponse } from "../types/response-types";
-import { AddRequest, ChangeStatusRequest, RequestFilters, UpdateRequest } from "../types/request-types";
+import { AddRequest, ChangeStatusRequest, RegisterUserRequest, RequestFilters, UpdateRequest } from "../types/request-types";
 import { JWTToken } from "../types/data-types";
 import { tap } from "rxjs/operators";
 
@@ -81,5 +81,9 @@ export class RequestsManagementService {
 
     changeRequestStatus(request: ChangeStatusRequest) {
         return this.httpClient.post<void>(`api/requests-management/change-status`, request);
+    }
+
+    registerUser(request: RegisterUserRequest) {
+        return this.httpClient.post<void>(`api/requests-management/register-user`, request);
     }
 }

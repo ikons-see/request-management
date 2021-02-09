@@ -20,7 +20,7 @@ export class AuthExpiredInterceptor implements HttpInterceptor {
         return next.handle(request).pipe(
             tap(
                 null, (err: HttpErrorResponse) => {
-                    if (err.status === 401) {
+                    if (err.status === 401 && err.url && !err.url.includes('register-user')) {
                         this.store.dispatch(logoutRequest());
                     }
                 })

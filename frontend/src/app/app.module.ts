@@ -20,7 +20,6 @@ import { NavigationBarComponent } from './components/navigation-bar/navigation-b
 import { ModalComponent } from './components/modal/modal.component';
 import { TableComponent } from './components/table/table.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LoginComponent } from './pages/login/login.component';
 import { RequesterComponent } from './pages/requester/requester.component';
 import { NavigationTabComponent } from './components/navigation-bar/navigation-tab/navigation-tab.component';
 import { PageComponent } from './components/page/page.component';
@@ -60,6 +59,9 @@ import { AuthInterceptor } from './endpoint/interceptors/token-interceptor.servi
 import { AuthExpiredInterceptor } from './endpoint/interceptors/auth-expired.interceptor';
 import { ChangeStatusModalComponent } from './pages/administrator/admin-requests/change-status-modal/change-status-modal.component';
 import { RequestHistoryModalComponent } from './pages/administrator/admin-requests/request-history-modal/request-history-modal.component';
+import { SignInComponent } from './pages/login/sign-in/sign-in.component';
+import { SignUpComponent } from './pages/login/sign-up/sign-up.component';
+import { LoginPageComponent } from './pages/login/login.component';
 
 export interface ApplicationState {
   [requesterReducer.featureKey]: requesterReducer.State,
@@ -85,7 +87,7 @@ const effects = [
     NavigationBarComponent,
     ModalComponent,
     TableComponent,
-    LoginComponent,
+    LoginPageComponent,
     RequesterComponent,
     NavigationTabComponent,
     PageComponent,
@@ -115,7 +117,9 @@ const effects = [
     AuthenticatedAppComponent,
     AdminRequestsComponent,
     ChangeStatusModalComponent,
-    RequestHistoryModalComponent
+    RequestHistoryModalComponent,
+    SignInComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
