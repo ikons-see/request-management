@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Deprecated(since = "use its associated RequestDetailsDTO in core")
 public class RequestData {
     private AreaOfInterestDTO areaOfInterest;
     private Instant startDate;

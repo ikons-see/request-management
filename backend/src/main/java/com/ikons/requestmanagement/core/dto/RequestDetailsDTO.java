@@ -15,7 +15,7 @@ import java.util.List;
 @EqualsAndHashCode
 public class RequestDetailsDTO {
     private long requestId;
-    private String areaOfInterest;
+    private AreaOfInterestDTO areaOfInterest;
     private String displayName;
     private String status;
     private Instant startDate;

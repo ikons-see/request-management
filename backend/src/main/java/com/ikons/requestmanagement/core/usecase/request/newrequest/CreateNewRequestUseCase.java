@@ -9,6 +9,8 @@ import com.ikons.requestmanagement.core.usecase.request.RequestActionNotificatio
 import com.ikons.requestmanagement.core.usecase.request.RequestDetailsManagement;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -17,6 +19,7 @@ import java.util.List;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class CreateNewRequestUseCase {
 
   private final CreateRequest createRequest;
@@ -25,7 +28,7 @@ public class CreateNewRequestUseCase {
   private final RequestActionNotification requestActionNotification;
 
   @Transactional
-  public void createRequest(
+  public Long createRequest(
       final AreaOfInterestDTO areaOfInterest,
       final Instant startDate,
       final Instant endDate,
@@ -35,9 +38,17 @@ public class CreateNewRequestUseCase {
       final List<ResourceDTO> resources
   ) {
     final long requestId = createRequest.createNewRequest(areaOfInterest, startDate, endDate, projectDescription, otherNotes, user, resources);
+    return requestId;
+  }
+
+  public void sendRequestCreationEmail(final Long requestId) {
     final List<String> administratorsEmails = userManagement.getAdministratorsEmails();
     final RequestMailContentDTO requestMailContent = generate(requestId);
-    requestActionNotification.sendRequestCreationEmail(administratorsEmails, requestMailContent);
+    try {
+      requestActionNotification.sendRequestCreationEmail(administratorsEmails, requestMailContent);
+    } catch (MailSendException e) {
+      log.debug("error sending email", e);
+    }
   }
 
   private RequestMailContentDTO generate(final long requestId) {

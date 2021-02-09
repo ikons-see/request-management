@@ -20,6 +20,7 @@ import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity;
 import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity_;
 import com.ikons.requestmanagement.dataprovider.database.entity.ResourceEntity;
 import com.ikons.requestmanagement.dataprovider.database.mapper.RequestMapper;
+import com.ikons.requestmanagement.dataprovider.database.mapper.ResourceMapper;
 import com.ikons.requestmanagement.dataprovider.database.repository.RequestRepository;
 import com.ikons.requestmanagement.dataprovider.database.repository.ResourceRepository;
 import com.ikons.requestmanagement.web.rest.requests.RequestUpdate;
@@ -49,17 +50,20 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   private final ResourceRepository resourceRepository;
   private final UserManagement userManagement;
   private final RequestMapper requestMapper;
+  private final ResourceMapper resourceMapper;
 
   public RequestDetailsManagementImpl(
       final RequestRepository requestRepository,
       final ResourceRepository resourcesRepository,
       final UserManagement userManagement,
-      final RequestMapper requestMapper
+      final RequestMapper requestMapper,
+      final ResourceMapper resourceMapper
   ) {
     this.requestRepository = requestRepository;
     this.resourceRepository = resourcesRepository;
     this.userManagement = userManagement;
     this.requestMapper = requestMapper;
+    this.resourceMapper = resourceMapper;
   }
 
   @Override
@@ -81,24 +85,11 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
         .notes(otherNotes)
         .resources(new ArrayList<>())
         .build();
-    entity.setCreatedBy(user);
 
     requestRepository.save(entity);
 
     if (resources != null) {
-
-      for (ResourceDTO resources1 : resources) {
-        ResourceEntity resourcesEntity = null;
-        try {
-          resourcesEntity = ResourceEntity.builder()
-              .request(entity)
-              .seniority(resources1.getSeniority()).skills(objectMapper.writeValueAsString(resources1.getSkills())).notes(resources1.getNotes()).total(resources1.getTotal()).build();
-        } catch (JsonProcessingException e) {
-          log.catching(e);
-        }
-        entity.getResources().add(resourcesEntity);
-      }
-
+      createNewResources(resources, entity);
       requestRepository.save(entity);
     }
     return entity.getRequestId();
@@ -190,20 +181,7 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
 
   private void createNewResources(List<ResourceDTO> resources, RequestEntity entity) {
     if (resources != null) {
-      final List<ResourceEntity> resourcesEntities = resources.stream().map(resource -> {
-        final ResourceEntity resourceEntity = new ResourceEntity();
-        resourceEntity.setRequest(entity);
-        resourceEntity.setSeniority(resource.getSeniority());
-        try {
-          resourceEntity.setSkills(objectMapper.writeValueAsString(resource.getSkills()));
-        } catch (JsonProcessingException e) {
-          log.catching(e);
-        }
-        resourceEntity.setNotes(resource.getNotes());
-        resourceEntity.setTotal(resource.getTotal());
-        return resourceEntity;
-      }).collect(Collectors.toList());
-
+      final List<ResourceEntity> resourcesEntities = resourceMapper.toEntity(resources);
       entity.getResources().addAll(resourcesEntities);
     }
   }
