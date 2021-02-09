@@ -93,7 +93,7 @@ public class RequestsResource {
   }
 
   @PostMapping("/list-requests")
-  public RequestsDTO listRequests(@RequestBody final Pageable pageable) {
+  public RequestsDTO listRequests(final Pageable pageable) {
     return listRequestsUseCase.getAllRequests(pageable);
   }
 

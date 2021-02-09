@@ -174,6 +174,7 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   }
 
   @Override
+  @Transactional
   public void changeStatus(final long requestId, final RequestStatusDTO requestStatus, final String note) {
     final RequestEntity requestEntity = requestRepository.findById(requestId).orElseThrow(() -> new MissingRequestException(requestId));
     requestEntity.setStatus(requestStatus.name());

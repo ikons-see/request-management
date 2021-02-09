@@ -54,7 +54,13 @@ export class ChangeStatusModalComponent implements OnInit {
   }
 
   performAction() {
-    if (this.notes) {
+    let performAction = false;
+    if (this.status !== this.statuses.CLOSED) {
+      performAction = true;
+    } else if (this.notes) {
+      performAction = true;
+    }
+    if (performAction) {
       this.store.dispatch(changeRequestStatus({ requestId: this.requestId, status: this.status, notes: this.notes }));
     } else {
       this.validNotes = false;
