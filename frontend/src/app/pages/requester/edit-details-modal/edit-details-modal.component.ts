@@ -72,7 +72,7 @@ export class EditDetailsModalComponent implements OnInit {
       areaOfInterest: [this.request.areaOfInterest],
       dateRange: [this.request.startDate, this.request.endDate],
       projectDescription: this.request.projectDescription,
-      notes: this.request.note
+      notes: this.request.notes
     });
 
     this.requestRsc = this.request.resources;
