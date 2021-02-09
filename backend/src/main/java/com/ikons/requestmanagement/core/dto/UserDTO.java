@@ -36,6 +36,7 @@ public class UserDTO {
   @Size(max = 256)
   private String imageUrl;
 
+  @Builder.Default
   private Boolean activated = false;
 
   @Size(min = 2, max = 10)

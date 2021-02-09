@@ -1,11 +1,10 @@
 package com.ikons.requestmanagement.core.dto;
 
 import com.ikons.requestmanagement.core.dto.ResourceDTO;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -13,13 +12,14 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class RequestDetailsDTO {
     private long requestId;
     private String areaOfInterest;
     private String displayName;
     private String status;
-    private Date startDate;
-    private Date endDate;
+    private Instant startDate;
+    private Instant endDate;
     private String notes;
     private String statusNotes;
     private String projectDescription;

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +19,8 @@ public class RequestMailContentDTO {
   private String userEmail;
   private long requestId;
   private String areaOfInterest;
-  private Date startDate;
-  private Date endDate;
+  private Instant startDate;
+  private Instant endDate;
   private String notes;
   private String projectDescription;
   private List<ResourceDTO> resources;
