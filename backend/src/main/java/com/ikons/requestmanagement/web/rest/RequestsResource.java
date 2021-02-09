@@ -115,12 +115,12 @@ public class RequestsResource {
     updateRequestUseCase.updateRequest(requestUpdate);
   }
 
-  @PostMapping("/close-request/{requestId}")
+  @GetMapping("/close-request/{requestId}")
   public void closeRequest(@PathVariable final Long requestId) {
     closeRequestUseCase.closeRequest(requestId);
   }
 
-  @PostMapping("delete-request/{requestId}")
+  @GetMapping("delete-request/{requestId}")
   public void deleteRequest(@PathVariable final Long requestId) {
     deleteRequestUseCase.deleteRequest(requestId);
   }

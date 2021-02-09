@@ -159,14 +159,16 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   }
 
   @Override
+  @Transactional
   public void close(final Long requestId) {
     requestRepository.findById(requestId).ifPresent(requestEntity -> {
       requestEntity.setStatus(RequestStatusDTO.CLOSED.toString());
-      requestRepository.save(requestEntity);
+      requestRepository.saveAndFlush(requestEntity);
     });
   }
 
   @Override
+  @Transactional
   public void delete(final Long requestId) {
     requestRepository.findById(requestId).ifPresent(requestRepository::delete);
   }
@@ -200,6 +202,9 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
       }
       if (criteria.getDisplayName() != null) {
         specification = specification.and(buildStringSpecification(criteria.getDisplayName(), RequestEntity_.createdBy));
+      }
+      if (criteria.getStatus() != null) {
+        specification = specification.and(buildStringSpecification(criteria.getStatus(), RequestEntity_.status));
       }
       if (criteria.getStartDate() != null) {
         specification = specification.and(buildRangeSpecification(criteria.getStartDate(), RequestEntity_.startDate));
