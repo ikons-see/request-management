@@ -68,9 +68,10 @@ export class EditDetailsModalComponent implements OnInit {
   }
 
   updateForms() {
+    console.log('Dates', this.request);
     this.generalInfoForm.patchValue({
       areaOfInterest: [this.request.areaOfInterest],
-      dateRange: [this.request.startDate, this.request.endDate],
+      dateRange: [new Date(this.request.startDate), new Date(this.request.endDate)],
       projectDescription: this.request.projectDescription,
       notes: this.request.notes
     });

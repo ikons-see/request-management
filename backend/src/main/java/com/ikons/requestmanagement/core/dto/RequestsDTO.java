@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Deprecated(since = "we using spring data, so we don't need to this type")
 public class RequestsDTO {
     private List<RequestDetailsDTO> requestResponses;
     private long total;

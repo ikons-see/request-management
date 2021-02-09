@@ -73,7 +73,7 @@ public class RequestsResource {
   @PostMapping("/create-new-request")
   public void createNewRequest(@RequestBody final RequestData requestData) {
     Optional<String> user = SecurityUtils.getCurrentUserLogin();
-    createNewRequestUseCase.createRequest(
+    Long requestId = createNewRequestUseCase.createRequest(
         requestData.getAreaOfInterest(),
         requestData.getStartDate(),
         requestData.getEndDate(),
@@ -82,10 +82,11 @@ public class RequestsResource {
         user.get(),
         requestData.getResources()
     );
+    createNewRequestUseCase.sendRequestCreationEmail(requestId);
   }
 
   @PostMapping("/my-requests")
-  @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.USER + "\")")
+  // @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.USER + "\")")
   public ResponseEntity<RequestsDTO> listUserRequests(final Pageable page) {
     Optional<RequestsDTO> requestsDTO = SecurityUtils.getCurrentUserLogin().map(login -> listRequestsUseCase.getUserRequests(login, page));
     return ResponseEntity.of(requestsDTO);
