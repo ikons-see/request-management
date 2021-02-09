@@ -32,7 +32,7 @@ import java.util.stream.Stream;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/requests-management/request")
+@RequestMapping("/api/requests-management")
 public class RequestsResource {
 
   private final ListRequestsUseCase listRequestsUseCase;
@@ -96,7 +96,7 @@ public class RequestsResource {
     return listRequestsUseCase.getAllRequests(pageable);
   }
 
-  @GetMapping("/")
+  @GetMapping("/request")
   public ResponseEntity<List<RequestDetailsDTO>> getRequests(
       final RequestCriteria criteria,
       final Pageable pageable
