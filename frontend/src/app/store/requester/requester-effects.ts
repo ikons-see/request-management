@@ -100,6 +100,7 @@ export class RequesterEffects {
     closeModal$ = createEffect(() => this.actions$.pipe(
         ofType(
             addRequestSuccess,
+            addRequestFailure,
             updateRequestSuccess,
             deleteRequestSuccess,
             deleteRequestFailure,
