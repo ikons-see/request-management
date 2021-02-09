@@ -1,9 +1,13 @@
 package com.ikons.requestmanagement.core.usecase.request.getrequests;
 
+import com.ikons.query.filter.StringFilter;
+import com.ikons.requestmanagement.config.Constants;
 import com.ikons.requestmanagement.core.criteria.RequestCriteria;
 import com.ikons.requestmanagement.core.dto.RequestDetailsDTO;
 import com.ikons.requestmanagement.core.usecase.request.RequestDetailsManagement;
 import com.ikons.requestmanagement.core.dto.RequestsDTO;
+import com.ikons.requestmanagement.security.AuthoritiesConstants;
+import com.ikons.requestmanagement.security.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
