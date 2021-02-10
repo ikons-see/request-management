@@ -29,7 +29,7 @@ import java.util.stream.Stream;
 @Log4j2
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/requests-management")
+@RequestMapping("/requests-management/api")
 public class RequestsController {
 
     private final ListRequestsUseCase listRequestsUseCase;
