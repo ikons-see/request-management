@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { ApplicationState } from 'src/app/app.module';
-import { loginRequest, resetMessage } from 'src/app/store/requests-actions';
-import { getErrorMessage } from 'src/app/store/requests-reducer';
+import { loginRequest, resetMessage } from '../../store/global/global-actions';
+import { getErrorMessage } from '../../store/global/global-reducer';
+import { ApplicationState } from '../../app.module';
 
 @Component({
   selector: 'app-login',

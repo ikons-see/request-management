@@ -1,35 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable, Subscription } from 'rxjs';
-import { ApplicationState } from 'src/app/app.module';
+import { ApplicationState } from '../../app.module';
 import {
-  logoutRequest,
+  addRequestFilters,
   openAddRequestModal,
   openCloseRequestModal,
   openDeleteRequestModal,
   openEditRequestModal,
   openViewDetailsModal,
   pageChanged,
-  requestData
-} from '../../store/requests-actions';
+  requestData,
+  resetRequestFilters
+} from '../../store/requester/requester-actions';
 import {
   getCurrentPage,
   getErrorMessage,
+  getFilters,
   getLoadingRequests,
   getRequestsList,
   getTotalNumber
-} from '../../store/requests-reducer';
-import { ColumnType, DropdownColumn, NavigationTab, TableConfig } from '../../types/data-types';
-import { RequestDetails } from '../../types/request-types';
+} from '../../store/requester/requester-reducer';
+import { ColumnType, DropdownColumn, TableConfig } from '../../types/data-types';
+import { RequestDetails, RequestFilters } from '../../types/request-types';
 
 @Component({
   selector: 'app-requester',
   templateUrl: './requester.component.html',
   styleUrls: ['./requester.component.scss']
 })
-export class RequesterComponent implements OnInit {
+export class RequesterComponent implements OnInit, OnDestroy {
 
-  tabs: Array<NavigationTab>;
   tableConfiguration: TableConfig;
   requests$: Observable<Array<RequestDetails>>;
   totalNumber$: Observable<number>;
@@ -37,11 +38,10 @@ export class RequesterComponent implements OnInit {
   errorMessage$: Observable<string>;
   loading$: Observable<boolean>;
   showFilters: boolean = false;
-
-  private subscriptions: Subscription[] = [];
+  filters: RequestFilters;
+  filtersSubscribtion: Subscription;
 
   constructor(private store: Store<ApplicationState>) {
-    this.initTabs();
     this.loadData(1);
 
     this.currentPage$ = this.store.select(getCurrentPage);
@@ -49,6 +49,10 @@ export class RequesterComponent implements OnInit {
     this.totalNumber$ = this.store.select(getTotalNumber);
     this.loading$ = this.store.select(getLoadingRequests);
     this.errorMessage$ = this.store.select(getErrorMessage);
+
+    this.filtersSubscribtion = this.store.select(getFilters).subscribe(value => {
+      this.filters = value;
+    });
   }
 
   ngOnInit(): void {
@@ -57,10 +61,6 @@ export class RequesterComponent implements OnInit {
 
   loadData(page: number) {
     this.store.dispatch(requestData({ page }));
-  }
-
-  tabClicked(e) {
-    console.log(e);
   }
 
   initDropdown(): DropdownColumn {
@@ -127,20 +127,6 @@ export class RequesterComponent implements OnInit {
     };
   }
 
-  initTabs() {
-    this.tabs = [
-      {
-        tabName: 'Requests',
-        tabId: "0"
-      },
-      {
-        tabName: 'Sign Out',
-        tabId: '1',
-        icon: 'fa-user',
-        onClick: (e) => this.signOut()
-      }];
-  }
-
   toogleFiltersPanel() {
     this.showFilters = !this.showFilters;
   }
@@ -166,11 +152,19 @@ export class RequesterComponent implements OnInit {
     this.store.dispatch(openDeleteRequestModal({ requestId: e }));
   }
 
-  signOut() {
-    this.store.dispatch(logoutRequest());
-  }
-
   closeRequest(e) {
     this.store.dispatch(openCloseRequestModal({requestId: e}));
+  }
+
+  applyFilters(e) {
+    this.store.dispatch(addRequestFilters({requestFilters: e}));
+  }
+
+  resetFilters() {
+    this.store.dispatch(resetRequestFilters());
+  }
+
+  ngOnDestroy() {
+    this.filtersSubscribtion.unsubscribe();
   }
 }

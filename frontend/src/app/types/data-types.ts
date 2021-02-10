@@ -2,7 +2,7 @@ export interface NavigationTab {
     tabName: string;
     tabId: string;
     icon?: string;
-    onClick?: (value?: any) => void;
+    href?: string;
 }
 
 export enum ColumnType {
@@ -46,8 +46,10 @@ export enum Skills {
 
 export enum RequestStatus {
     CREATED = 'CREATED',
-    PENDING = 'PENDING',
+    UPDATED = 'UPDATED',
     CLOSED = 'CLOSED',
+    ON_GOING = 'ON_GOING',
+    PENDING = 'PENDING',
     REJECTED = 'REJECTED',
     DELETED = 'DELETED'
 }

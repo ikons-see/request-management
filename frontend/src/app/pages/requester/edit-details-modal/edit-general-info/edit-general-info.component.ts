@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormGroup, Validators } from '@angular/forms';
 import { AreaOfInterest } from 'src/app/types/data-types';
 import { RequestDetails } from 'src/app/types/request-types';
 
@@ -19,6 +19,15 @@ export class EditGeneralInfoComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    this.formGroup.get('areaOfInterest').valueChanges
+    .subscribe(area => {
+      if (area == AreaOfInterest.Other) {
+        this.formGroup.controls['notes'].setValidators([Validators.required]);
+      } else {
+        this.formGroup.controls['notes'].clearValidators();
+      }
+      this.formGroup.controls['notes'].updateValueAndValidity();
+    });
   }
 
   notes() {
