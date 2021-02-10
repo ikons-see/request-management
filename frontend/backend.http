@@ -18,3 +18,31 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfU
 {
   status: {notEquals: created},
 }
+
+###
+GET http://localhost:8080/api/account HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfUkVRVUVTVEVSIiwiZXhwIjoxNjEyOTcwOTg1fQ.QanC9VazRv1CfWYwtCJ6_41nMtP99R-CeJydBrcl4KbsoL-Tu9NKn8sG5QT63rhVn4AhjSJCog9SBW_sUxCv7g
+
+### register user
+POST http://localhost:8080/api/register HTTP/1.1
+content-type: application/json
+
+{"firstName":"Gezim","lastName":"M","login":"gmuja","email":"gmuja@ikons-see.com","password":"ikons","confirmPassword":"ikons"}
+
+### activate registered user
+GET http://localhost:8080/api/activate?key=0bzB2MFgd6zdOjPhkBpV
+
+### request rest password
+POST http://localhost:8080/api/account/reset-password/init HTTP/1.1
+Content-Type: text/plain
+
+gmuja@ikons-see.com
+
+### complete reset password
+POST http://localhost:8080/api/account/reset-password/finish
+Content-Type: application/json
+
+{
+  "resetKey": "",
+  "newPassword": ""
+}

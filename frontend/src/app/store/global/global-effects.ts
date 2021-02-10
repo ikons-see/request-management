@@ -8,7 +8,16 @@ import { Observable, of } from "rxjs";
 import { catchError, mergeMap, switchMap } from "rxjs/operators";
 import { ApplicationState } from "../../app.module";
 import { RequestsManagementService } from "../../endpoint/requests-management.service";
-import { loginFailure, loginRequest, loginSuccess, logoutRequest, rehydrateSuccess } from "./global-actions";
+import {
+    loginFailure,
+    loginRequest,
+    loginSuccess,
+    logoutRequest,
+    registerUser,
+    registerUserFailure,
+    registerUserSuccess,
+    rehydrateSuccess
+} from "./global-actions";
 
 @Injectable()
 export class GlobalEffects {
@@ -66,4 +75,28 @@ export class GlobalEffects {
         ])
     ), { dispatch: false });
 
+    onRegisterUser$ = createEffect(() => this.actions$.pipe(
+        ofType(registerUser),
+        switchMap((action) => {
+          console.log('register user data', action.userData);
+            return this.requestsService.registerUser(action.userData)
+                .pipe(
+                    switchMap(response => {
+                        return [
+                            registerUserSuccess()
+                        ]
+                    }),
+                    catchError((error: HttpErrorResponse) =>
+                        of(registerUserFailure({ errorMessage: error.message }),
+                        ))
+                )
+        })));
+
+    redirectAfterUserRegister$ = createEffect(() => this.actions$.pipe(
+        ofType(registerUserSuccess,
+            registerUserFailure),
+        switchMap(() => [
+            this.router.navigate(['login'])
+        ])
+    ), { dispatch: false });
 }
