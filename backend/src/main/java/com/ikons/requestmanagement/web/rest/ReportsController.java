@@ -31,13 +31,13 @@ public class ReportsController {
 
   @GetMapping("/total-resources-per-month")
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-  public void totalOpenedRequests() {
+  public void totalRequestsPerMonth() {
 
   }
 
   @GetMapping("/total-requests-per-month")
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-  public void totalOpenedRequests() {
+  public void totalResourcesPerMonth() {
 
   }
 

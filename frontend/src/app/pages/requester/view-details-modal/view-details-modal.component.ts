@@ -26,9 +26,9 @@ export class ViewDetailsModalComponent implements OnInit {
   activeId: string = '0';
   buttons: Array<ButtonConfiguration>;
   requestSubscribtion: Subscription;
-  
+
   constructor(private store: Store<ApplicationState>,
-    public bsModalRef: BsModalRef) { 
+    public bsModalRef: BsModalRef) {
     this.initButtons();
     this.initTabs();
   }
@@ -64,5 +64,5 @@ export class ViewDetailsModalComponent implements OnInit {
   tabChanged(e) {
     this.activeId = e;
   }
-  
+
 }

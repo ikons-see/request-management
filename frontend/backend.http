@@ -11,6 +11,7 @@ content-type: application/json
 GET http://localhost:8080/api/users HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfUkVRVUVTVEVSIiwiZXhwIjoxNjEyNDM1MDEzfQ.CNviWotA7S1IEFsZRq_JFocZRubtU0mEUyLBMLCSerrbZlCxMVp9vZLyfqbHxs_Wylqz_wBEOQlUhJMQbSyNwg
 
+
 ###
 GET http://localhost:8080/api/requests-management/request?status.notEquals=CLOSED HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfUkVRVUVTVEVSIiwiZXhwIjoxNjEyOTQ3NDA2fQ.uhDAnoNmH1GddAd_37xgHtvPXjwh9WKztXBG9oCNLE0iguof1CMWqeJBrKxccB3_olDHydFi1ff8k4ZxonL63A

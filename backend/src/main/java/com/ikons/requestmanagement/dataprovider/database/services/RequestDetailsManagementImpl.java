@@ -86,12 +86,11 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
         .resources(new ArrayList<>())
         .build();
 
-    requestRepository.save(entity);
-
     if (resources != null) {
       createNewResources(resources, entity);
-      requestRepository.save(entity);
     }
+    requestRepository.save(entity);
+
     return entity.getRequestId();
   }
 
@@ -184,8 +183,9 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
 
   private void createNewResources(List<ResourceDTO> resources, RequestEntity entity) {
     if (resources != null) {
-      final List<ResourceEntity> resourcesEntities = resourceMapper.toEntity(resources);
-      entity.getResources().addAll(resourcesEntities);
+      final List<ResourceEntity> resourceEntities = resourceMapper.toEntity(resources);
+      resourceEntities.stream().forEach(resource -> resource.setRequest(entity));
+      entity.getResources().addAll(resourceEntities);
     }
   }
 
