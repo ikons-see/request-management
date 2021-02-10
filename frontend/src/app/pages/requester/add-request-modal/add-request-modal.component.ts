@@ -1,9 +1,11 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import { ApplicationState } from 'src/app/app.module';
 import { addNewRequest } from 'src/app/store/requester/requester-actions';
-import { AreaOfInterest, ButtonConfiguration, ButtonType, Tab } from 'src/app/types/data-types';
+import { ButtonConfiguration, ButtonType, Tab } from 'src/app/types/data-types';
 import { Resource } from 'src/app/types/request-types';
 import { AddGeneralInfoComponent } from './add-general-info/add-general-info.component';
 
@@ -12,7 +14,7 @@ import { AddGeneralInfoComponent } from './add-general-info/add-general-info.com
   templateUrl: './add-request-modal.component.html',
   styleUrls: ['./add-request-modal.component.scss']
 })
-export class AddRequestModalComponent implements OnInit {
+export class AddRequestModalComponent implements OnInit, OnDestroy {
 
   @Input()
   title: string;
@@ -20,14 +22,18 @@ export class AddRequestModalComponent implements OnInit {
   @ViewChild('general') childComponent: AddGeneralInfoComponent;
 
   buttons: Array<ButtonConfiguration>;
+  generalButtons: Array<ButtonConfiguration>;
+  resourcesButtons: Array<ButtonConfiguration>;
   tabs: Array<Tab>;
   activeId: string = '0';
   generalInfoForm: FormGroup;
   resourcesForm: FormGroup;
   resources: Array<Resource> = [];
+  translationSub: Subscription;
 
   constructor(private formBuilder: FormBuilder,
-    private store: Store<ApplicationState>) {
+    private store: Store<ApplicationState>,
+    private translate: TranslateService) {
     this.generalInfoForm = this.formBuilder.group({
       areaOfInterest: ['', Validators.required],
       dateRange: [null, Validators.required],
@@ -41,38 +47,51 @@ export class AddRequestModalComponent implements OnInit {
       skills: [[]],
       note: ['']
     });
-
-    this.initButtons();
-    this.initTabs();
   }
 
   ngOnInit(): void {
+    this.translationSub =  this.translate.get('requester.add-request').subscribe(translations => {
+      this.init(translations);
+     });
   }
 
-  initButtons() {
-    this.buttons = [
+  init(translations: { [key: string]: string }) {
+    this.generalButtons = [
       {
-        text: "Next",
+        text: translations['next'],
         type: ButtonType.DARK,
         disabled: this.generalInfoForm.invalid,
         onClick: (e) => this.addResources()
       }
-    ]
-  }
+    ];
 
-  initTabs() {
+    this.resourcesButtons = [
+      {
+        text: translations['back'],
+        type: ButtonType.SECONDARY,
+        onClick: (e) => this.goBack(e)
+      },
+      {
+        text: translations['add-request'],
+        type: ButtonType.DARK,
+        onClick: (e) => this.addRequest(e)
+      }
+    ];
+
+    this.buttons = this.generalButtons;
+
     this.tabs = [
       {
         id: '0',
-        name: 'General Info',
+        name: translations['general-info'],
         onClick: (e) => this.tabChanged(e)
       },
       {
         id: '1',
-        name: 'Resources',
+        name: translations['resources'],
         onClick: (e) => this.tabChanged(e)
       }
-    ]
+    ];
   }
 
   tabChanged(e) {
@@ -83,23 +102,12 @@ export class AddRequestModalComponent implements OnInit {
     this.childComponent.onSubmit();
     if(this.generalInfoForm.valid) {
       this.tabChanged('1');
-      this.buttons = [
-        {
-          text: "Back",
-          type: ButtonType.SECONDARY,
-          onClick: (e) => this.goBack(e)
-        },
-        {
-          text: "Add Request",
-          type: ButtonType.DARK,
-          onClick: (e) => this.addRequest(e)
-        }
-      ];
+      this.buttons = this.resourcesButtons;
     }
   }
 
   goBack(e) {
-    this.initButtons();
+    this.buttons = this.generalButtons;
     this.tabChanged('0');
   }
 
@@ -114,5 +122,9 @@ export class AddRequestModalComponent implements OnInit {
       note: generalInfo['notes'],
       resources: this.resources
     }}));
+  }
+
+  ngOnDestroy() {
+    this.translationSub.unsubscribe();
   }
 }

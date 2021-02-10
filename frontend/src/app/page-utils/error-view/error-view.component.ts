@@ -8,10 +8,10 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ErrorViewComponent implements OnInit {
 
   @Input()
-  title: string = "Something went wrong";
+  title: string = "error-page.title";
 
   @Input()
-  message: string = "Please try again later";
+  message: string = "error-page.subtitle";
   
   constructor() { }
 

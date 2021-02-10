@@ -1,3 +1,4 @@
-<app-page [navigationTabs]="tabs" [loading]="loading$ | async" (signingOut)="signOut()">
+<app-navigation-bar [tabs]="tabs" [signOutTab]="signOutTab" (signingOut)="signOut()" *ngIf="tabs"></app-navigation-bar>
+<app-page *ngIf="tabs" [loading]="loading$ | async">
     <router-outlet></router-outlet>
 </app-page>

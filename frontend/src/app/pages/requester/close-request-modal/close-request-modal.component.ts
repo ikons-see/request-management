@@ -1,6 +1,8 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
+import { Subscription } from 'rxjs';
 import { ApplicationState } from '../../../app.module';
 import { closeRequest } from '../../../store/requester/requester-actions';
 import { ButtonConfiguration, ButtonType } from '../../../types/data-types';
@@ -10,7 +12,7 @@ import { ButtonConfiguration, ButtonType } from '../../../types/data-types';
   templateUrl: './close-request-modal.component.html',
   styleUrls: ['./close-request-modal.component.scss']
 })
-export class CloseRequestModalComponent implements OnInit {
+export class CloseRequestModalComponent implements OnInit, OnDestroy {
 
   @Input()
   requestId: number;
@@ -19,24 +21,28 @@ export class CloseRequestModalComponent implements OnInit {
   title: string;
 
   buttons: Array<ButtonConfiguration>;
+  translationSub: Subscription;
   
   constructor(private store: Store<ApplicationState>,
-    public bsModalRef: BsModalRef) {
-    this.initButtons();
+    public bsModalRef: BsModalRef,
+    private translate: TranslateService) {
    }
 
   ngOnInit(): void {
+    this.translationSub =  this.translate.get('requester.close-request').subscribe(translations => {
+      this.initButtons(translations);
+     });
   }
 
-  initButtons() {
+  initButtons(translations: { [key: string]: string }) {
     this.buttons = [
       {
-        text: "Cancel",
+        text: translations['cancel'],
         type: ButtonType.SECONDARY,
         onClick: (e) => this.closeModal()
       },
       {
-        text: "Continue",
+        text: translations['continue'],
         type: ButtonType.DARK,
         onClick: (e) => this.closeRequest()
       }
@@ -49,6 +55,10 @@ export class CloseRequestModalComponent implements OnInit {
 
   closeModal() {
     this.bsModalRef.hide();
+  }
+
+  ngOnDestroy() {
+    this.translationSub.unsubscribe();
   }
 
 }

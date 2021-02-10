@@ -3,12 +3,14 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
+import { TranslateService } from "@ngx-translate/core";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { Observable, of } from "rxjs";
 import { catchError, mergeMap, switchMap } from "rxjs/operators";
 import { ApplicationState } from "../../app.module";
 import { RequestsManagementService } from "../../endpoint/requests-management.service";
 import { 
+    changeLanguage,
     loginFailure, 
     loginRequest, 
     loginSuccess, 
@@ -26,6 +28,7 @@ export class GlobalEffects {
         private store: Store<ApplicationState>,
         private modalService: BsModalService,
         private router: Router,
+        private translate: TranslateService,
         private requestsService: RequestsManagementService) {
     }
 
@@ -96,6 +99,13 @@ export class GlobalEffects {
             registerUserFailure),
         switchMap(() => [
             this.router.navigate(['login'])
+        ])
+    ), { dispatch: false });
+
+    onChangeLanguage$ = createEffect(() => this.actions$.pipe(
+        ofType(changeLanguage),
+        switchMap((action) => [
+            this.translate.use(action.language)
         ])
     ), { dispatch: false });
 }

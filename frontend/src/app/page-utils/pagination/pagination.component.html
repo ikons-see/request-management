@@ -1,7 +1,7 @@
 <ul>
     <li>
       <a (click)="setPage(1)"
-         title="First"
+         title="{{'pagination.first' | translate}}"
          class="action"
          [class.disabled]="pager.currentPage == 1">
         <i class="fa fa-angle-double-left"></i>
@@ -9,7 +9,7 @@
     </li>
     <li>
       <a (click)="setPage(pager.currentPage - 1)"
-         title="Previous"
+         title="{{'pagination.previous' | translate}}"
          class="action"
          [class.disabled]="pager.currentPage == 1">
          <i class="fa fa-angle-left"></i>
@@ -24,7 +24,7 @@
     </li>
     <li>
       <a (click)="setPage(pager.currentPage + 1)"
-         title="Next"
+         title="{{'pagination.next' | translate}}"
          class="action"
          [class.disabled]="pager.currentPage == pager.totalPages">
         <i class="fa fa-angle-right"></i>
@@ -32,7 +32,7 @@
     </li>
     <li>
       <a (click)="setPage(pager.totalPages)"
-         title="Last"
+         title="{{'pagination.last' | translate}}"
          class="action"
          [class.disabled]="pager.currentPage == pager.totalPages">
         <i class="fa fa-angle-double-right"></i>

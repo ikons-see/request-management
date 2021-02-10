@@ -1,11 +1,15 @@
 <form class="form-group resources-form" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <div class="initial-container">
         <div class="form-group total-container">
-            <label for="total">Total</label>
+            <label for="total">
+                {{'requester.requests-list.total' | translate}}
+            </label>
             <input id="total" type="number" class="form-control" formControlName="total" min="1">
         </div>
         <div class="form-group seniority-container">
-            <label for="seniority">Seniority</label>
+            <label for="seniority">
+                {{'requester.requests-list.seniority' | translate}}
+            </label>
             <ng-select [items]="seniorities"
                        bindLabel="seniority"
                        placeholder="Select item"
@@ -17,11 +21,13 @@
         </div>
     </div>
     <div class="form-control-feedback" *ngIf="total().errors?.min">
-        *The total input has to be larger or equal to 1
+        {{'requester.edit-request.total-error' | translate}}
      </div>
     
     <div class="form-group">
-        <label for="skills">Skills</label>
+        <label for="skills">
+            {{'requester.requests-list.skills' | translate}}
+        </label>
         <ng-select [items]="skills" 
                    bindLabel="skills" 
                    placeholder="Select item" 
@@ -31,14 +37,16 @@
         </ng-select>
     </div>
     <div class="form-group">
-        <label for="note">Notes</label>
+        <label for="note">
+            {{'requester.requests-list.notes' | translate}}
+        </label>
         <textarea id="note" class="form-control" formControlName="note"></textarea>
     </div>
     <div class="form-control-feedback" *ngIf="submittedForm && note().invalid">
-        *This field is required
+        {{'requester.actions.required-field' | translate}}
      </div>
         <button class="btn btn-outline-secondary" type="submit" [disabled]="!formGroup.valid">
-            Add resource
+            {{'requester.actions.add-resource' | translate}}
         </button>
 </form>
 
@@ -52,11 +60,15 @@
                 <i class="fa fa-angle-up"></i>
             </span>
             <div class="attr-holder">
-                <span class="attr-title">Total:</span>
+                <span class="attr-title">
+                    {{'requester.requests-list.total' | translate}}:
+                </span>
                 <span>{{item.total}}</span>
             </div>
             <div class="attr-holder">
-                <span class="attr-title">Seniority:</span>
+                <span class="attr-title">
+                    {{'requester.requests-list.seniority' | translate}}:
+                </span>
                 <span>{{item.seniority}}</span>
             </div>
             <button class="btn btn-danger remove" title="Remove">
@@ -66,11 +78,15 @@
         <div id="collapseBasic" [collapse]="isCollapsed[i]">
             <div class="well well-lg card card-block card-header">
                 <div class="skills-holder" *ngIf="item.skills.length > 0">
-                    <span class="attr-title">Skills:</span>
+                    <span class="attr-title">
+                        {{'requester.requests-list.skills' | translate}}:
+                    </span>
                     <span class="skill-span" *ngFor="let skill of item.skills">{{skill}}</span>
                 </div>
                 <div *ngIf="item.note">
-                    <span class="attr-title">Notes:</span>
+                    <span class="attr-title">
+                        {{'requester.requests-list.notes' | translate}}:
+                    </span>
                     <span>{{item.note}}</span>
                 </div>
             </div>
