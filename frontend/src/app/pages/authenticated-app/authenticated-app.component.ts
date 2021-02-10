@@ -4,7 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { logoutRequest } from '../../store/global/global-actions';
 import { ApplicationState } from '../../app.module';
-import { NavigationTab } from '../../types/data-types';
+import { NavigationTab, Role } from '../../types/data-types';
+import { getUserRole } from 'src/app/store/global/global-reducer';
 
 @Component({
   selector: 'app-authenticated-app',
@@ -18,9 +19,14 @@ export class AuthenticatedAppComponent implements OnInit, OnDestroy {
   isAdmin: boolean = true;
   translationSub: Subscription;
   signOutTab: NavigationTab;
+  role: Role;
 
   constructor(private store: Store<ApplicationState>,
     private translate: TranslateService) {
+      this.store.select(getUserRole).subscribe(value => {
+        this.role = value;
+      });
+      console.log('User role:', this.role);
   }
 
   ngOnInit(): void {
@@ -30,7 +36,7 @@ export class AuthenticatedAppComponent implements OnInit, OnDestroy {
   }
 
    init(translations: { [key: string]: string }) {
-    if (this.isAdmin) {
+    if (this.role == Role.admin) {
       this.tabs = [
         {
           tabName: translations['requests'],

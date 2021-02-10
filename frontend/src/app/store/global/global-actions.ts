@@ -1,6 +1,7 @@
 import { createAction, props } from "@ngrx/store";
 import { RegisterUserRequest } from "../../types/request-types";
 import { JWTToken } from "../../types/data-types";
+import { AccountData } from "src/app/types/response-types";
 
 export const featureKey = 'global';
 
@@ -19,3 +20,4 @@ export const logoutRequest = createAction(`[${featureKey}] logoutRequest`);
 export const registerUser = createAction(`[${featureKey}] registerUser`, props<{ userData: RegisterUserRequest }>());
 export const registerUserSuccess = createAction(`[${featureKey}] registerUserSuccess`);
 export const registerUserFailure = createAction(`[${featureKey}] registerUserFailure`, props<{ errorMessage: string }>());
+export const loadProfileSuccessful = createAction(`[${featureKey}] loadProfileSuccessful`, props<{ userData: AccountData }>());

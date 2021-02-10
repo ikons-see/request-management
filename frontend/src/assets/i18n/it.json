@@ -2,7 +2,7 @@
     "login-page": {
         "title": "Sign in to access your account",
         "required-field": "*This field is required",
-        "remember-me": "Ricordami",
+        "remember-me": "Remember me",
         "sign-in": "Sign in",
         "new-user": "New user?",
         "register": "Register",
@@ -14,127 +14,114 @@
         }
     },
     "requester": {
-        "actions" : {
-            "actions": "Actions",
-            "add-filters": "Add filters",
-            "add-request": "Add request",
-            "back": "Back",
-            "view-details": "View details",
-            "edit": "Edit",
-            "delete": "Delete",
-            "close": "Close",
-            "required-field": "*This field is required",
-            "add-resource": "Add Resource",
-            "proceed": "Are you sure you want to proceed?",
-            "cancel": "Cancel",
-            "continue": "Continue",
-            "next": "Next"
-        },
-        "requests-list": {
-            "area-of-interest": "Area of interest",
-            "status": "Status",
-            "project-description": "Project Description",
-            "date-range": "Date Range",
-            "start-date": "Start Date",
-            "end-date": "End Date",
-            "notes": "Notes",
-            "closing-notes": "Closing notes",
-            "total": "Total",
-            "seniority": "Seniority",
-            "skills": "Skills",
-            "manage-request": "Manage Request"
-        },
-        "add-request": {
-            "title": "Add Request",
-            "general-info": "General Info",
-            "resources": "Resources",
-            "add-request": "Add request",
-            "next": "Next",
-            "back": "Back",
-            "total-error": "*The total input has to be larger or equal to 1"
-        },
-        "view-details": {
-            "title": "View details for request #",
-            "general-info": "General Info",
-            "resources": "Resources"
-        },
-        "edit-request": {
-            "next": "Next",
-            "back": "Back",
-            "title": "Edit Request #",
-            "general-info": "General Info",
-            "resources": "Resources",
-            "update-request": "Update Request",
-            "total-error": "*The total input has to be larger or equal to 1"
-        },
-        "close-request": {
-            "title": "Close Request #",
-            "cancel": "Cancel",
-            "continue": "Continue"
-        },
-        "delete-request": {
-            "title": "Delete Request #",
-            "cancel": "Cancel",
-            "continue": "Continue"
-        },
-        "filters": {
-            "general-information": "General information",
-            "request-state": "Request State",
-            "resources": "Resources",
-            "number-of-resources": "Number of Resources",
-            "actions": {
-                "apply-filters": "Apply filters",
-                "reset-filters": "Reset filters"
-            }
-        }
+        "actions": "Actions",
+        "add-filters": "Add filters",
+        "add-request": "Add request",
+        "back": "Back",
+        "view-details": "View details",
+        "edit": "Edit",
+        "delete": "Delete",
+        "close": "Close",
+        "area-of-interest": "Area of interest",
+        "status": "Status",
+        "project-description": "Project Description",
+        "date-range": "Date Range",
+        "start-date": "Start Date",
+        "end-date": "End Date",
+        "notes": "Notes",
+        "closing-notes": "Closing notes",
+        "total": "Total",
+        "seniority": "Seniority",
+        "skills": "Skills",
+        "manage-request": "Manage Request",
+        "required-field": "*This field is required",
+        "add-resource": "Add Resource"
     },
-    "resources": {
+    "add-request": {
+        "title": "Add Request",
+        "general-info": "General Info",
+        "resources": "Resources",
+        "add-request": "Add request",
+        "add-resource": "Add Resource",
+        "next": "Next",
+        "back": "Back",
+        "total-error": "*The total input has to be larger or equal to 1"
+    },
+    "view-details": {
+        "title": "View details for request #",
+        "general-info": "General Info",
+        "resources": "Resources"
+    },
+    "edit-request": {
+        "next": "Next",
+        "back": "Back",
+        "title": "Edit Request #",
+        "general-info": "General Info",
+        "resources": "Resources",
+        "update-request": "Update Request",
+        "total-error": "*The total input has to be larger or equal to 1"
+    },
+    "close-request": {
+        "title": "Close Request #",
+        "cancel": "Cancel",
+        "continue": "Continue",
+        "proceed": "Are you sure you want to proceed?"
+    },
+    "delete-request": {
+        "title": "Delete Request #",
+        "cancel": "Cancel",
+        "continue": "Continue",
+        "proceed": "Are you sure you want to proceed?"
+    },
+    "filters": {
+        "general-information": "General information",
+        "request-state": "Request State",
+        "resources": "Resources",
+        "number-of-resources": "Number of Resources",
+        "apply-filters": "Apply filters",
+        "reset-filters": "Reset filters",
         "total": "Total",
         "seniority": "Seniority",
         "skills": "Skills",
         "notes": "Notes"
     },
     "admin": {
-        "actions" : {
-            "actions": "Actions",
-            "add-filters": "Add filters",
-            "view-details": "View details",
-            "view-history": "View history",
-            "take-charge": "Take charge",
-            "reject": "Reject",
-            "pending-information": "Pending information",
-            "edit": "Edit",
-            "delete": "Delete",
-            "close": "Close",
-            "cancel": "Cancel",
-            "continue": "Continue"
-        },
-        "requests-list": {
-            "area-of-interest": "Area of interest",
-            "status": "Status",
-            "start-date": "Start Date",
-            "end-date": "End Date",
-            "manage-request": "Manage Request"
-        },
-        "change-status": {
-            "message": "Are you sure you want to proceed?",
-            "additional-notes": "Additional notes",
-            "invalid-notes": "*Please insert valid notes",
-            "take-in-charge": "Taking in charge request #",
-            "pending": "Pending request #",
-            "reject": "Rejecting request #",
-            "close-request": "Closing request #",
-            "default-title": "Changing status for request #",
-            "cancel": "Cancel",
-            "continue": "Continue"
-        }
+        "actions": "Actions",
+        "add-filters": "Add filters",
+        "view-details": "View details",
+        "view-history": "View history",
+        "take-charge": "Take charge",
+        "reject": "Reject",
+        "pending-information": "Pending information",
+        "edit": "Edit",
+        "delete": "Delete",
+        "close": "Close",
+        "cancel": "Cancel",
+        "continue": "Continue",
+        "area-of-interest": "Area of interest",
+        "status": "Status",
+        "start-date": "Start Date",
+        "end-date": "End Date",
+        "manage-request": "Manage Request"
+    },
+    "change-status": {
+        "message": "Are you sure you want to proceed?",
+        "additional-notes": "Additional notes",
+        "invalid-notes": "*Please insert valid notes",
+        "take-in-charge": "Taking in charge request #",
+        "pending": "Pending request #",
+        "reject": "Rejecting request #",
+        "close-request": "Closing request #",
+        "default-title": "Changing status for request #",
+        "cancel": "Cancel",
+        "continue": "Continue"
     },
     "error-page": {
         "title": "Something went wrong",
         "subtitle": "Please try again later"
     },
     "empty-page": {
-        "title": "Nessun record trovato per il tuo elenco di richieste",
+        "title": "No records found for your requests list",
         "subtitle": "Try adding a new request to your list"
     },
     "loading-view": {
