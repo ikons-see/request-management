@@ -31,3 +31,18 @@ content-type: application/json
 
 ### activate registered user
 GET http://localhost:8080/api/activate?key=0bzB2MFgd6zdOjPhkBpV
+
+### request rest password
+POST http://localhost:8080/api/account/reset-password/init HTTP/1.1
+Content-Type: text/plain
+
+gmuja@ikons-see.com
+
+### complete reset password
+POST http://localhost:8080/api/account/reset-password/finish
+Content-Type: application/json
+
+{
+  "resetKey": "",
+  "newPassword": ""
+}

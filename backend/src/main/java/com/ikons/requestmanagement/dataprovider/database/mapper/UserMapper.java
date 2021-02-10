@@ -18,7 +18,9 @@ public class UserMapper {
         .collect(Collectors.toList());
   }
 
-  public static UserDTO userToUserDTO(User user) {
+  public static UserDTO userToUserDTO(final User user, final Boolean excludeAuthorities) {
+    Set<String> authorities = excludeAuthorities ? new HashSet<>() : stringsFromAuthorities(user.getAuthorities());
+
     return UserDTO.builder()
         .id(user.getId())
         .firstName(user.getFirstName())
@@ -29,7 +31,7 @@ public class UserMapper {
         .activationKey(user.getActivationKey())
         .langKey(user.getLangKey())
         .imageUrl(user.getImageUrl())
-        .authorities(stringsFromAuthorities(user.getAuthorities()))
+        .authorities(authorities)
         .createdBy(user.getCreatedBy())
         .createdDate(user.getCreatedDate())
         .lastModifiedBy(user.getLastModifiedBy())
@@ -37,17 +39,22 @@ public class UserMapper {
         .build();
   }
 
-  public static List<User> userDTOsToUsers(List<UserDTO> userDTOs) {
+  public static UserDTO userToUserDTO(final User user) {
+    return userToUserDTO(user, false);
+  }
+
+  public static List<User> userDTOsToUsers(final List<UserDTO> userDTOs) {
     return userDTOs.stream()
         .filter(Objects::nonNull)
         .map(UserMapper::userDTOToUser)
         .collect(Collectors.toList());
   }
 
-  public static User userDTOToUser(UserDTO userDTO) {
+  public static User userDTOToUser(final UserDTO userDTO,  Boolean excludeAuthorities) {
     if (userDTO == null) {
       return null;
     } else {
+      Set<Authority> authorities = excludeAuthorities ? null : authoritiesFromStrings(userDTO.getAuthorities());
       User user = new User();
       user.setId(userDTO.getId());
       user.setLogin(userDTO.getLogin());
@@ -58,13 +65,16 @@ public class UserMapper {
       user.setActivated(userDTO.getActivated());
       user.setActivationKey(userDTO.getActivationKey());
       user.setLangKey(userDTO.getLangKey());
-      Set<Authority> authorities = authoritiesFromStrings(userDTO.getAuthorities());
       user.setAuthorities(authorities);
       return user;
     }
   }
 
-  private static Set<Authority> authoritiesFromStrings(Set<String> authoritiesAsString) {
+  public static User userDTOToUser(final UserDTO userDTO) {
+    return userDTOToUser(userDTO, false);
+  }
+
+  private static Set<Authority> authoritiesFromStrings(final Set<String> authoritiesAsString) {
     Set<Authority> authorities = new HashSet<>();
 
     if (authoritiesAsString != null) {
@@ -78,7 +88,7 @@ public class UserMapper {
     return authorities;
   }
 
-  private static Set<String> stringsFromAuthorities(Set<Authority> authorities) {
+  private static Set<String> stringsFromAuthorities(final Set<Authority> authorities) {
     if (authorities == null || authorities.isEmpty()) {
       return new HashSet<String>();
     }

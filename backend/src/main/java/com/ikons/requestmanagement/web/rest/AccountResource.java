@@ -7,6 +7,7 @@ import com.ikons.requestmanagement.dataprovider.database.repository.UserReposito
 import com.ikons.requestmanagement.security.SecurityUtils;
 import com.ikons.requestmanagement.web.vm.ManagedUserVM;
 import com.ikons.requestmanagement.web.vm.PasswordChangeVM;
+import com.ikons.requestmanagement.web.vm.ResetPasswordVM;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -65,6 +66,26 @@ public class AccountResource {
   @PostMapping(path = "/account/change-password")
   public void changePassword(@RequestBody PasswordChangeVM passwordChange) {
     userUseCase.changePassword(passwordChange.getCurrentPassword(), passwordChange.getNewPassword());
+  }
+
+  /**
+   * {@code POST   /account/reset-password/init} : Send an email to reset the password of the user.
+   *
+   * @param email the mail of the user.
+   */
+  @PostMapping(path = "/account/reset-password/init")
+  public void requestPasswordReset(@RequestBody String email) {
+    userUseCase.requestPasswordReset(email);
+  }
+
+  /**
+   * {@code POST   /account/reset-password/finish} : Finish to reset the password of the user.
+   *
+   * @param resetPasswordVM the generated key and the new password.
+   */
+  @PostMapping(path = "/account/reset-password/finish")
+  public void finishPasswordReset(@RequestBody ResetPasswordVM resetPasswordVM) {
+    userUseCase.completePasswordReset(resetPasswordVM.getNewPassword(), resetPasswordVM.getResetKey());
   }
 
 }

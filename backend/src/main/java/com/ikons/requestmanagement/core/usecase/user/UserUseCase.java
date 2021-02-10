@@ -83,6 +83,21 @@ public class UserUseCase {
     userManagement.changePassword(currentPassword, newPassword);
   }
 
+  public void requestPasswordReset(final String email) {
+    userManagement.requestPasswordReset(email).ifPresentOrElse(
+        userDTO -> userActionNotification.sendPasswordResetMail(userDTO) ,
+        () -> new RuntimeException("Can not reset password for non existing email: "+ email)
+    );
+  }
+
+  public void completePasswordReset(final String newPassword, final String resetKey) {
+    if (!checkPasswordLength(newPassword)) {
+      throw new InvalidPasswordException();
+    }
+    userManagement.completePasswordReset(newPassword, resetKey)
+        .orElseThrow(() -> new RuntimeException("No user found for the reset key: " + resetKey));
+  }
+
   private static boolean checkPasswordLength(String password) {
     return !StringUtils.isEmpty(password) &&
         password.length() >= UserManagement.PASSWORD_MIN_LENGTH &&
