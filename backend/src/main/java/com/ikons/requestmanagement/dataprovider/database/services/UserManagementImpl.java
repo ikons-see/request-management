@@ -63,9 +63,7 @@ public class UserManagementImpl implements UserManagement {
                     this.clearUserCaches(user);
                     log.debug("Activated user: {}", user);
                     // avoid using UserMapper because authorities aren't loaded, and it'll throw LazyInitializationException
-                    return UserDTO.builder()
-                        .id(user.getId())
-                        .build();
+                    return UserMapper.userToUserDTO(user, true);
                 });
     }
 
@@ -79,7 +77,7 @@ public class UserManagementImpl implements UserManagement {
                     user.setResetKey(null);
                     user.setResetDate(null);
                     this.clearUserCaches(user);
-                    return UserMapper.userToUserDTO(user);
+                    return UserMapper.userToUserDTO(user, true);
                 });
     }
 
@@ -91,7 +89,7 @@ public class UserManagementImpl implements UserManagement {
                     user.setResetKey(RandomUtil.generateResetKey());
                     user.setResetDate(Instant.now());
                     this.clearUserCaches(user);
-                    return UserMapper.userToUserDTO(user);
+                    return UserMapper.userToUserDTO(user, true);
                 });
     }
 
@@ -265,7 +263,7 @@ public class UserManagementImpl implements UserManagement {
     @Override
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserMapper::userToUserDTO);
+        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map( user -> UserMapper.userToUserDTO(user, true));
     }
 
     @Override
@@ -297,9 +295,7 @@ public class UserManagementImpl implements UserManagement {
     @Override
     public List<String> getAdministratorsEmails() {
         List<User> administrators = userRepository.findAllByAuthoritiesNameIn(Collections.singletonList("ROLE_ADMIN"));
-        return administrators.stream().filter(Objects::nonNull).map(a -> {
-            return a.getEmail();
-        }).collect(Collectors.toList());
+        return administrators.stream().filter(Objects::nonNull).map(User::getEmail).collect(Collectors.toList());
     }
 
 
