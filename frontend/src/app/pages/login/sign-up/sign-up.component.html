@@ -1,55 +1,59 @@
 <div class="info-message">
-    <span>Fill in the form below to register:</span>
+    <span>{{'login-page.sign-up.title' | translate}}</span>
 </div>
 
 <form class="form-group" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
     <div class="form-group">
         <input type="text" class="form-control" formControlName="firstName" placeholder="First Name">
         <div class="form-control-feedback" *ngIf="submitted && firstName().invalid">
-            *This field is required
+            {{'login-page.required-field' | translate}}
         </div>
     </div>
     <div class="form-group">
         <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name">
         <div class="form-control-feedback" *ngIf="submitted && lastName().invalid">
-            *This field is required
+            {{'login-page.required-field' | translate}}
         </div>
     </div>
     <div class="form-group">
         <input type="text" class="form-control" formControlName="login" placeholder="Username">
         <div class="form-control-feedback" *ngIf="submitted && login().invalid">
-            *This field is required
+            {{'login-page.required-field' | translate}}
         </div>
     </div>
     <div class="form-group">
         <input type="text" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
             formControlName="email" placeholder="Email">
         <div class="form-control-feedback" *ngIf="submitted && email().invalid && !email().errors?.pattern">
-            *This field is required
+            {{'login-page.required-field' | translate}}
         </div>
         <div class="form-control-feedback" *ngIf="submitted && email().invalid && email().errors?.pattern">
-            *The email format is not correct
+            {{'login-page.sign-up.email-not-correct' | translate}}
         </div>
     </div>
     <div class="form-group">
         <input type="password" class="form-control" formControlName="password" placeholder="Password">
         <div class="form-control-feedback" *ngIf="submitted && password().invalid">
-            *This field is required
+            {{'login-page.required-field' | translate}}
         </div>
     </div>
     <div class="form-group">
         <input type="password" class="form-control" formControlName="confirmPassword"
             placeholder="Confirm Password">
         <div class="form-control-feedback" *ngIf="submitted && !validPassword">
-            *The entered value doesn't match the password
+            {{'login-page.sign-up.password-not-correct' | translate}}
         </div>
     </div>
     <div class="form-actions">
         <button class="btn btn-light">
             <a [routerLink]="['login']" class="nav__link">
-                <span class="m-nav__link-text">Cancel</span>
+                <span class="m-nav__link-text">
+                    {{'login-page.sign-up.cancel' | translate}}
+                </span>
             </a>
         </button>
-        <button type="submit" class="btn btn-primary">Register</button>
+        <button type="submit" class="btn btn-primary">
+            {{'login-page.register' | translate}}
+        </button>
     </div>
 </form>

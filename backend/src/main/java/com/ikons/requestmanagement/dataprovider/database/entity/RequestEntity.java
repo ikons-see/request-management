@@ -52,6 +52,6 @@ public class RequestEntity extends AbstractAuditingEntity {
     @Column
     private String statusNotes;
 
-    @OneToMany(targetEntity = ResourceEntity.class, mappedBy = "request", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResourceEntity> resources;
 }

@@ -1,29 +1,29 @@
 <form class="form-group" [formGroup]="formGroup">
     <div class="form-group">
-        <label for="area-of-interest">Area of interest</label>
+        <label for="area-of-interest">{{'requester.area-of-interest' | translate}}</label>
         <input id="area-of-interest" type="text" class="form-control" formControlName="areaOfInterest"
             [attr.disabled]="true">
     </div>
     <div class="form-group">
-        <label for="start-date">Start Date</label>
+        <label for="start-date">{{'requester.start-date' | translate}}</label>
         <input id="start-date" type="text" class="form-control" formControlName="startDate" [attr.disabled]="true">
     </div>
     <div class="form-group">
-        <label for="end-date">End Date</label>
+        <label for="end-date">{{'requester.end-date' | translate}}</label>
         <input id="end-date" type="text" class="form-control" formControlName="endDate" [attr.disabled]="true">
     </div>
     <div class="form-group">
-        <label for="project-description">Project Description</label>
+        <label for="project-description">{{'requester.project-description' | translate}}</label>
         <textarea id="project-description" class="form-control" formControlName="projectDescription"
             [attr.disabled]="true">
             </textarea>
     </div>
     <div class="form-group" *ngIf="request.notes">
-        <label for="notes">Notes</label>
+        <label for="notes">{{'requester.notes' | translate}}</label>
         <textarea id="notes" class="form-control" formControlName="notes" [attr.disabled]="true"></textarea>
     </div>
     <div class="form-group" *ngIf="request.status == statuses.CLOSED">
-        <label for="notes">Closing notes</label>
+        <label for="notes">{{'requester.closing-notes' | translate}}</label>
         <textarea id="closing-notes" class="form-control" formControlName="closingNotes" [attr.disabled]="true"></textarea>
     </div>
 </form>

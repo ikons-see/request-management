@@ -1,5 +1,5 @@
 <div class="info-message">
-  <span>Sign in to access your account</span>
+  <span>{{'login-page.title' | translate}}</span>
 </div>
 
 <div class="alert alert-danger alert-dismissible animated fadeIn" role="alert"
@@ -14,27 +14,33 @@
   <div class="form-group">
     <input type="text" class="form-control" formControlName="username" placeholder="Username">
     <div class="form-control-feedback" *ngIf="submitted && username().invalid">
-      *This field is required
+      {{'login-page.required-field' | translate}}
     </div>
   </div>
   <div class="form-group">
     <input type="password" class="form-control" formControlName="password" placeholder="Password">
     <div class="form-control-feedback" *ngIf="submitted && password().invalid">
-      *This field is required
+      {{'login-page.required-field' | translate}}
     </div>
   </div>
   <div class="form-check">
     <input type="checkbox" class="form-check-input" (change)="onCheckChange($event)">
-    <label class="form-check-label" for="exampleCheck1">Remember me</label>
+    <label class="form-check-label" for="exampleCheck1">
+      {{'login-page.remember-me' | translate}}
+    </label>
   </div>
   <div class="form-actions">
-    <button type="submit" class="btn btn-primary">Sign in</button>
+    <button type="submit" class="btn btn-primary">
+    {{'login-page.sign-in' | translate}}
+    </button>
   </div>
 </form>
 
 <div class="register-user">
-  <span>New user?</span>
+  <span>{{'login-page.new-user' | translate}}</span>
   <a [routerLink]="['register']" class="m-nav__link">
-    <span class="m-nav__link-text">Register</span>
+    <span class="m-nav__link-text">
+      {{'login-page.register' | translate}}
+    </span>
   </a>
 </div>

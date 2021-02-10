@@ -17,7 +17,7 @@ Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfU
 
 ###
 GET http://localhost:8080/api/account HTTP/1.1
-Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfUkVRVUVTVEVSIiwiZXhwIjoxNjEyOTcwOTg1fQ.QanC9VazRv1CfWYwtCJ6_41nMtP99R-CeJydBrcl4KbsoL-Tu9NKn8sG5QT63rhVn4AhjSJCog9SBW_sUxCv7g
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfUkVRVUVTVEVSIiwiZXhwIjoxNjEzMDU4MTkxfQ.1ue-_mj9dUEnW7tUYtB-AcqbHBz-Pfnfu6DZwSTmax9O8vcS4rqvuqUu2MGlY8coEFp5YjdsRShDPvWVqDHIKw
 
 ### register user
 POST http://localhost:8080/api/register HTTP/1.1

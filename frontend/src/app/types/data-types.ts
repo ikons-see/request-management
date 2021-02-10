@@ -5,6 +5,12 @@ export interface NavigationTab {
     href?: string;
 }
 
+export enum Role {
+    admin = 'ROLE_ADMIN',
+    requester = 'ROLE_REQUESTER',
+    systemAdmin = 'ROLE_SYSADMIN'
+}
+
 export enum ColumnType {
     STRING = 'string',
     NUMBER = 'number',

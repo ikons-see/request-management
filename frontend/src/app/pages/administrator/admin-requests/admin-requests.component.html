@@ -1,6 +1,6 @@
 <div class="page-actions" *ngIf="(requests$ | async).length > 0">
     <button class="btn btn-light" (click)="toogleFiltersPanel()">
-        Add filters
+        {{'admin.add-filters' | translate}}
         <i class="fa fa-angle-up" *ngIf="showFilters"></i>
         <i class="fa fa-angle-down" *ngIf="!showFilters"></i>
     </button>
@@ -11,14 +11,18 @@
                    (removeFilters)="resetFilters()">
 </app-filters-panel>
 <ng-container *ngIf="(requests$ | async).length > 0 && (errorMessage$ | async) == null">
-    <app-table [columns]="tableConfiguration.columns" [data]="requests$ | async" [currentPage]="currentPage$ | async"
-        [totalItems]="totalNumber$ | async" (pageChanged)="pageChanged($event)">
+    <app-table *ngIf="tableConfiguration"
+               [columns]="tableConfiguration.columns" 
+               [data]="requests$ | async" 
+               [currentPage]="currentPage$ | async"
+               [totalItems]="totalNumber$ | async" 
+               (pageChanged)="pageChanged($event)">
     </app-table>
 </ng-container>
 
 <app-error-view *ngIf="errorMessage$ | async"></app-error-view>
 
 <ng-container *ngIf="(requests$ | async).length == 0 && (errorMessage$ | async) == null">
-    <app-empty-page icon="fa-info-circle" title="No records found for your requests list"
-        subtitle="Try adding a new request to your list"></app-empty-page>
+    <app-empty-page icon="fa-info-circle" title="{{'empty-page.title' | translate}}"
+        subtitle="{{'empty-page.subtitle' | translate}}"></app-empty-page>
 </ng-container>

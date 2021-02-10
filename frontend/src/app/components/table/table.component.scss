@@ -3,17 +3,17 @@
   width: 100%;
 }
 
-.kt-portlet {
+.portlet {
   overflow: visible !important;
 }
 
-.kt-datatable__head {
+.datatable__head {
   th {
     border: none;
   }
 }
 
-.kt-portlet__body {
+.portlet__body {
 
   .table {
     margin-bottom: 0rem;
@@ -44,7 +44,7 @@
   }
 }
 
-.kt-pagination {
+.pagination {
   padding: 2rem;
 }
 
@@ -61,11 +61,11 @@
   }
 }
 
-.kt-datatable__cell {
+.datatable__cell {
   vertical-align: middle;
 }
 
-.kt-datatable.kt-datatable--default {
+.datatable.kt-datatable--default {
   margin-bottom: 0;
 }
 

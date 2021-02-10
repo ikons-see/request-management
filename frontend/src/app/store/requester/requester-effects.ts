@@ -40,6 +40,7 @@ import {
     updateRequestSuccess
 } from "./requester-actions";
 import { ViewDetailsModalComponent } from "src/app/pages/requester/view-details-modal/view-details-modal.component";
+import { TranslateService } from "@ngx-translate/core";
 
 @Injectable()
 export class RequesterEffects {
@@ -48,6 +49,7 @@ export class RequesterEffects {
         private store: Store<ApplicationState>,
         private modalService: BsModalService,
         private router: Router,
+        private translate: TranslateService,
         private requestsService: RequestsManagementService) {
     }
 
@@ -75,7 +77,7 @@ export class RequesterEffects {
                 ...globalModalConfig,
                 class: 'modal-dialog modal-dialog-centered modal-lg',
                 initialState: {
-                    title: 'Add Request'
+                    title: this.translate.instant('add-request.title')
                 }
             });
         })
@@ -120,7 +122,7 @@ export class RequesterEffects {
                 class: 'modal-dialog modal-dialog-centered modal-lg',
                 initialState: {
                     requestId: action.requestId,
-                    title: 'Edit Request #'
+                    title: this.translate.instant('edit-request.title')
                 }
             });
         })
@@ -165,7 +167,7 @@ export class RequesterEffects {
                 class: 'modal-dialog modal-dialog-centered modal-lg',
                 initialState: {
                     requestId: action.requestId,
-                    title: 'Delete Request #'
+                    title: this.translate.instant('delete-request.title')
                 }
             });
         })
@@ -196,7 +198,7 @@ export class RequesterEffects {
                 class: 'modal-dialog modal-dialog-centered modal-lg',
                 initialState: {
                     requestId: action.requestId,
-                    title: 'Close Request #'
+                    title: this.translate.instant('close-request.title')
                 }
             });
         })
@@ -229,7 +231,7 @@ export class RequesterEffects {
                 class: 'modal-dialog modal-dialog-centered modal-lg',
                 initialState: {
                     requestId: action.requestId,
-                    title: 'View details for request #',
+                    title: this.translate.instant('view-details.title'),
                     details: details
                 }
             });

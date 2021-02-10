@@ -46,7 +46,8 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
     CreateRequest,
     DeleteRequest,
     UpdateRequest,
-    CloseRequest {
+    CloseRequest
+{
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
   private final RequestRepository requestRepository;
@@ -93,7 +94,9 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
     if (resources != null) {
       createNewResources(resources, entity);
     }
+
     requestRepository.save(entity);
+
     return entity.getRequestId();
   }
 
