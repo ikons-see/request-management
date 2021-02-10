@@ -1,6 +1,6 @@
-<app-modal [title]="title" [buttons]="buttons">
+<app-modal [title]="title" [buttons]="buttons" *ngIf="buttons">
     <div class="tabs-container">
-        <app-tabs [tabs]="tabs" [activeId]="activeId" [disable]="true">
+        <app-tabs [tabs]="tabs" [activeId]="activeId" [disable]="true" *ngIf="tabs">
             <div slot="content" [ngSwitch]="activeId">
                 <ng-container *ngSwitchCase="'0'">
                     <app-add-general-info [form]="generalInfoForm" #general></app-add-general-info>

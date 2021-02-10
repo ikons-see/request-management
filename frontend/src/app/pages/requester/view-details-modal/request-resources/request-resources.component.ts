@@ -1,4 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 import { ColumnType, TableConfig } from 'src/app/types/data-types';
 import { Resource } from 'src/app/types/request-types';
 
@@ -7,44 +9,51 @@ import { Resource } from 'src/app/types/request-types';
   templateUrl: './request-resources.component.html',
   styleUrls: ['./request-resources.component.scss']
 })
-export class RequestResourcesComponent implements OnInit {
+export class RequestResourcesComponent implements OnInit, OnDestroy {
 
   @Input()
   resources: Array<Resource>;
 
   tableConfiguration: TableConfig;
+  translationSub: Subscription;
   
-  constructor() { }
+  constructor(private translate: TranslateService) { }
 
   ngOnInit(): void {
-    this.initTable();
+    this.translationSub =  this.translate.get('requester').subscribe(translations => {
+      this.init(translations);
+     });
   }
 
-  initTable() {
+  init(translations: { [key: string]: string }) {
     this.tableConfiguration = {
       columns: [
         {
           type: ColumnType.STRING,
           field: 'total',
-          text: 'Total'
+          text: translations['total']
         },
         {
           type: ColumnType.STRING,
           field: 'seniority',
-          text: 'Seniority'
+          text: translations['seniority']
         },
         {
           type: ColumnType.STRING,
           field: 'skills',
-          text: 'Skills'
+          text: translations['skills']
         },
         {
           type: ColumnType.STRING,
           field: 'note',
-          text: 'Notes'
+          text: translations['notes']
         }
       ]
     };
+  }
+
+  ngOnDestroy() {
+    this.translationSub.unsubscribe();
   }
   
 }

@@ -1,5 +1,6 @@
 package com.ikons.requestmanagement.dataprovider.database.entity;
 
+import com.ikons.requestmanagement.core.dto.AreaOfInterestDTO;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,8 +26,9 @@ public class RequestEntity extends AbstractAuditingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long requestId;
 
+    @Enumerated(EnumType.STRING)
     @Column
-    private String areaOfInterest;
+    private AreaOfInterestDTO areaOfInterest;
 
     @Column
     private String status;
@@ -46,6 +48,6 @@ public class RequestEntity extends AbstractAuditingEntity {
     @Column
     private String statusNotes;
 
-    @OneToMany(targetEntity = ResourceEntity.class, mappedBy = "request", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResourceEntity> resources;
 }

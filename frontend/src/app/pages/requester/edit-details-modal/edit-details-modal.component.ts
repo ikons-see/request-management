@@ -1,6 +1,7 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ApplicationState } from 'src/app/app.module';
 import { updateRequest } from 'src/app/store/requester/requester-actions';
@@ -15,7 +16,7 @@ import { EditResourcesComponent } from './edit-resources/edit-resources.componen
   templateUrl: './edit-details-modal.component.html',
   styleUrls: ['./edit-details-modal.component.scss']
 })
-export class EditDetailsModalComponent implements OnInit {
+export class EditDetailsModalComponent implements OnInit, OnDestroy {
 
   @Input()
   title: string;
@@ -31,15 +32,17 @@ export class EditDetailsModalComponent implements OnInit {
   request: RequestDetails;
   requestRsc: Array<Resource>;
   buttons: Array<ButtonConfiguration>;
+  generalButtons: Array<ButtonConfiguration>;
+  resourcesButtons: Array<ButtonConfiguration>;
   tabs: Array<Tab>;
   activeId: string = '0';
   requestSubscribtion: Subscription;
+  translationSub: Subscription;
 
   constructor(private formBuilder: FormBuilder,
-              private store: Store<ApplicationState>) {
+              private store: Store<ApplicationState>,
+              private translate: TranslateService) {
     this.initForms();
-    this.initButtons();
-    this.initTabs();
   }
 
   ngOnInit(): void {
@@ -49,6 +52,10 @@ export class EditDetailsModalComponent implements OnInit {
         this.updateForms();
       }
     );
+
+    this.translationSub =  this.translate.get('edit-request').subscribe(translations => {
+      this.init(translations);
+     });
   }
 
   initForms() {
@@ -67,8 +74,49 @@ export class EditDetailsModalComponent implements OnInit {
     });
   }
 
+  init(translations: { [key: string]: string }) {
+    this.generalButtons = [
+      {
+        text: translations['next'],
+        type: ButtonType.DARK,
+        onClick: (e) => this.addResources()
+      }
+    ];
+
+    this.resourcesButtons = [
+      {
+        text: translations['back'],
+        type: ButtonType.SECONDARY,
+        onClick: (e) => this.goBack(e)
+      },
+      {
+        text: translations['update-request'],
+        type: ButtonType.DARK,
+        onClick: (e) => this.updateRequest(e)
+      }
+    ];
+
+    this.buttons = this.generalButtons;
+
+    this.tabs = [
+      {
+        id: '0',
+        name: translations['general-info'],
+        onClick: (e) => this.tabChanged(e)
+      },
+      {
+        id: '1',
+        name: translations['resources'],
+        onClick: (e) => this.tabChanged(e)
+      }
+    ];
+  }
+
+  resetButtons() {
+    this.buttons = this.generalButtons;
+  }
+
   updateForms() {
-    console.log('Dates', this.request);
     this.generalInfoForm.patchValue({
       areaOfInterest: [this.request.areaOfInterest],
       dateRange: [new Date(this.request.startDate), new Date(this.request.endDate)],
@@ -79,31 +127,6 @@ export class EditDetailsModalComponent implements OnInit {
     this.requestRsc = this.request.resources;
   }
 
-  initButtons() {
-    this.buttons = [
-      {
-        text: "Next",
-        type: ButtonType.DARK,
-        onClick: (e) => this.addResources()
-      }
-    ]
-  }
-
-  initTabs() {
-    this.tabs = [
-      {
-        id: '0',
-        name: 'General Info',
-        onClick: (e) => this.tabChanged(e)
-      },
-      {
-        id: '1',
-        name: 'Resources',
-        onClick: (e) => this.tabChanged(e)
-      }
-    ]
-  }
-
   tabChanged(e) {
     this.activeId = e;
   }
@@ -112,23 +135,12 @@ export class EditDetailsModalComponent implements OnInit {
     this.generalCmp.onSubmit();
     if(this.generalInfoForm.valid) {
       this.tabChanged('1');
-      this.buttons = [
-        {
-          text: "Back",
-          type: ButtonType.SECONDARY,
-          onClick: (e) => this.goBack(e)
-        },
-        {
-          text: "Update Request",
-          type: ButtonType.DARK,
-          onClick: (e) => this.updateRequest(e)
-        }
-      ];
+      this.buttons = this.resourcesButtons;
     }
   }
 
   goBack(e) {
-    this.initButtons();
+    this.resetButtons();
     this.tabChanged('0');
   }
 
@@ -139,6 +151,10 @@ export class EditDetailsModalComponent implements OnInit {
       deletedResourceIds: this.resourcesCmp.getDeletedResources()
     }
     this.store.dispatch(updateRequest({request: data}));
+  }
+
+  ngOnDestroy() {
+    this.translationSub.unsubscribe();
   }
 
 }

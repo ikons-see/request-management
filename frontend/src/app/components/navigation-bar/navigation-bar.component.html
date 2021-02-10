@@ -1,9 +1,9 @@
 <nav class="navbar navbar-expand-lg">
   <a class="navbar-brand" href="#">
-    <!-- <img src="../../../assets/images/navbar-logo.png" alt="Almaviva"> -->
   </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation" (click)="isNavbarCollapsed = !isNavbarCollapsed">
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"
+    (click)="isNavbarCollapsed = !isNavbarCollapsed">
     <span class="navbar-toggler-icon">
       <i class="fa fa-align-justify" style="color: white;"></i>
     </span>
@@ -15,6 +15,17 @@
       </app-navigation-tab>
       <app-navigation-tab [tab]="signOutTab" (click)="signOut()">
       </app-navigation-tab>
+      <div class="dropdown ms-3">
+        <button class="btn btn-bd-light dropdown-toggle show" aria-expanded="true" (click)="chooseLang()">
+          <span class="d-none d-lg-inline">Change language</span>
+        </button>
+        <ul class="dropdown-menu dropdown-menu-end show" *ngIf="showLang">
+          <li *ngFor="let item of availableLanguages$ | async" [class.active]="item == (currentLang$ | async)"
+            (click)="changeLanguage(item)">
+            {{item}}
+          </li>
+        </ul>
+      </div>
     </ul>
   </div>
 </nav>

@@ -1,20 +1,19 @@
-<div class="kt-portlet">
-    <div class="kt-portlet__body kt-portlet__body--fit">
-        <div *ngIf="!data">No records</div>
+<div class="portlet">
+    <div class="portlet__body portlet__body--fit">
         <div class="kt-datatable kt-datatable--default kt-datatable--brand kt-datatable--scroll kt-datatable--loaded">
             <table class="table dataTables " *ngIf="data">
-                <thead class="kt-datatable__head">
-                    <tr class="kt-datatable__row">
+                <thead class="datatable__head">
+                    <tr class="datatable__row">
                         <th *ngFor="let col of columns" [class.sortable]="col.sortable">
                             {{col.text}}
                         </th>
                     </tr>
                 </thead>
-                <tbody class="kt-datatable__body ps ps--active-y">
+                <tbody class="datatable__body ps ps--active-y">
                     <tr *ngFor="let datum of data; let rowIndex = index;" class="row-hover"
                         [class.clickable]="rowClickable">
-                        <td *ngFor="let col of columns;" class="kt-datatable__cell kt-datatable__cell--sort"
-                            (click)="onRowClick(datum, col)" [className]="col.type">
+                        <td *ngFor="let col of columns;" class="datatable__cell" (click)="onRowClick(datum, col)"
+                            [className]="col.type">
                             <ng-container [ngSwitch]="col.type">
                                 <app-dropdown-column *ngSwitchCase="columnType.DROPDOWN"
                                     [dropdown]="getDropdownConfig(datum, col)" [value]="getFormattedValue(datum, col)">

@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
+import { CommonModule, LOCATION_INITIALIZED } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { DatePipe } from '@angular/common';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -14,6 +14,7 @@ import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgSelectModule } from '@ng-select/ng-select';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
 import { AppComponent } from './app.component';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
@@ -62,6 +63,8 @@ import { RequestHistoryModalComponent } from './pages/administrator/admin-reques
 import { SignInComponent } from './pages/login/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/login/sign-up/sign-up.component';
 import { LoginPageComponent } from './pages/login/login.component';
+import { TranslateLoader } from '@ngx-translate/core';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 
 export interface ApplicationState {
   [requesterReducer.featureKey]: requesterReducer.State,
@@ -80,6 +83,12 @@ const effects = [
   AdministratorEffects,
   GlobalEffects
 ];
+
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new MultiTranslateHttpLoader(httpClient, [
+    { prefix: './assets/i18n/', suffix: '.json' }
+  ]);
+}
 
 @NgModule({
   declarations: [
@@ -130,6 +139,13 @@ const effects = [
     NgSelectModule,
     ReactiveFormsModule,
     HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     BsDropdownModule.forRoot(),
@@ -159,7 +175,7 @@ const effects = [
       provide: HTTP_INTERCEPTORS,
       useClass: AuthExpiredInterceptor,
       multi: true
-    },
+    }
   ],
   entryComponents: [
     AddRequestModalComponent,

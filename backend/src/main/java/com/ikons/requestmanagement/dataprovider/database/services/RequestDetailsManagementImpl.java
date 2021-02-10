@@ -2,7 +2,12 @@ package com.ikons.requestmanagement.dataprovider.database.services;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ikons.query.QueryService;
+import com.ikons.query.filter.StringFilter;
 import com.ikons.requestmanagement.core.criteria.RequestCriteria;
+import com.ikons.requestmanagement.core.dto.AreaOfInterestDTO;
+import com.ikons.requestmanagement.core.dto.RequestDetailsDTO;
+import com.ikons.requestmanagement.core.dto.RequestStatusDTO;
+import com.ikons.requestmanagement.core.dto.ResourceDTO;
 import com.ikons.requestmanagement.core.dto.*;
 import com.ikons.requestmanagement.core.usecase.request.RequestDetailsManagement;
 import com.ikons.requestmanagement.core.usecase.request.closerequest.CloseRequest;
@@ -15,6 +20,7 @@ import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity;
 import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity_;
 import com.ikons.requestmanagement.dataprovider.database.entity.ResourceEntity;
 import com.ikons.requestmanagement.dataprovider.database.entity.StateHistoryEntity;
+import com.ikons.requestmanagement.dataprovider.database.entity.ResourceEntity_;
 import com.ikons.requestmanagement.dataprovider.database.mapper.RequestMapper;
 import com.ikons.requestmanagement.dataprovider.database.mapper.ResourceMapper;
 import com.ikons.requestmanagement.dataprovider.database.mapper.StateHistoryMapper;
@@ -29,8 +35,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.criteria.JoinType;
 import java.time.Instant;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Log4j2
@@ -68,6 +78,7 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
     }
 
     @Override
+    @Transactional
     public long createNewRequest(
             final AreaOfInterestDTO areaOfInterest,
             final Instant startDate,
@@ -87,12 +98,12 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
                 .resources(new ArrayList<>())
                 .build();
 
-        requestRepository.save(entity);
+
 
         if (resources != null) {
-            createNewResources(resources, entity);
+            createNewResources(resources, entity);}
             requestRepository.save(entity);
-        }
+
         return entity.getRequestId();
     }
 
@@ -157,7 +168,7 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
         Optional<RequestEntity> requestEntity = requestRepository.findById(requestUpdate.getRequestId());
 
         requestEntity.ifPresent(entity -> {
-            entity.setAreaOfInterest(requestUpdate.getAreaOfInterest().toString());
+            entity.setAreaOfInterest(requestUpdate.getAreaOfInterest().name());
             entity.setStatus(String.valueOf(RequestStatusDTO.UPDATED));
             entity.setStartDate(requestUpdate.getStartDate());
             entity.setEndDate(requestUpdate.getEndDate());
@@ -201,10 +212,13 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
         requestRepository.save(requestEntity);
     }
 
-    private void createNewResources(List<ResourceDTO> resources, RequestEntity entity) {
+    private void createNewResources(final List<ResourceDTO> resources, final RequestEntity entity) {
         if (resources != null) {
-            final List<ResourceEntity> resourcesEntities = resourceMapper.toEntity(resources);
-            entity.getResources().addAll(resourcesEntities);
+            resources.stream().forEach(resourceDTO -> {
+        ResourceEntity resourceEntity = resourceMapper.toEntity(resourceDTO);
+        resourceEntity.setRequest(entity);
+            entity.getResources().add(resourceEntity);
+      });
         }
     }
 
@@ -218,7 +232,7 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
         Specification<RequestEntity> specification = Specification.where(null);
         if (criteria != null) {
             if (criteria.getAreOfInterest() != null) {
-                specification = specification.and(buildStringSpecification(criteria.getAreOfInterest(), RequestEntity_.areaOfInterest));
+                specification = specification.and(buildSpecification(criteria.getAreOfInterest(), RequestEntity_.areaOfInterest));
             }
             if (criteria.getDisplayName() != null) {
                 specification = specification.and(buildStringSpecification(criteria.getDisplayName(), RequestEntity_.createdBy));
@@ -231,6 +245,37 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
             }
             if (criteria.getEndDate() != null) {
                 specification = specification.and(buildRangeSpecification(criteria.getEndDate(), RequestEntity_.endDate));
+      }
+
+      if (criteria.getNumberOfResource() != null) {
+        specification = specification.and(buildSpecification(
+            criteria.getNumberOfResource(),
+            root -> root.join(RequestEntity_.resources, JoinType.LEFT).get(ResourceEntity_.total)
+            )
+        );
+      }
+      if (criteria.getSeniorityOfResource() != null) {
+        specification = specification.and(buildSpecification(
+            criteria.getSeniorityOfResource(),
+            root -> root.join(RequestEntity_.resources, JoinType.LEFT).get(ResourceEntity_.seniority)
+            )
+        );
+      }
+      if (criteria.getSkillsOfResource() != null && criteria.getSkillsOfResource().length > 0) {
+        StringFilter[] skillsFilter = criteria.getSkillsOfResource();
+        Specification<RequestEntity> spec = buildSpecification(
+            skillsFilter[0],
+            root -> root.join(RequestEntity_.resources, JoinType.LEFT).get(ResourceEntity_.skills)
+        );
+        for (int i = 1; i < skillsFilter.length ; i++) {
+          spec = spec.or(
+              buildSpecification(
+                  skillsFilter[i],
+                  root -> root.join(RequestEntity_.resources, JoinType.LEFT).get(ResourceEntity_.skills)
+              )
+          );
+        }
+        specification = specification.and(spec);
             }
         }
         return specification;
