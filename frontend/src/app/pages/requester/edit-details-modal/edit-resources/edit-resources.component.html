@@ -2,13 +2,13 @@
     <div class="initial-container">
         <div class="form-group total-container">
             <label for="total">
-                {{'requester.requests-list.total' | translate}}
+                {{'requester.total' | translate}}
             </label>
             <input id="total" type="number" class="form-control" formControlName="total" min="1">
         </div>
         <div class="form-group seniority-container">
             <label for="seniority">
-                {{'requester.requests-list.seniority' | translate}}
+                {{'requester.seniority' | translate}}
             </label>
             <ng-select [items]="seniorities"
                        bindLabel="seniority"
@@ -21,12 +21,12 @@
         </div>
     </div>
     <div class="form-control-feedback" *ngIf="total().errors?.min">
-        {{'requester.edit-request.total-error' | translate}}
+        {{'edit-request.total-error' | translate}}
      </div>
     
     <div class="form-group">
         <label for="skills">
-            {{'requester.requests-list.skills' | translate}}
+            {{'requester.skills' | translate}}
         </label>
         <ng-select [items]="skills" 
                    bindLabel="skills" 
@@ -38,15 +38,15 @@
     </div>
     <div class="form-group">
         <label for="note">
-            {{'requester.requests-list.notes' | translate}}
+            {{'requester.notes' | translate}}
         </label>
         <textarea id="note" class="form-control" formControlName="note"></textarea>
     </div>
     <div class="form-control-feedback" *ngIf="submittedForm && note().invalid">
-        {{'requester.actions.required-field' | translate}}
+        {{'requester.required-field' | translate}}
      </div>
         <button class="btn btn-outline-secondary" type="submit" [disabled]="!formGroup.valid">
-            {{'requester.actions.add-resource' | translate}}
+            {{'requester.add-resource' | translate}}
         </button>
 </form>
 
@@ -61,13 +61,13 @@
             </span>
             <div class="attr-holder">
                 <span class="attr-title">
-                    {{'requester.requests-list.total' | translate}}:
+                    {{'requester.total' | translate}}:
                 </span>
                 <span>{{item.total}}</span>
             </div>
             <div class="attr-holder">
                 <span class="attr-title">
-                    {{'requester.requests-list.seniority' | translate}}:
+                    {{'requester.seniority' | translate}}:
                 </span>
                 <span>{{item.seniority}}</span>
             </div>
@@ -79,13 +79,13 @@
             <div class="well well-lg card card-block card-header">
                 <div class="skills-holder" *ngIf="item.skills.length > 0">
                     <span class="attr-title">
-                        {{'requester.requests-list.skills' | translate}}:
+                        {{'requester.skills' | translate}}:
                     </span>
                     <span class="skill-span" *ngFor="let skill of item.skills">{{skill}}</span>
                 </div>
                 <div *ngIf="item.note">
                     <span class="attr-title">
-                        {{'requester.requests-list.notes' | translate}}:
+                        {{'requester.notes' | translate}}:
                     </span>
                     <span>{{item.note}}</span>
                 </div>

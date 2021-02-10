@@ -65,37 +65,37 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
   init(translations: { [key: string]: string }) {
     this.dropdownConfig = {
       button: {
-        text: translations['actions.actions'],
+        text: translations['actions'],
         icon: ''
       },
       values: [
         {
-          text: translations['actions.view-details'],
+          text: translations['view-details'],
           icon: 'fa-list',
           onClick: (e) => this.openDetailsModal(e)
         },
         {
-          text: translations['actions.view-history'],
+          text: translations['view-history'],
           icon: 'fa-history',
           onClick: (e) => this.openViewHistoryModal(e)
         },
         {
-          text: translations['actions.take-charge'],
+          text: translations['take-charge'],
           icon: 'fa-edit',
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.ON_GOING)
         },
         {
-          text: translations['actions.reject'],
+          text: translations['reject'],
           icon: 'fa-trash',
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.REJECTED)
         },
         {
-          text: translations['actions.pending-information'],
+          text: translations['pending-information'],
           icon: 'fa-info-circle',
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.PENDING)
         },
         {
-          text: translations['actions.close'],
+          text: translations['close'],
           icon: 'fa-close',
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.CLOSED)
         }
@@ -108,27 +108,27 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
         {
           type: ColumnType.STRING,
           field: 'areaOfInterest',
-          text: translations['requests-list.area-of-interest']
+          text: translations['area-of-interest']
         },
         {
           type: ColumnType.STATUS,
           field: 'status',
-          text: translations['requests-list.status']
+          text: translations['status']
         },
         {
           type: ColumnType.DATE,
           field: 'startDate',
-          text: translations['requests-list.start-date']
+          text: translations['start-date']
         },
         {
           type: ColumnType.DATE,
           field: 'endDate',
-          text: translations['requests-list.end-date']
+          text: translations['end-date']
         },
         {
           type: ColumnType.DROPDOWN,
           field: 'requestId',
-          text: translations['requests-list.manage-request'],
+          text: translations['manage-request'],
           defaultContent: (datum) => this.dropdownConfig
         }
       ]

@@ -1,11 +1,11 @@
 <form [formGroup]="formGroup">
     <div class="portlet__body">
         <div class="portlet-div">
-            <h3 class="portlet-title">{{'requester.filters.general-information' | translate}}</h3>
+            <h3 class="portlet-title">{{'filters.general-information' | translate}}</h3>
             <div class="form-group">
                 <label>
                     <i class="fa fa-info"></i>
-                    {{'requester.filters.request-state' | translate}}
+                    {{'filters.request-state' | translate}}
                 </label>
                 <ng-select [items]="statuses" bindLabel="skills" placeholder="Select item" multiple="true"
                     [searchable]="true" formControlName="statuses">
@@ -14,7 +14,7 @@
             <div class="form-group">
                 <label>
                     <i class="fa fa-folder"></i>
-                    {{'requester.requests-list.area-of-interest' | translate}}
+                    {{'requester.area-of-interest' | translate}}
                 </label>
                 <ng-select [items]="areas" bindLabel="name" id="area-of-interest" placeholder="Select item"
                     multiple="false" [searchable]="false" maxSelectedItems='1' formControlName="areaOfInterest">
@@ -23,24 +23,24 @@
             <div class="form-group">
                 <label>
                     <i class="fa fa-calendar"></i>
-                    {{'requester.requests-list.start-date' | translate}}
+                    {{'requester.start-date' | translate}}
                 </label>
                 <input id="start-date" class="form-control" bsDatepicker formControlName="startDate">
             </div>
             <div class="form-group">
                 <label>
                     <i class="fa fa-calendar"></i>
-                    {{'requester.requests-list.end-date' | translate}}
+                    {{'requester.end-date' | translate}}
                 </label>
                 <input id="end-date" class="form-control" bsDatepicker formControlName="endDate">
             </div>
         </div>
         <div class="portlet-div">
-            <h3 class="portlet-title">{{'requester.filters.resources' | translate}}</h3>
+            <h3 class="portlet-title">{{'filters.resources' | translate}}</h3>
             <div class="form-group">
                 <label>
                     <i class="fa fa-users"></i>
-                    {{'requester.filters.number-of-resources' | translate}}
+                    {{'filters.number-of-resources' | translate}}
                 </label>
                 <input id="total" type="number" class="form-control" placeholder="Enter value" formControlName="total"
                     min="1">
@@ -48,7 +48,7 @@
             <div class="form-group">
                 <label>
                     <i class="fa fa-user"></i>
-                    {{'requester.requests-list.seniority' | translate}}
+                    {{'requester.seniority' | translate}}
                 </label>
                 <ng-select [items]="seniorities" bindLabel="seniority" placeholder="Select item" multiple="false"
                     [searchable]="false" maxSelectedItems='1' formControlName='seniority'>
@@ -57,7 +57,7 @@
             <div class="form-group">
                 <label>
                     <i class="fa fa-list"></i>
-                    {{'requester.requests-list.skills' | translate}}
+                    {{'requester.skills' | translate}}
                 </label>
                 <ng-select [items]="skills" bindLabel="skills" placeholder="Select item" multiple="true"
                     [searchable]="true" formControlName="skills">
@@ -68,10 +68,10 @@
     <div class="divider"></div>
     <div class="form__actions">
         <button type="button" class="btn btn-outline-secondary" (click)="resetFilters()">
-            {{'requester.filters.actions.reset-filters' | translate}}
+            {{'filters.reset-filters' | translate}}
         </button>
         <button type="button" class="btn btn-outline-secondary" (click)="applyFilters()">
-            {{'requester.filters.actions.apply-filters' | translate}}
+            {{'filters.apply-filters' | translate}}
         </button>
     </div>
 </form>

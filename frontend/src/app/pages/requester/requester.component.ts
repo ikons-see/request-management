@@ -72,27 +72,27 @@ export class RequesterComponent implements OnInit, OnDestroy {
   init(translations: { [key: string]: string }) {
     this.dropdownConfig = {
       button: {
-        text: translations['actions.actions'],
+        text: translations['actions'],
         icon: ''
       },
       values: [
         {
-          text: translations['actions.view-details'],
+          text: translations['view-details'],
           icon: 'fa-list',
           onClick: (e) => this.openDetailsModal(e)
         },
         {
-          text: translations['actions.edit'],
+          text: translations['edit'],
           icon: 'fa-edit',
           onClick: (e) => this.openEditRequestModal(e)
         },
         {
-          text: translations['actions.delete'],
+          text: translations['delete'],
           icon: 'fa-trash',
           onClick: (e) => this.deleteRequest(e)
         },
         {
-          text: translations['actions.close'],
+          text: translations['close'],
           icon: 'fa-close',
           onClick: (e) => this.closeRequest(e)
         }
@@ -104,27 +104,27 @@ export class RequesterComponent implements OnInit, OnDestroy {
         {
           type: ColumnType.STRING,
           field: 'areaOfInterest',
-          text: translations['requests-list.area-of-interest']
+          text: translations['area-of-interest']
         },
         {
           type: ColumnType.STATUS,
           field: 'status',
-          text: translations['requests-list.status']
+          text: translations['status']
         },
         {
           type: ColumnType.DATE,
           field: 'startDate',
-          text: translations['requests-list.start-date']
+          text: translations['start-date']
         },
         {
           type: ColumnType.DATE,
           field: 'endDate',
-          text: translations['requests-list.end-date']
+          text: translations['end-date']
         },
         {
           type: ColumnType.DROPDOWN,
           field: 'requestId',
-          text: translations['requests-list.manage-request'],
+          text: translations['manage-request'],
           defaultContent: (datum) => this.dropdownConfig
         }
       ]

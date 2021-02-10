@@ -1,6 +1,6 @@
 <form class="form-group" [formGroup]="form" (ngSubmit)="onSubmit()">
     <div class="form-group">
-        <label for="area-of-interest">{{'requester.requests-list.area-of-interest' | translate}}</label>
+        <label for="area-of-interest">{{'requester.area-of-interest' | translate}}</label>
         <ng-select [items]="areas"
                    bindLabel="name"
                    id="area-of-interest"
@@ -12,11 +12,11 @@
         </ng-select>
     </div>
     <div class="form-control-feedback" *ngIf="submittedForm && areaOfInterest().invalid">
-        {{'requester.actions.required-field' | translate}}
+        {{'requester.required-field' | translate}}
      </div>
     <div class="form-group">
         <label class="col-form-label form-label">
-          {{'requester.requests-list.date-range' | translate}}
+          {{'requester.date-range' | translate}}
         </label>
             <input
               id="date-range"
@@ -25,25 +25,25 @@
               formControlName="dateRange">
     </div>
     <div class="form-control-feedback" *ngIf="submittedForm && dateRange().invalid">
-        {{'requester.actions.required-field' | translate}}
+        {{'requester.required-field' | translate}}
     </div>
     <div class="form-group">
         <label for="project-description">
-            {{'requester.requests-list.project-description' | translate}}
+            {{'requester.project-description' | translate}}
         </label>
         <textarea id="project-description" class="form-control" formControlName="projectDescription">
             </textarea>
     </div>
     <div class="form-control-feedback" *ngIf="submittedForm && projectDescription().invalid">
-        {{'requester.actions.required-field' | translate}}
+        {{'requester.required-field' | translate}}
      </div>
     <div class="form-group">
         <label for="notes">
-            {{'requester.requests-list.notes' | translate}}
+            {{'requester.notes' | translate}}
         </label>
         <textarea id="notes" class="form-control" formControlName="notes"></textarea>
     </div>
     <div class="form-control-feedback" *ngIf="submittedForm && notes().invalid">
-        {{'requester.actions.required-field' | translate}}
+        {{'requester.required-field' | translate}}
     </div>
 </form>

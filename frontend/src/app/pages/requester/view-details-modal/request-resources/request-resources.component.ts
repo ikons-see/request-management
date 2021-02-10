@@ -20,7 +20,7 @@ export class RequestResourcesComponent implements OnInit, OnDestroy {
   constructor(private translate: TranslateService) { }
 
   ngOnInit(): void {
-    this.translationSub =  this.translate.get('resources').subscribe(translations => {
+    this.translationSub =  this.translate.get('requester').subscribe(translations => {
       this.init(translations);
      });
   }

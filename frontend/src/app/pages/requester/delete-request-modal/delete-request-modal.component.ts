@@ -32,7 +32,7 @@ export class DeleteRequestModalComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
-    this.translationSub =  this.translate.get('requester.delete-request').subscribe(translations => {
+    this.translationSub =  this.translate.get('delete-request').subscribe(translations => {
       this.initButtons(translations);
      });
   }

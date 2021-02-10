@@ -50,7 +50,7 @@ export class AddRequestModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.translationSub =  this.translate.get('requester.add-request').subscribe(translations => {
+    this.translationSub =  this.translate.get('add-request').subscribe(translations => {
       this.init(translations);
      });
   }

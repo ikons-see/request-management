@@ -32,7 +32,7 @@ export class ChangeStatusModalComponent implements OnInit, OnDestroy {
     private translate: TranslateService) { }
 
   ngOnInit(): void {
-    this.translationSub =  this.translate.get('admin.change-status').subscribe(translations => {
+    this.translationSub =  this.translate.get('change-status').subscribe(translations => {
       this.init(translations);
      });
   }

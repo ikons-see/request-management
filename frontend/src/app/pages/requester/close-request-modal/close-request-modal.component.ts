@@ -29,7 +29,7 @@ export class CloseRequestModalComponent implements OnInit, OnDestroy {
    }
 
   ngOnInit(): void {
-    this.translationSub =  this.translate.get('requester.close-request').subscribe(translations => {
+    this.translationSub =  this.translate.get('close-request').subscribe(translations => {
       this.initButtons(translations);
      });
   }

@@ -77,7 +77,7 @@ export class RequesterEffects {
                 ...globalModalConfig,
                 class: 'modal-dialog modal-dialog-centered modal-lg',
                 initialState: {
-                    title: this.translate.instant('requester.add-request.title')
+                    title: this.translate.instant('add-request.title')
                 }
             });
         })
@@ -122,7 +122,7 @@ export class RequesterEffects {
                 class: 'modal-dialog modal-dialog-centered modal-lg',
                 initialState: {
                     requestId: action.requestId,
-                    title: this.translate.instant('requester.edit-request.title')
+                    title: this.translate.instant('edit-request.title')
                 }
             });
         })
@@ -167,7 +167,7 @@ export class RequesterEffects {
                 class: 'modal-dialog modal-dialog-centered modal-lg',
                 initialState: {
                     requestId: action.requestId,
-                    title: this.translate.instant('requester.delete-request.title')
+                    title: this.translate.instant('delete-request.title')
                 }
             });
         })
@@ -198,7 +198,7 @@ export class RequesterEffects {
                 class: 'modal-dialog modal-dialog-centered modal-lg',
                 initialState: {
                     requestId: action.requestId,
-                    title: this.translate.instant('requester.close-request.title')
+                    title: this.translate.instant('close-request.title')
                 }
             });
         })
@@ -231,7 +231,7 @@ export class RequesterEffects {
                 class: 'modal-dialog modal-dialog-centered modal-lg',
                 initialState: {
                     requestId: action.requestId,
-                    title: this.translate.instant('requester.view-details.title'),
+                    title: this.translate.instant('view-details.title'),
                     details: details
                 }
             });

@@ -1,11 +1,11 @@
 <app-modal [title]="title + requestId" [buttons]="buttons" *ngIf="buttons">
     <div class="message-container">
-        <span>{{'admin.change-status.message' | translate}}</span>
+        <span>{{'change-status.message' | translate}}</span>
 
         <div class="notes-container" *ngIf="status == statuses.CLOSED">
-            <label for="notes">{{'admin.change-status.additional-notes' | translate}}</label>
+            <label for="notes">{{'change-status.additional-notes' | translate}}</label>
             <textarea id="notes" class="form-control" [(ngModel)]="notes" (ngModelChange)="checkNotes($event)"></textarea>
-            <span *ngIf="!validNotes">{{'admin.change-status.invalid-notes' | translate}}</span>
+            <span *ngIf="!validNotes">{{'change-status.invalid-notes' | translate}}</span>
         </div>
     </div>
 </app-modal>

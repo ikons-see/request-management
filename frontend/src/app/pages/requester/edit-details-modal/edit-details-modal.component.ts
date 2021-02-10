@@ -53,7 +53,7 @@ export class EditDetailsModalComponent implements OnInit, OnDestroy {
       }
     );
 
-    this.translationSub =  this.translate.get('requester.edit-request').subscribe(translations => {
+    this.translationSub =  this.translate.get('edit-request').subscribe(translations => {
       this.init(translations);
      });
   }
