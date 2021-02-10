@@ -32,10 +32,6 @@ public class RequestEntity extends AbstractAuditingEntity {
     private String status;
 
     @Column(columnDefinition = "DATE")
-    @CreationTimestamp
-    private Instant requestDate;
-
-    @Column(columnDefinition = "DATE")
     private Instant startDate;
 
     @Column(columnDefinition = "DATE")

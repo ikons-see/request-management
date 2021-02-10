@@ -11,7 +11,6 @@ public interface RequestMapper extends EntityMapper<RequestEntity, RequestDetail
   @Mapping(source = "createdBy", target = "displayName")
   RequestDetailsDTO toDto(RequestEntity entity);
 
-  @Mapping(target = "requestDate", ignore = true)
   @Mapping(target = "createdBy", ignore = true)
   @Mapping(target = "createdDate", ignore = true)
   @Mapping(target = "lastModifiedBy", ignore = true)

@@ -120,7 +120,7 @@ public class MailService implements UserActionNotification, RequestActionNotific
   }
 
   @Override
-  public void sendRequestCreationEmail(List<String> emails, RequestMailContentDTO requestMailContent) {
+  public void sendRequestSummaryEmail(List<String> emails, RequestMailContentDTO requestMailContent) {
     sendRequestEmailFromTemplate(emails, requestMailContent,"mail/requestEmail", "email.request.title");
   }
 }

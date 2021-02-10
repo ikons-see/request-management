@@ -5,4 +5,8 @@ public class MissingUserException extends RuntimeException {
   public MissingUserException(final long id) {
     super("user-not-found" + id);
   }
+
+  public MissingUserException() {
+    super("user-not-found");
+  }
 }

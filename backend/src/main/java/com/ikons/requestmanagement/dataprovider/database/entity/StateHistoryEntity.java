@@ -28,9 +28,8 @@ public class StateHistoryEntity {
     private String createdBy;
 
     @CreatedDate
-    @Column(name = "created_date", updatable = false)
-    @JsonIgnore
-    private Instant createdDate = Instant.now();
+    @Column(columnDefinition = "DATE")
+    private Instant createdDate;
 
     @Column
     private long requestId;
@@ -41,5 +40,8 @@ public class StateHistoryEntity {
     @Column
     private String notes;
 
-
+    @PrePersist
+    public void prePersist() {
+        createdDate = Instant.now();
+    }
 }
