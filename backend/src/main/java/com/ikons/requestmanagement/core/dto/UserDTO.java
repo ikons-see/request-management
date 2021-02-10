@@ -42,6 +42,8 @@ public class UserDTO {
   @Builder.Default
   private Boolean activated = false;
 
+  private String activationKey;
+
   @Size(min = 2, max = 10)
   private String langKey;
 

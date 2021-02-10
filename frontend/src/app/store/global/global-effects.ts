@@ -8,15 +8,15 @@ import { Observable, of } from "rxjs";
 import { catchError, mergeMap, switchMap } from "rxjs/operators";
 import { ApplicationState } from "../../app.module";
 import { RequestsManagementService } from "../../endpoint/requests-management.service";
-import { 
-    loginFailure, 
-    loginRequest, 
-    loginSuccess, 
-    logoutRequest, 
-    registerUser, 
-    registerUserFailure, 
-    registerUserSuccess, 
-    rehydrateSuccess 
+import {
+    loginFailure,
+    loginRequest,
+    loginSuccess,
+    logoutRequest,
+    registerUser,
+    registerUserFailure,
+    registerUserSuccess,
+    rehydrateSuccess
 } from "./global-actions";
 
 @Injectable()
@@ -78,6 +78,7 @@ export class GlobalEffects {
     onRegisterUser$ = createEffect(() => this.actions$.pipe(
         ofType(registerUser),
         switchMap((action) => {
+          console.log('register user data', action.userData);
             return this.requestsService.registerUser(action.userData)
                 .pipe(
                     switchMap(response => {

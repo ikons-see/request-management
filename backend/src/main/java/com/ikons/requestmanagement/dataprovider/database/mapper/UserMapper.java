@@ -26,6 +26,7 @@ public class UserMapper {
         .login(user.getLogin())
         .email(user.getEmail())
         .activated(user.isActivated())
+        .activationKey(user.getActivationKey())
         .langKey(user.getLangKey())
         .imageUrl(user.getImageUrl())
         .authorities(stringsFromAuthorities(user.getAuthorities()))
@@ -55,6 +56,7 @@ public class UserMapper {
       user.setEmail(userDTO.getEmail());
       user.setImageUrl(userDTO.getImageUrl());
       user.setActivated(userDTO.getActivated());
+      user.setActivationKey(userDTO.getActivationKey());
       user.setLangKey(userDTO.getLangKey());
       Set<Authority> authorities = authoritiesFromStrings(userDTO.getAuthorities());
       user.setAuthorities(authorities);
@@ -77,6 +79,9 @@ public class UserMapper {
   }
 
   private static Set<String> stringsFromAuthorities(Set<Authority> authorities) {
+    if (authorities == null || authorities.isEmpty()) {
+      return new HashSet<String>();
+    }
     return authorities.stream()
         .map(Authority::getName)
         .collect(Collectors.toSet());
