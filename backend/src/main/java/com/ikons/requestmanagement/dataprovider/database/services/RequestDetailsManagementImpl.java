@@ -89,7 +89,7 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
             final List<ResourceDTO> resources
     ) {
         final RequestEntity entity = RequestEntity.builder()
-                .areaOfInterest(areaOfInterest.name())
+                .areaOfInterest(areaOfInterest)
                 .startDate(startDate)
                 .endDate(endDate)
                 .status(RequestStatusDTO.CREATED.name())
@@ -168,7 +168,7 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
         Optional<RequestEntity> requestEntity = requestRepository.findById(requestUpdate.getRequestId());
 
         requestEntity.ifPresent(entity -> {
-            entity.setAreaOfInterest(requestUpdate.getAreaOfInterest().name());
+            entity.setAreaOfInterest(requestUpdate.getAreaOfInterest());
             entity.setStatus(String.valueOf(RequestStatusDTO.UPDATED));
             entity.setStartDate(requestUpdate.getStartDate());
             entity.setEndDate(requestUpdate.getEndDate());
