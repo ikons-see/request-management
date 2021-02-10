@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
@@ -18,8 +19,8 @@ public class RequestUpdate {
 
   private long requestId;
   private AreaOfInterestDTO areaOfInterest;
-  private Date startDate;
-  private Date endDate;
+  private Instant startDate;
+  private Instant endDate;
   private String projectDescription;
   private String notes;
   private String statusNotes;

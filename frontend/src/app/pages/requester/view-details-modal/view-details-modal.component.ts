@@ -1,9 +1,8 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
 import { ApplicationState } from 'src/app/app.module';
-import { getRequestById } from 'src/app/store/requests-reducer';
 import { ButtonConfiguration, ButtonType, Tab } from 'src/app/types/data-types';
 import { RequestDetails } from 'src/app/types/request-types';
 
@@ -12,7 +11,7 @@ import { RequestDetails } from 'src/app/types/request-types';
   templateUrl: './view-details-modal.component.html',
   styleUrls: ['./view-details-modal.component.scss']
 })
-export class ViewDetailsModalComponent implements OnInit, OnDestroy {
+export class ViewDetailsModalComponent implements OnInit {
 
   @Input()
   requestId: number;
@@ -20,10 +19,12 @@ export class ViewDetailsModalComponent implements OnInit, OnDestroy {
   @Input()
   title: string;
 
+  @Input()
+  details: RequestDetails;
+
   tabs: Array<Tab>;
   activeId: string = '0';
   buttons: Array<ButtonConfiguration>;
-  request: RequestDetails;
   requestSubscribtion: Subscription;
   
   constructor(private store: Store<ApplicationState>,
@@ -33,11 +34,6 @@ export class ViewDetailsModalComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.requestSubscribtion = this.store.select(getRequestById, this.requestId).subscribe(
-      value => { 
-        this.request = value;
-      }
-    );
   }
 
   initButtons() {
@@ -67,10 +63,6 @@ export class ViewDetailsModalComponent implements OnInit, OnDestroy {
 
   tabChanged(e) {
     this.activeId = e;
-  }
-
-  ngOnDestroy() {
-    this.requestSubscribtion.unsubscribe();
   }
   
 }

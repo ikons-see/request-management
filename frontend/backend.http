@@ -10,3 +10,24 @@ content-type: application/json
 ### get list of users
 GET http://localhost:8080/api/users HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfUkVRVUVTVEVSIiwiZXhwIjoxNjEyNDM1MDEzfQ.CNviWotA7S1IEFsZRq_JFocZRubtU0mEUyLBMLCSerrbZlCxMVp9vZLyfqbHxs_Wylqz_wBEOQlUhJMQbSyNwg
+
+###
+GET http://localhost:8080/api/requests-management/request?status.notEquals=CLOSED HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfUkVRVUVTVEVSIiwiZXhwIjoxNjEyOTQ3NDA2fQ.uhDAnoNmH1GddAd_37xgHtvPXjwh9WKztXBG9oCNLE0iguof1CMWqeJBrKxccB3_olDHydFi1ff8k4ZxonL63A
+
+{
+  status: {notEquals: created},
+}
+
+###
+GET http://localhost:8080/api/account HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfUkVRVUVTVEVSIiwiZXhwIjoxNjEyOTcwOTg1fQ.QanC9VazRv1CfWYwtCJ6_41nMtP99R-CeJydBrcl4KbsoL-Tu9NKn8sG5QT63rhVn4AhjSJCog9SBW_sUxCv7g
+
+### register user
+POST http://localhost:8080/api/register HTTP/1.1
+content-type: application/json
+
+{"firstName":"Gezim","lastName":"M","login":"gmuja","email":"gmuja@ikons-see.com","password":"ikons","confirmPassword":"ikons"}
+
+### activate registered user
+GET http://localhost:8080/api/activate?key=0bzB2MFgd6zdOjPhkBpV

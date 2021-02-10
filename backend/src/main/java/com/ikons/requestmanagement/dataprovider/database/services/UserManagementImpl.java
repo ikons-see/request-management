@@ -32,6 +32,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Log4j2
+@Transactional
 public class UserManagementImpl implements UserManagement {
     private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections.unmodifiableList(Arrays.asList("id", "login", "firstName", "lastName", "email", "activated", "langKey"));
 
@@ -61,7 +62,10 @@ public class UserManagementImpl implements UserManagement {
                     user.setActivationKey(null);
                     this.clearUserCaches(user);
                     log.debug("Activated user: {}", user);
-                    return UserMapper.userToUserDTO(user);
+                    // avoid using UserMapper because authorities aren't loaded, and it'll throw LazyInitializationException
+                    return UserDTO.builder()
+                        .id(user.getId())
+                        .build();
                 });
     }
 
@@ -122,7 +126,7 @@ public class UserManagementImpl implements UserManagement {
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        authorityRepository.findById(AuthoritiesConstants.REQUESTER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
@@ -219,17 +223,23 @@ public class UserManagementImpl implements UserManagement {
     }
 
     @Override
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
-        SecurityUtils.getCurrentUserLogin()
+    public void updateAuthenticatedUser(UserDTO userDTO) {
+      Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
+      if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
+        throw new EmailAlreadyUsedException();
+      }
+      userRepository.findOneByLogin(userDTO.getLogin()).orElseThrow(() -> new RuntimeException("User could not be found"));
+
+      SecurityUtils.getCurrentUserLogin()
                 .flatMap(userRepository::findOneByLogin)
                 .ifPresent(user -> {
-                    user.setFirstName(firstName);
-                    user.setLastName(lastName);
-                    if (email != null) {
-                        user.setEmail(email.toLowerCase());
+                    user.setFirstName(userDTO.getFirstName());
+                    user.setLastName(userDTO.getLastName());
+                    if (userDTO.getEmail() != null) {
+                        user.setEmail(userDTO.getEmail().toLowerCase());
                     }
-                    user.setLangKey(langKey);
-                    user.setImageUrl(imageUrl);
+                    user.setLangKey(userDTO.getLangKey());
+                    user.setImageUrl(userDTO.getImageUrl());
                     this.clearUserCaches(user);
                     log.debug("Changed Information for User: {}", user);
                 });

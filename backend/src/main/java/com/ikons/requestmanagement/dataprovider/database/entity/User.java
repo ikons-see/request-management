@@ -18,11 +18,12 @@ import java.util.Set;
 @Entity
 @Table(name = "ik_user")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class User extends AbstractAuditingEntity{
+public class User extends AbstractAuditingEntity {
   private static final long serialVersionUID = 1L;
 
   @Id
@@ -56,6 +57,7 @@ public class User extends AbstractAuditingEntity{
 
   @NotNull
   @Column(nullable = false)
+  @Builder.Default
   private boolean activated = false;
 
   @Size(min = 2, max = 10)
@@ -77,7 +79,7 @@ public class User extends AbstractAuditingEntity{
   private String resetKey;
 
   @Column(name = "reset_date")
-  private Instant resetDate = null;
+  private Instant resetDate;
 
   @JsonIgnore
   @ManyToMany
@@ -87,6 +89,7 @@ public class User extends AbstractAuditingEntity{
       inverseJoinColumns = {@JoinColumn(name = "authority_name", referencedColumnName = "name")})
   @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
   @BatchSize(size = 20)
+  @Builder.Default
   private Set<Authority> authorities = new HashSet<>();
 
   @Override

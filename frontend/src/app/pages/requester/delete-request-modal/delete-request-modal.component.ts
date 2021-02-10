@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
 import { ApplicationState } from 'src/app/app.module';
-import { deleteRequest } from 'src/app/store/requests-actions';
-import { getLoadingRequests } from 'src/app/store/requests-reducer';
+import { deleteRequest } from 'src/app/store/requester/requester-actions';
+import { getLoadingRequests } from 'src/app/store/requester/requester-reducer';
 import { ButtonConfiguration, ButtonType } from 'src/app/types/data-types';
 
 @Component({

@@ -1,3 +1,5 @@
+import { RequestStatus } from "./data-types";
+
 export interface Pageable {
     page: number;
     itemsPerPage?: number;
@@ -14,12 +16,14 @@ export interface Resource {
 export interface RequestDetails {
     requestId: number;
     areaOfInterest: string;
+    displayName?: string;
     status: string;
     startDate: Date;
     endDate: Date;
+    notes?: string;
+    statusNotes?: string;
     projectDescription: string;
     resources: Array<Resource>;
-    note?: string;
 }
 
 export interface RequestsListRequest extends Pageable {
@@ -44,8 +48,22 @@ export interface RequestFilters {
     areaOfInterest: string;
     startDate: Date;
     endDate: Date;
-    projectDescription: string;
     total: number;
     seniority: string;
     skills: Array<string>;
+}
+
+export interface ChangeStatusRequest {
+    requestId: number;
+    requestStatus: RequestStatus;
+    note: string;
+}
+
+export interface RegisterUserRequest {
+    firstName: string;
+    lastName: string;
+    login: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
 }

@@ -4,6 +4,8 @@ import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import javax.persistence.*;
 @Table(name = "ik_request")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Data
+@EqualsAndHashCode(callSuper=false)
 @Entity
 @Builder
 @AllArgsConstructor
@@ -30,13 +33,13 @@ public class RequestEntity extends AbstractAuditingEntity {
 
     @Column(columnDefinition = "DATE")
     @CreationTimestamp
-    private Date requestDate;
+    private Instant requestDate;
 
     @Column(columnDefinition = "DATE")
-    private Date startDate;
+    private Instant startDate;
 
     @Column(columnDefinition = "DATE")
-    private Date endDate;
+    private Instant endDate;
 
     @Column
     private String projectDescription;
