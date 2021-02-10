@@ -62,7 +62,7 @@ export interface ChangeStatusRequest {
 export interface RegisterUserRequest {
     firstName: string;
     lastName: string;
-    username: string;
+    login: string;
     email: string;
     password: string;
     confirmPassword: string;

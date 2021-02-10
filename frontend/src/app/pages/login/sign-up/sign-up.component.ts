@@ -22,7 +22,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.formGroup = this.formBuilder.group({
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
-      username: ['', Validators.required],
+      login: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required],
       confirmPassword: ['']
@@ -43,8 +43,8 @@ export class SignUpComponent implements OnInit, OnDestroy {
     return this.formGroup.get('lastName');
   }
 
-  username() {
-    return this.formGroup.get('username');
+  login() {
+    return this.formGroup.get('login');
   }
 
   email() {
@@ -67,7 +67,7 @@ export class SignUpComponent implements OnInit, OnDestroy {
     this.submitted = true;
     this.validPassword = this.passwordCheck();
     if (this.formGroup.valid && this.validPassword) {
-      this.store.dispatch(registerUser(this.formGroup.value));
+      this.store.dispatch(registerUser({userData: {...this.formGroup.value, 'langKey': 'it'}}));
     }
   }
 

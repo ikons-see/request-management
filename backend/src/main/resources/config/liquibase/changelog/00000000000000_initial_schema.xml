@@ -9,9 +9,11 @@
     <!--
         The initial schema has the '00000000000001' id, so that it is over-written if we re-generate it.
     -->
+    <property name="autoIncrement" value="true"/>
+
     <changeSet id="00000000000001" author="gmuja">
         <createTable tableName="ik_user">
-            <column name="id" type="bigint" >
+            <column name="id" type="bigint" autoIncrement="${autoIncrement}">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="login" type="varchar(50)">
