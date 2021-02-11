@@ -116,6 +116,10 @@
         "cancel": "Cancel",
         "continue": "Continue"
     },
+    "view-history": {
+        "title": "History for request #",
+        "no-records": "No records found for this request"
+    },
     "error-page": {
         "title": "Something went wrong",
         "subtitle": "Please try again later"

@@ -9,7 +9,7 @@
 
     <div align="center">
         <p align="left">
-            A new request has been created with the below information:<br>
+            A new request has been  <span th:text="${request.operation}"/> with the below information:<br>
             Request created by: <span th:text="${request.displayName}"/><br>
             Area of interest: <span th:text="${request.areaOfInterest}"/><br>
             Request id: <span th:text="${request.requestId}"/><br>

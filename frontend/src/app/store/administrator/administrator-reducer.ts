@@ -1,6 +1,7 @@
 import { Action, createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
+import { AuditEvent } from "src/app/types/response-types";
 import { RequestDetails, RequestFilters } from "../../types/request-types";
-import { pageChanged, requestData, setData, setDataFailure } from "./administrator-actions";
+import { openViewHistoryModal, pageChanged, requestData, requestStatusLogFailure, requestStatusLogSuccess, setData, setDataFailure } from "./administrator-actions";
 
 export const featureKey = 'administrator';
 
@@ -11,6 +12,8 @@ export interface State {
     loading: boolean;
     currentPage: number;
     errorMessage: string;
+    auditErrorMessage: string;
+    statusLog?: Array<AuditEvent>;
 }
 
 export const initialState: State = {
@@ -27,7 +30,8 @@ export const initialState: State = {
     totalNumber: 0,
     loading: false,
     currentPage: 0,
-    errorMessage: null
+    errorMessage: null,
+    auditErrorMessage: null
 }
 
 const requesterReducer = createReducer(
@@ -36,6 +40,9 @@ const requesterReducer = createReducer(
     on(setData, (state, { requests, totalNumber }) => ({ ...state, requests, totalNumber, loading: false })),
     on(setDataFailure, (state, { errorMessage }) => ({ ...state, errorMessage, loading: false })),
     on(pageChanged, (state, { page }) => ({ ...state, currentPage: page })),
+    on(openViewHistoryModal, (state) => ({...state, auditErrorMessage: null})),
+    on(requestStatusLogSuccess, (state, {events}) => ({...state, statusLog: events})),
+    on(requestStatusLogFailure, (state, {errorMessage}) => ({...state, auditErrorMessage: errorMessage}))
 );
 
 export function reducer(state: State | undefined, action: Action) {
@@ -52,3 +59,5 @@ export const getLoadingRequests = createSelector(featureState, state => state.lo
 export const getErrorMessage = createSelector(featureState, state => state.errorMessage);
 export const getRequestById = createSelector(featureState,
     (state: State, requestId: number) => state.requests.find(el => el.requestId == requestId));
+export const getStatusLog = createSelector(featureState, state => state.statusLog ? state.statusLog : null);
+export const getAuditError = createSelector(featureState, state => state.auditErrorMessage);

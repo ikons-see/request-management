@@ -8,6 +8,7 @@ import com.ikons.requestmanagement.core.dto.AreaOfInterestDTO;
 import com.ikons.requestmanagement.core.dto.RequestDetailsDTO;
 import com.ikons.requestmanagement.core.dto.RequestStatusDTO;
 import com.ikons.requestmanagement.core.dto.ResourceDTO;
+import com.ikons.requestmanagement.core.dto.*;
 import com.ikons.requestmanagement.core.usecase.request.RequestDetailsManagement;
 import com.ikons.requestmanagement.core.usecase.request.closerequest.CloseRequest;
 import com.ikons.requestmanagement.core.usecase.request.deleterequest.DeleteRequest;
@@ -18,11 +19,14 @@ import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity;
 import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity_;
 import com.ikons.requestmanagement.dataprovider.database.entity.ResourceEntity;
+import com.ikons.requestmanagement.dataprovider.database.entity.StateHistoryEntity;
 import com.ikons.requestmanagement.dataprovider.database.entity.ResourceEntity_;
 import com.ikons.requestmanagement.dataprovider.database.mapper.RequestMapper;
 import com.ikons.requestmanagement.dataprovider.database.mapper.ResourceMapper;
+import com.ikons.requestmanagement.dataprovider.database.mapper.StateHistoryMapper;
 import com.ikons.requestmanagement.dataprovider.database.repository.RequestRepository;
 import com.ikons.requestmanagement.dataprovider.database.repository.ResourceRepository;
+import com.ikons.requestmanagement.dataprovider.database.repository.StateHistoryRepository;
 import com.ikons.requestmanagement.web.rest.requests.RequestUpdate;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
@@ -49,47 +53,51 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
     CloseRequest
 {
 
-  private static final ObjectMapper objectMapper = new ObjectMapper();
-  private final RequestRepository requestRepository;
-  private final ResourceRepository resourceRepository;
-  private final UserManagement userManagement;
-  private final RequestMapper requestMapper;
-  private final ResourceMapper resourceMapper;
+    private static final ObjectMapper objectMapper = new ObjectMapper();
+    private final RequestRepository requestRepository;
+    private final ResourceRepository resourceRepository;
+    private final UserManagement userManagement;
+    private final RequestMapper requestMapper;
+    private final ResourceMapper resourceMapper;
+    private final StateHistoryMapper stateHistoryMapper;
+    private final StateHistoryRepository stateHistoryRepository;
 
-  public RequestDetailsManagementImpl(
-      final RequestRepository requestRepository,
-      final ResourceRepository resourcesRepository,
-      final UserManagement userManagement,
-      final RequestMapper requestMapper,
-      final ResourceMapper resourceMapper
-  ) {
-    this.requestRepository = requestRepository;
-    this.resourceRepository = resourcesRepository;
-    this.userManagement = userManagement;
-    this.requestMapper = requestMapper;
-    this.resourceMapper = resourceMapper;
-  }
+    public RequestDetailsManagementImpl(
+            final RequestRepository requestRepository,
+            final ResourceRepository resourcesRepository,
+            final UserManagement userManagement,
+            final RequestMapper requestMapper,
+            final ResourceMapper resourceMapper,
+            final StateHistoryMapper stateHistoryMapper, final StateHistoryRepository stateHistoryRepository) {
+        this.requestRepository = requestRepository;
+        this.resourceRepository = resourcesRepository;
+        this.userManagement = userManagement;
+        this.requestMapper = requestMapper;
+        this.resourceMapper = resourceMapper;
+        this.stateHistoryMapper = stateHistoryMapper;
+        this.stateHistoryRepository = stateHistoryRepository;
+    }
 
-  @Override
-  @Transactional
-  public long createNewRequest(
-      final AreaOfInterestDTO areaOfInterest,
-      final Instant startDate,
-      final Instant endDate,
-      final String projectDescription,
-      final String otherNotes,
-      final String user,
-      final List<ResourceDTO> resources
-  ) {
-    final RequestEntity entity = RequestEntity.builder()
-        .areaOfInterest(areaOfInterest)
-        .startDate(startDate)
-        .endDate(endDate)
-        .status(RequestStatusDTO.CREATED.name())
-        .projectDescription(projectDescription)
-        .notes(otherNotes)
-        .resources(new ArrayList<>())
-        .build();
+    @Override
+    @Transactional
+    public long createNewRequest(
+            final AreaOfInterestDTO areaOfInterest,
+            final Instant startDate,
+            final Instant endDate,
+            final String projectDescription,
+            final String otherNotes,
+            final String user,
+            final List<ResourceDTO> resources
+    ) {
+        final RequestEntity entity = RequestEntity.builder()
+                .areaOfInterest(areaOfInterest)
+                .startDate(startDate)
+                .endDate(endDate)
+                .status(RequestStatusDTO.CREATED.name())
+                .projectDescription(projectDescription)
+                .notes(otherNotes)
+                .resources(new ArrayList<>())
+                .build();
 
     if (resources != null) {
       createNewResources(resources, entity);
@@ -137,10 +145,28 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
     return requestEntities.stream().filter(Objects::nonNull).map(a -> requestMapper.toDto(a)).collect(Collectors.toList());
   }
 
-  @Override
-  @Transactional
-  public void update(final RequestUpdate requestUpdate) {
-    Optional<RequestEntity> requestEntity = requestRepository.findById(requestUpdate.getRequestId());
+    @Override
+    public void logRequestState(long requestId, String user, RequestStatusDTO status, String notes) {
+        final StateHistoryEntity stateHistoryEntity = StateHistoryEntity.builder()
+                .operation(status.name())
+                .createdBy(user)
+                .requestId(requestId)
+                .notes(notes)
+                .build();
+        stateHistoryRepository.save(stateHistoryEntity);
+
+    }
+
+    @Override
+    public List<RequestStateHistoryDTO> getStateHistory(long requestId) {
+        final List<StateHistoryEntity> stateHistoryEntities = stateHistoryRepository.findByRequestId(requestId);
+        return stateHistoryEntities.stream().filter(Objects::nonNull).map(a-> {return stateHistoryMapper.toDto(a);}).collect(Collectors.toList());
+    }
+
+    @Override
+    @Transactional
+    public void update(final RequestUpdate requestUpdate) {
+        Optional<RequestEntity> requestEntity = requestRepository.findById(requestUpdate.getRequestId());
 
     requestEntity.ifPresent(entity -> {
       entity.setAreaOfInterest(requestUpdate.getAreaOfInterest());

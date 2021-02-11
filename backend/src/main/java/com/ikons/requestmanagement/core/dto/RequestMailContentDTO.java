@@ -24,5 +24,6 @@ public class RequestMailContentDTO {
   private String notes;
   private String projectDescription;
   private List<ResourceDTO> resources;
+  private String operation;
 
 }

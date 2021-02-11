@@ -7,6 +7,7 @@ import {
   addRequestFilters,
   openChangeStatusModal,
   openViewDetailsModal,
+  openViewHistoryModal,
   pageChanged,
   requestData,
   resetRequestFilters
@@ -157,7 +158,7 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
   }
 
   openViewHistoryModal(e) {
-    console.log('View history');
+    this.store.dispatch(openViewHistoryModal({requestId: e}));
   }
 
   applyFilters(e) {

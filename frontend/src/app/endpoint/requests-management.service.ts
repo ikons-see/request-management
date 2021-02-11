@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import {HttpClient, HttpResponse} from '@angular/common/http';
 import { Observable, of } from "rxjs";
-import { AccountData, RequestsListResponse } from "../types/response-types";
+import { AccountData, AuditEvent, RequestsListResponse } from "../types/response-types";
 import {
   AddRequest,
   ChangeStatusRequest,
@@ -102,5 +102,9 @@ export class RequestsManagementService {
 
     getUserInfo() {
         return this.httpClient.get<AccountData>(`api/account`);
+    }
+
+    getStatusLog(requestId: number): Observable<Array<AuditEvent>> {
+        return this.httpClient.get<Array<AuditEvent>>(`api/requests-management/state-history/${requestId}`);
     }
 }

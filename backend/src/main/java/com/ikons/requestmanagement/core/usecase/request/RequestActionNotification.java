@@ -8,5 +8,5 @@ import java.util.List;
 public interface RequestActionNotification {
 
 
-    void sendRequestCreationEmail(final List<String> administrators, final RequestMailContentDTO requestMailContent);
+    void sendRequestSummaryEmail(final List<String> administrators, final RequestMailContentDTO requestMailContent);
 }
