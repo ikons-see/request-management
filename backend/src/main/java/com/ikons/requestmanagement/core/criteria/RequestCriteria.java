@@ -14,7 +14,7 @@ import java.io.Serializable;
 @Setter
 @AllArgsConstructor
 public class RequestCriteria implements Serializable, Criteria {
-  private AreaOfInterestFilter areOfInterest;
+  private AreaOfInterestFilter areaOfInterest;
   private StringFilter displayName;
   private StringFilter status;
   private InstantFilter startDate;
@@ -28,7 +28,7 @@ public class RequestCriteria implements Serializable, Criteria {
   @Override
   public Criteria copy() {
     return new RequestCriteria(
-        areOfInterest,
+        areaOfInterest,
         displayName,
         status,
         startDate,

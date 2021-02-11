@@ -26,7 +26,6 @@ export class AuthenticatedAppComponent implements OnInit, OnDestroy {
       this.store.select(getUserRole).subscribe(value => {
         this.role = value;
       });
-      console.log('User role:', this.role);
   }
 
   ngOnInit(): void {

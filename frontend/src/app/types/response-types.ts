@@ -22,3 +22,10 @@ export interface AccountData {
         lastModifiedDate: Date,
         authorities: Array<Role>
 }
+
+export interface AuditEvent {
+    createdBy: string,
+    createdDate: Date,
+    operation: string,
+    notes?: string
+}

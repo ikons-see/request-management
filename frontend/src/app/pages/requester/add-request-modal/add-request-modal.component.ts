@@ -44,7 +44,7 @@ export class AddRequestModalComponent implements OnInit, OnDestroy {
     this.resourcesForm = this.formBuilder.group({
       total: ['', [Validators.required, Validators.min(1)]],
       seniority: ['', Validators.required],
-      skills: [[]],
+      skills: [[], Validators.required],
       note: ['']
     });
   }

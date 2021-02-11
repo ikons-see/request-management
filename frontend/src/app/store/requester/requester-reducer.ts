@@ -40,7 +40,7 @@ export const initialState: State = {
 
 const requesterReducer = createReducer(
     initialState,
-    on(requestData, (state, { page }) => ({ ...state, loadingRequests: true, currentPage: page })),
+    on(requestData, (state, { query }) => ({ ...state, loadingRequests: true, currentPage: query.page })),
     on(setData, (state, { requests, totalNumber }) => ({ ...state, requests, totalNumber, loading: false })),
     on(setDataFailure, (state, { errorMessage }) => ({ ...state, errorMessage, loading: false })),
     on(pageChanged, (state, { page }) => ({ ...state, currentPage: page })),

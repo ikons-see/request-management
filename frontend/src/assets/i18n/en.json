@@ -45,7 +45,8 @@
         "add-resource": "Add Resource",
         "next": "Next",
         "back": "Back",
-        "total-error": "*The total input has to be larger or equal to 1"
+        "total-error": "*The total input has to be larger or equal to 1",
+        "required-notes": "*Notes are required in case you want to add other skills"
     },
     "view-details": {
         "title": "View details for request #",
@@ -115,6 +116,10 @@
         "default-title": "Changing status for request #",
         "cancel": "Cancel",
         "continue": "Continue"
+    },
+    "view-history": {
+        "title": "History for request #",
+        "no-records": "No records found for this request"
     },
     "error-page": {
         "title": "Something went wrong",

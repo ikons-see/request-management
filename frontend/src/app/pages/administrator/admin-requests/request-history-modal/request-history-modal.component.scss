@@ -1,0 +1,91 @@
+table {
+    margin-bottom: 1rem;
+    text-align: center;
+    width: 100%;
+
+    tr:not(:first-child) {
+        border-top: 1px solid #F1EDEE;
+    }
+
+    td:not(:first-child) {
+        padding-bottom: 1rem;
+        padding-top: 1rem;
+    }
+
+    td:first-child {
+        margin-left: .5rem;
+        margin-right: .5rem;
+        margin-bottom: 1rem;
+        margin-top: 1rem;
+    }
+
+    .generic-info {
+        display: flex;
+    }
+
+    .notes {
+        padding: 0 !important;
+        font-style: italic;
+        padding-left: 1rem;
+    }
+
+    .notes-container {
+        margin-left: 1rem;
+    }
+
+    .user {
+        font-weight: 500;
+    }
+
+    .date {
+        font-style: italic;
+        padding-left: 130px;
+    }
+
+    .status {
+        font-weight: 500;
+        border-radius: 10px;
+        color: white;
+        display: flex;
+        justify-content: center;
+        min-width: 100px;
+    }
+
+    .created {
+        background-color: #7BB4A2;
+    }
+
+    .pending {
+        background-color: #CCCE8C;
+    }
+
+    .rejected {
+        background-color: #BC8E9D;
+    }
+
+    .closed {
+        background-color: #8EA9BC;
+    }
+
+    .ongoing {
+        background-color: #CB9A90;
+    }
+
+    .updated {
+        background-color: #9b9b9b;
+    }
+}
+
+
+.empty-container {
+    width: 100%;
+    padding-bottom: 2rem;
+
+    ::ng-deep .empty-page-ct {
+        padding-top: 0 !important;
+    }
+}
+
+.error-container {
+    width: 100%;
+}

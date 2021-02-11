@@ -9,6 +9,7 @@ import { RequesterComponent } from './pages/requester/requester.component';
 import { SignInComponent } from './pages/login/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/login/sign-up/sign-up.component';
 import { LoginPageComponent } from './pages/login/login.component';
+import { RouteAccessGuard } from './endpoint/guards/route-access.guard';
 
 const routes: Routes = [
   {
@@ -25,7 +26,7 @@ const routes: Routes = [
     canActivate: [AuthenticationGuard],
     children: [
       { path: '', redirectTo: 'requester', pathMatch: 'full' },
-      { path: 'requester', component: RequesterComponent },
+      { path: 'requester', component: RequesterComponent},
       {
         path: 'administrator', component: AdministratorComponent, children: [
           { path: '', redirectTo: 'requests', pathMatch: 'full' },
