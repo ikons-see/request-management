@@ -20,6 +20,7 @@ export class AddResourcesComponent implements OnInit {
   skills = Object.values(Skills);
   isCollapsed: Array<boolean> = [];
   submittedForm: boolean = false;
+  infoText: boolean = false;
 
   constructor(private formBuilder: FormBuilder) { 
   }
@@ -30,7 +31,13 @@ export class AddResourcesComponent implements OnInit {
     }
     this.formGroup.get('skills').valueChanges
     .subscribe(value => {
-      this.formGroup.controls['note'].clearValidators();
+      if(value.includes(Skills.Other)) {
+        this.formGroup.controls['note'].setValidators([Validators.required]);
+        this.infoText = true;
+      } else {
+        this.formGroup.controls['note'].clearValidators();
+        this.infoText = false;
+      }
       this.formGroup.controls['note'].updateValueAndValidity();
     });
   }

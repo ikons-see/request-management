@@ -47,7 +47,8 @@ export enum Skills {
     SQL = 'SQL',
     Typescript = 'Typescript',
     React = 'React',
-    NgRx = 'NgRx'
+    NgRx = 'NgRx',
+    Other = "Other"
 }
 
 export enum RequestStatus {
