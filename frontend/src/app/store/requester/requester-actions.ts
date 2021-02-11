@@ -1,12 +1,13 @@
 import { createAction, props } from "@ngrx/store";
 import { AddRequest, RequestDetails, RequestFilters, UpdateRequest } from "../../types/request-types";
+import {SearchWithPagination} from "../../endpoint/http-rest-utils";
 
 export const featureKey = 'requester';
 
 export const resetMessage = createAction(`[${featureKey}] resetMessage`);
 
-export const requestData = createAction(`[${featureKey}] requestData`, props<{ page: number }>());
-export const setData = createAction(`[${featureKey}] setData`, props<{ requests: Array<RequestDetails>, totalNumber: number }>());
+export const requestData = createAction(`[${featureKey}] requestData`, props<{query: SearchWithPagination}>());
+export const setData = createAction(`[${featureKey}] setData`, props<{ requests: Array<RequestDetails>, totalNumber: number, links?: {[link: string]: string} }>());
 export const setDataFailure = createAction(`[${featureKey}] setDataFailure`, props<{ errorMessage: string }>());
 
 export const openAddRequestModal = createAction(`[${featureKey}] openAddRequestModal`);
