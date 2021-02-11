@@ -31,6 +31,7 @@ public class UpdateRequestUseCase {
     public void updateRequest(final RequestUpdate requestDetails, String user) {
         updateRequest.update(requestDetails);
         requestDetailsManagement.logRequestState(requestDetails.getRequestId(), user, RequestStatusDTO.UPDATED, requestDetails.getNotes());
+        sendRequestUpdateEmail(requestDetails.getRequestId());
     }
 
     public void sendRequestUpdateEmail(final long requestId) {

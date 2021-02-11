@@ -145,6 +145,7 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
     }
 
     @Override
+    @Transactional
     public void logRequestState(long requestId, String user, RequestStatusDTO status, String notes) {
         final StateHistoryEntity stateHistoryEntity = StateHistoryEntity.builder()
                 .operation(status.name())

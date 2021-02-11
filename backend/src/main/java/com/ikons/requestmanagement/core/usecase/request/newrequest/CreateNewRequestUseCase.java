@@ -27,8 +27,7 @@ public class CreateNewRequestUseCase {
   private final RequestActionNotification requestActionNotification;
   private final RequestMailContentUseCase requestMailContentUseCase;
 
-  @Transactional
-  public Long createRequest(
+  public void createRequest(
       final AreaOfInterestDTO areaOfInterest,
       final Instant startDate,
       final Instant endDate,
@@ -39,7 +38,7 @@ public class CreateNewRequestUseCase {
   ) {
     final long requestId = createRequest.createNewRequest(areaOfInterest, startDate, endDate, projectDescription, otherNotes, user, resources);
     requestDetailsManagement.logRequestState(requestId, user, RequestStatusDTO.CREATED, null);
-    return requestId;
+    sendRequestCreationEmail(requestId);
   }
 
   public void sendRequestCreationEmail(final Long requestId) {

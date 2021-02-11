@@ -8,6 +8,7 @@ import com.ikons.requestmanagement.core.usecase.request.getrequests.ListRequests
 import com.ikons.requestmanagement.core.usecase.request.newrequest.CreateNewRequestUseCase;
 import com.ikons.requestmanagement.core.usecase.request.updaterequest.RequestStatusUseCase;
 import com.ikons.requestmanagement.core.usecase.request.updaterequest.UpdateRequestUseCase;
+import com.ikons.requestmanagement.core.usecase.user.exception.MissingUserException;
 import com.ikons.requestmanagement.security.SecurityUtils;
 import com.ikons.requestmanagement.web.rest.requests.ChangeStatusRequest;
 import com.ikons.requestmanagement.web.rest.requests.RequestData;
@@ -71,7 +72,7 @@ public class RequestsResource {
     @PostMapping("/create-new-request")
     public void createNewRequest(@RequestBody final RequestData requestData) {
         final Optional<String> user = SecurityUtils.getCurrentUserLogin();
-        final Long requestId = createNewRequestUseCase.createRequest(
+         createNewRequestUseCase.createRequest(
                 requestData.getAreaOfInterest(),
                 requestData.getStartDate(),
                 requestData.getEndDate(),
@@ -80,11 +81,9 @@ public class RequestsResource {
                 user.get(),
                 requestData.getResources()
         );
-        createNewRequestUseCase.sendRequestCreationEmail(requestId);
     }
 
     @PostMapping("/my-requests")
-    // @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.USER + "\")")
     public ResponseEntity<RequestsDTO> listUserRequests(final Pageable page) {
         Optional<RequestsDTO> requestsDTO = SecurityUtils.getCurrentUserLogin().map(login -> listRequestsUseCase.getUserRequests(login, page));
         return ResponseEntity.of(requestsDTO);
@@ -110,17 +109,14 @@ public class RequestsResource {
 
     @PostMapping("/update-request")
     public void updateRequest(@RequestBody final RequestUpdate requestUpdate) {
-        Optional<String> user = SecurityUtils.getCurrentUserLogin();
-        updateRequestUseCase.updateRequest(requestUpdate, user.get());
-        updateRequestUseCase.sendRequestUpdateEmail(requestUpdate.getRequestId());
+        final String user = Optional.ofNullable(SecurityUtils.getCurrentUserLogin()).get().orElseThrow(() -> new MissingUserException());
+        updateRequestUseCase.updateRequest(requestUpdate, user);
     }
 
     @GetMapping("/close-request/{requestId}")
     public void closeRequest(@PathVariable final Long requestId) {
-        //final String user = Optional.ofNullable(SecurityUtils.getCurrentUserLogin()).get().orElseThrow(() -> new MissingUserException(requestId));
-        Optional<String> user = SecurityUtils.getCurrentUserLogin();
-        closeRequestUseCase.closeRequest(requestId, user.get());
-        closeRequestUseCase.sendRequestCloseEmail(requestId);
+        final String user = Optional.ofNullable(SecurityUtils.getCurrentUserLogin()).get().orElseThrow(() -> new MissingUserException());
+        closeRequestUseCase.closeRequest(requestId, user);
     }
 
     @GetMapping("delete-request/{requestId}")
@@ -130,9 +126,8 @@ public class RequestsResource {
 
     @PostMapping("/change-status")
     public void changeStatus(@RequestBody final ChangeStatusRequest changeStatusRequest) {
-        Optional<String> user = SecurityUtils.getCurrentUserLogin();
-        requestStatusUseCase.changeRequestStatus(changeStatusRequest, user.get());
-        requestStatusUseCase.sendChangeStatusEmail(changeStatusRequest.getRequestId(), changeStatusRequest.getRequestStatus());
+        final String user = Optional.ofNullable(SecurityUtils.getCurrentUserLogin()).get().orElseThrow(() -> new MissingUserException());
+        requestStatusUseCase.changeRequestStatus(changeStatusRequest, user);
     }
 
     @GetMapping("state-history/{requestId}")

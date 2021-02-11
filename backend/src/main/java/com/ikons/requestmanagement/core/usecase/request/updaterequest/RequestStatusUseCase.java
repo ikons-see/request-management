@@ -28,6 +28,7 @@ public class RequestStatusUseCase {
     public void changeRequestStatus(final ChangeStatusRequest requestStatus, final String user) {
         updateRequest.changeStatus(requestStatus.getRequestId(), requestStatus.getRequestStatus(), requestStatus.getNote());
         requestDetailsManagement.logRequestState(requestStatus.getRequestId(), user, requestStatus.getRequestStatus(), requestStatus.getNote());
+        sendChangeStatusEmail(requestStatus.getRequestId(), requestStatus.getRequestStatus());
     }
 
     public List<RequestStateHistoryDTO> getRequestStateHistory(final Long requestId) {

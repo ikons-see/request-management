@@ -3,6 +3,7 @@ package com.ikons.requestmanagement.core.usecase.request.closerequest;
 import com.ikons.requestmanagement.core.dto.RequestMailContentDTO;
 import com.ikons.requestmanagement.core.dto.RequestStatusDTO;
 import com.ikons.requestmanagement.core.usecase.request.RequestActionNotification;
+import com.ikons.requestmanagement.core.usecase.request.RequestDetailsManagement;
 import com.ikons.requestmanagement.core.usecase.request.RequestMailContentUseCase;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import lombok.RequiredArgsConstructor;
@@ -21,13 +22,16 @@ public class CloseRequestUseCase {
     private final RequestMailContentUseCase requestMailContentUseCase;
     private final UserManagement userManagement;
     private final RequestActionNotification requestActionNotification;
+    private final RequestDetailsManagement requestDetailsManagement;
 
 
-    public void closeRequest(final Long requestId, String s) {
+    public void closeRequest(final Long requestId, String user) {
         closeRequest.close(requestId);
+        requestDetailsManagement.logRequestState(requestId, user, RequestStatusDTO.CLOSED, "notess");
+        sendRequestCloseEmail(requestId);
     }
 
-    public void sendRequestCloseEmail(Long requestId) {
+    public void sendRequestCloseEmail(final Long requestId) {
         final List<String> administratorsEmails = userManagement.getAdministratorsEmails();
         final RequestMailContentDTO requestMailContent = requestMailContentUseCase.generate(requestId);
         requestMailContent.setOperation(RequestStatusDTO.CLOSED.name());
