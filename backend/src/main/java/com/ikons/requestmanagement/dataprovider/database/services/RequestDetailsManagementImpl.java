@@ -1,14 +1,10 @@
 package com.ikons.requestmanagement.dataprovider.database.services;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ikons.query.QueryService;
 import com.ikons.requestmanagement.core.criteria.RequestCriteria;
-import com.ikons.requestmanagement.core.dto.AreaOfInterestDTO;
-import com.ikons.requestmanagement.core.dto.RequestDetailsDTO;
-import com.ikons.requestmanagement.core.dto.RequestStatusDTO;
-import com.ikons.requestmanagement.core.dto.ResourceDTO;
-import com.ikons.requestmanagement.core.usecase.CannotDeserializeException;
+import com.ikons.requestmanagement.core.dto.*;
+import com.ikons.requestmanagement.core.usecase.reports.ReportResults;
 import com.ikons.requestmanagement.core.usecase.request.RequestDetailsManagement;
 import com.ikons.requestmanagement.core.usecase.request.closerequest.CloseRequest;
 import com.ikons.requestmanagement.core.usecase.request.deleterequest.DeleteRequest;
@@ -42,7 +38,8 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
     CreateRequest,
     DeleteRequest,
     UpdateRequest,
-    CloseRequest
+    CloseRequest,
+    ReportResults
 {
 
   private static final ObjectMapper objectMapper = new ObjectMapper();
@@ -218,4 +215,29 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   }
 
 
+  @Override
+  public List<MonthlyReportsDto> requestsPerMonth() {
+    return requestRepository.totalRequestsPerMonth();
+  }
+
+
+  @Override
+  public List<MonthlyReportsDto> resourcesPerMonth() {
+    return requestRepository.totalResourcesPerMonth();
+  }
+
+  @Override
+  public Long totalActiveRequests() {
+    return requestRepository.countAllActiveRequests(RequestStatusDTO.CLOSED.name());
+  }
+
+  @Override
+  public Long totalOnGoingRequests() {
+    return requestRepository.countAllOnGoingRequests(RequestStatusDTO.ON_GOING.name());
+  }
+
+  @Override
+  public Long totalRequests() {
+    return requestRepository.count();
+  }
 }
