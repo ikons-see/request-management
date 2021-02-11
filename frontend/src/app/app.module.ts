@@ -181,7 +181,8 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     AddRequestModalComponent,
     ViewDetailsModalComponent,
     EditDetailsModalComponent,
-    DeleteRequestModalComponent
+    DeleteRequestModalComponent,
+    RequestHistoryModalComponent
   ],
   bootstrap: [AppComponent]
 })

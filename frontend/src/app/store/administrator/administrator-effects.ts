@@ -7,6 +7,7 @@ import { BsModalService } from "ngx-bootstrap/modal";
 import { of } from "rxjs";
 import { catchError, map, mergeMap, switchMap, take, tap, withLatestFrom } from "rxjs/operators";
 import { ChangeStatusModalComponent } from "src/app/pages/administrator/admin-requests/change-status-modal/change-status-modal.component";
+import { RequestHistoryModalComponent } from "src/app/pages/administrator/admin-requests/request-history-modal/request-history-modal.component";
 import { ApplicationState } from "../../app.module";
 import { RequestsManagementService } from "../../endpoint/requests-management.service";
 import { ViewDetailsModalComponent } from "../../pages/requester/view-details-modal/view-details-modal.component";
@@ -18,7 +19,10 @@ import {
     changeRequestSuccess,
     openChangeStatusModal,
     openViewDetailsModal,
+    openViewHistoryModal,
     requestData,
+    requestStatusLogFailure,
+    requestStatusLogSuccess,
     resetRequestFilters,
     setData,
     setDataFailure
@@ -127,4 +131,31 @@ export class AdministratorEffects {
         })
     ), { dispatch: false });
 
+    openViewHistoryModal$ = createEffect(() => this.actions$.pipe(
+        ofType(openViewHistoryModal),
+        tap((action) => {
+            this.modalService.show(RequestHistoryModalComponent, {
+                ...globalModalConfig,
+                class: 'modal-dialog modal-dialog-centered',
+                initialState: {
+                    requestId: action.requestId
+                }
+            });
+        })
+    ), { dispatch: false });
+
+    onRequestAuditHistory$ = createEffect(() => this.actions$.pipe(
+        ofType(openViewHistoryModal),
+        switchMap((action) => {
+            return this.requestsService.getStatusLog(action.requestId)
+                .pipe(
+                    map(res => requestStatusLogSuccess({
+                        events: res
+                    })),
+                    catchError((error: HttpErrorResponse) =>
+                        of(requestStatusLogFailure({ errorMessage: error.message }),
+                        ))
+                );
+        })
+    ));
 }
