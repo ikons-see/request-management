@@ -13,7 +13,7 @@ import java.time.Instant;
 @AllArgsConstructor
 public class MonthlyReportsDto {
 
-  private Integer yearRequest;
-  private Integer monthRequest;
+  private Integer year;
+  private Integer month;
   private Long total;
 }
