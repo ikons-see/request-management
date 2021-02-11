@@ -1,0 +1,59 @@
+<div class="info-message">
+    <span>{{'login-page.sign-up.title' | translate}}</span>
+</div>
+
+<form class="form-group" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+        <input type="text" class="form-control" formControlName="firstName" placeholder="First Name">
+        <div class="form-control-feedback" *ngIf="submitted && firstName().invalid">
+            {{'login-page.required-field' | translate}}
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" formControlName="lastName" placeholder="Last Name">
+        <div class="form-control-feedback" *ngIf="submitted && lastName().invalid">
+            {{'login-page.required-field' | translate}}
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" formControlName="login" placeholder="Username">
+        <div class="form-control-feedback" *ngIf="submitted && login().invalid">
+            {{'login-page.required-field' | translate}}
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="text" class="form-control" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$"
+            formControlName="email" placeholder="Email">
+        <div class="form-control-feedback" *ngIf="submitted && email().invalid && !email().errors?.pattern">
+            {{'login-page.required-field' | translate}}
+        </div>
+        <div class="form-control-feedback" *ngIf="submitted && email().invalid && email().errors?.pattern">
+            {{'login-page.sign-up.email-not-correct' | translate}}
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control" formControlName="password" placeholder="Password">
+        <div class="form-control-feedback" *ngIf="submitted && password().invalid">
+            {{'login-page.required-field' | translate}}
+        </div>
+    </div>
+    <div class="form-group">
+        <input type="password" class="form-control" formControlName="confirmPassword"
+            placeholder="Confirm Password">
+        <div class="form-control-feedback" *ngIf="submitted && !validPassword">
+            {{'login-page.sign-up.password-not-correct' | translate}}
+        </div>
+    </div>
+    <div class="form-actions">
+        <button class="btn btn-light">
+            <a [routerLink]="['login']" class="nav__link">
+                <span class="m-nav__link-text">
+                    {{'login-page.sign-up.cancel' | translate}}
+                </span>
+            </a>
+        </button>
+        <button type="submit" class="btn btn-primary">
+            {{'login-page.register' | translate}}
+        </button>
+    </div>
+</form>

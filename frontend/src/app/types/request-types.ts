@@ -58,3 +58,12 @@ export interface ChangeStatusRequest {
     requestStatus: RequestStatus;
     note: string;
 }
+
+export interface RegisterUserRequest {
+    firstName: string;
+    lastName: string;
+    login: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+}

@@ -5,7 +5,6 @@ import com.ikons.requestmanagement.core.dto.UserDTO;
 import com.ikons.requestmanagement.core.dto.RequestMailContentDTO;
 import com.ikons.requestmanagement.core.usecase.request.RequestActionNotification;
 import com.ikons.requestmanagement.core.usecase.user.UserActionNotification;
-import com.ikons.requestmanagement.dataprovider.database.entity.User;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.context.MessageSource;
 import org.springframework.mail.MailException;
@@ -20,7 +19,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.stream.Collectors;
 
 @Service
 @Log4j2
@@ -120,7 +118,8 @@ public class MailService implements UserActionNotification, RequestActionNotific
   }
 
   @Override
-  public void sendRequestCreationEmail(List<String> emails, RequestMailContentDTO requestMailContent) {
+  @Async
+  public void sendRequestSummaryEmail(final List<String> emails, final RequestMailContentDTO requestMailContent) {
     sendRequestEmailFromTemplate(emails, requestMailContent,"mail/requestEmail", "email.request.title");
   }
 }

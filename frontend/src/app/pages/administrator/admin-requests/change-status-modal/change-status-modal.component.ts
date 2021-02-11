@@ -1,16 +1,18 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { changeRequestStatus } from '../../../../store/administrator/administrator-actions';
 import { ApplicationState } from '../../../../app.module';
 import { ButtonConfiguration, ButtonType, RequestStatus } from '../../../../types/data-types';
+import { TranslateService } from '@ngx-translate/core';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-change-status-modal',
   templateUrl: './change-status-modal.component.html',
   styleUrls: ['./change-status-modal.component.scss']
 })
-export class ChangeStatusModalComponent implements OnInit {
+export class ChangeStatusModalComponent implements OnInit, OnDestroy {
 
   @Input()
   requestId: number;
@@ -23,28 +25,49 @@ export class ChangeStatusModalComponent implements OnInit {
   buttons: Array<ButtonConfiguration>;
   statuses = RequestStatus;
   validNotes: boolean = true;
+  translationSub: Subscription;
 
   constructor(private store: Store<ApplicationState>,
-    public bsModalRef: BsModalRef) { }
+    public bsModalRef: BsModalRef,
+    private translate: TranslateService) { }
 
   ngOnInit(): void {
-    this.initButtons();
-    this.getModalTitle();
+    this.translationSub =  this.translate.get('change-status').subscribe(translations => {
+      this.init(translations);
+     });
   }
 
-  initButtons() {
+  init(translations: { [key: string]: string }) {
     this.buttons = [
       {
-        text: "Cancel",
+        text: translations['cancel'],
         type: ButtonType.SECONDARY,
         onClick: (e) => this.closeModal()
       },
       {
-        text: "Continue",
+        text: translations['continue'],
         type: ButtonType.DARK,
         onClick: (e) => this.performAction()
       }
-    ]
+    ];
+
+    switch (this.status) {
+      case RequestStatus.ON_GOING:
+        this.title = translations['take-in-charge'];
+        break;
+      case RequestStatus.PENDING:
+        this.title = translations['pending'];
+        break;
+      case RequestStatus.REJECTED:
+        this.title = translations['reject'];
+        break;
+      case RequestStatus.CLOSED:
+        this.title = translations['close-request'];
+        break;
+      default:
+        this.title = translations['default-title'];
+        break;
+    }
   }
 
   checkNotes(e) {
@@ -71,24 +94,7 @@ export class ChangeStatusModalComponent implements OnInit {
     this.bsModalRef.hide();
   }
 
-  getModalTitle() {
-    switch (this.status) {
-      case RequestStatus.ON_GOING:
-        this.title = 'Taking in charge request #';
-        break;
-      case RequestStatus.PENDING:
-        this.title = 'Pending request #';
-        break;
-      case RequestStatus.REJECTED:
-        this.title = 'Rejecting request #';
-        break;
-      case RequestStatus.CLOSED:
-        this.title = 'Closing request #';
-        break;
-      default:
-        this.title = 'Changing status for request #';
-        break;
-    }
+  ngOnDestroy() {
+    this.translationSub.unsubscribe();
   }
-
 }

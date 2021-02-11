@@ -1,9 +1,9 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
+import { CommonModule, LOCATION_INITIALIZED } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
+import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { DatePipe } from '@angular/common';
 
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
@@ -14,13 +14,13 @@ import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgSelectModule } from '@ng-select/ng-select';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 
 import { AppComponent } from './app.component';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
 import { ModalComponent } from './components/modal/modal.component';
 import { TableComponent } from './components/table/table.component';
 import { AppRoutingModule } from './app-routing.module';
-import { LoginComponent } from './pages/login/login.component';
 import { RequesterComponent } from './pages/requester/requester.component';
 import { NavigationTabComponent } from './components/navigation-bar/navigation-tab/navigation-tab.component';
 import { PageComponent } from './components/page/page.component';
@@ -60,6 +60,11 @@ import { AuthInterceptor } from './endpoint/interceptors/token-interceptor.servi
 import { AuthExpiredInterceptor } from './endpoint/interceptors/auth-expired.interceptor';
 import { ChangeStatusModalComponent } from './pages/administrator/admin-requests/change-status-modal/change-status-modal.component';
 import { RequestHistoryModalComponent } from './pages/administrator/admin-requests/request-history-modal/request-history-modal.component';
+import { SignInComponent } from './pages/login/sign-in/sign-in.component';
+import { SignUpComponent } from './pages/login/sign-up/sign-up.component';
+import { LoginPageComponent } from './pages/login/login.component';
+import { TranslateLoader } from '@ngx-translate/core';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 
 export interface ApplicationState {
   [requesterReducer.featureKey]: requesterReducer.State,
@@ -79,13 +84,19 @@ const effects = [
   GlobalEffects
 ];
 
+export function HttpLoaderFactory(httpClient: HttpClient) {
+  return new MultiTranslateHttpLoader(httpClient, [
+    { prefix: './assets/i18n/', suffix: '.json' }
+  ]);
+}
+
 @NgModule({
   declarations: [
     AppComponent,
     NavigationBarComponent,
     ModalComponent,
     TableComponent,
-    LoginComponent,
+    LoginPageComponent,
     RequesterComponent,
     NavigationTabComponent,
     PageComponent,
@@ -115,7 +126,9 @@ const effects = [
     AuthenticatedAppComponent,
     AdminRequestsComponent,
     ChangeStatusModalComponent,
-    RequestHistoryModalComponent
+    RequestHistoryModalComponent,
+    SignInComponent,
+    SignUpComponent
   ],
   imports: [
     BrowserModule,
@@ -126,6 +139,13 @@ const effects = [
     NgSelectModule,
     ReactiveFormsModule,
     HttpClientModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    }),
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     BsDropdownModule.forRoot(),
@@ -155,13 +175,14 @@ const effects = [
       provide: HTTP_INTERCEPTORS,
       useClass: AuthExpiredInterceptor,
       multi: true
-    },
+    }
   ],
   entryComponents: [
     AddRequestModalComponent,
     ViewDetailsModalComponent,
     EditDetailsModalComponent,
-    DeleteRequestModalComponent
+    DeleteRequestModalComponent,
+    RequestHistoryModalComponent
   ],
   bootstrap: [AppComponent]
 })

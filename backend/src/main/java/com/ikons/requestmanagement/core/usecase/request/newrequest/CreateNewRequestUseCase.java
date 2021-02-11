@@ -1,17 +1,16 @@
 package com.ikons.requestmanagement.core.usecase.request.newrequest;
 
 
-import com.ikons.requestmanagement.core.dto.AreaOfInterestDTO;
-import com.ikons.requestmanagement.core.dto.RequestDetailsDTO;
-import com.ikons.requestmanagement.core.dto.RequestMailContentDTO;
-import com.ikons.requestmanagement.core.dto.ResourceDTO;
+import com.ikons.requestmanagement.core.dto.*;
 import com.ikons.requestmanagement.core.usecase.request.RequestActionNotification;
 import com.ikons.requestmanagement.core.usecase.request.RequestDetailsManagement;
+import com.ikons.requestmanagement.core.usecase.request.RequestMailContentUseCase;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Service;
+import org.zalando.problem.Status;
 
 import javax.transaction.Transactional;
 import java.time.Instant;
@@ -24,11 +23,11 @@ public class CreateNewRequestUseCase {
 
   private final CreateRequest createRequest;
   private final UserManagement userManagement;
-  private final RequestDetailsManagement getRequest;
+  private final RequestDetailsManagement requestDetailsManagement;
   private final RequestActionNotification requestActionNotification;
+  private final RequestMailContentUseCase requestMailContentUseCase;
 
-  @Transactional
-  public Long createRequest(
+  public void createRequest(
       final AreaOfInterestDTO areaOfInterest,
       final Instant startDate,
       final Instant endDate,
@@ -38,30 +37,19 @@ public class CreateNewRequestUseCase {
       final List<ResourceDTO> resources
   ) {
     final long requestId = createRequest.createNewRequest(areaOfInterest, startDate, endDate, projectDescription, otherNotes, user, resources);
-    return requestId;
+    requestDetailsManagement.logRequestState(requestId, user, RequestStatusDTO.CREATED, null);
+    sendRequestCreationEmail(requestId);
   }
 
   public void sendRequestCreationEmail(final Long requestId) {
     final List<String> administratorsEmails = userManagement.getAdministratorsEmails();
-    final RequestMailContentDTO requestMailContent = generate(requestId);
+    final RequestMailContentDTO requestMailContent = requestMailContentUseCase.generate(requestId);
+    requestMailContent.setOperation(RequestStatusDTO.CREATED.name());
     try {
-      requestActionNotification.sendRequestCreationEmail(administratorsEmails, requestMailContent);
+      requestActionNotification.sendRequestSummaryEmail(administratorsEmails, requestMailContent);
     } catch (MailSendException e) {
       log.debug("error sending email", e);
     }
   }
 
-  private RequestMailContentDTO generate(final long requestId) {
-    final RequestDetailsDTO requestDetails = getRequest.getRequestDetails(requestId);
-    return RequestMailContentDTO.builder()
-        .requestId(requestId)
-        .areaOfInterest(requestDetails.getAreaOfInterest())
-        .startDate(requestDetails.getStartDate())
-        .endDate(requestDetails.getEndDate())
-        .notes(requestDetails.getNotes())
-        .projectDescription(requestDetails.getProjectDescription())
-        .displayName(requestDetails.getDisplayName())
-        .resources(requestDetails.getResources())
-        .build();
-  }
 }

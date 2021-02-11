@@ -1,0 +1,46 @@
+<div class="info-message">
+  <span>{{'login-page.title' | translate}}</span>
+</div>
+
+<div class="alert alert-danger alert-dismissible animated fadeIn" role="alert"
+  *ngIf="(errorMessage$ | async) && !messageDismissed">
+  <button type="button" class="close pull-right" aria-label="Close" (click)="hideMessage()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <span>{{errorMessage$ | async}}</span>
+</div>
+
+<form class="form-group" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <input type="text" class="form-control" formControlName="username" placeholder="Username">
+    <div class="form-control-feedback" *ngIf="submitted && username().invalid">
+      {{'login-page.required-field' | translate}}
+    </div>
+  </div>
+  <div class="form-group">
+    <input type="password" class="form-control" formControlName="password" placeholder="Password">
+    <div class="form-control-feedback" *ngIf="submitted && password().invalid">
+      {{'login-page.required-field' | translate}}
+    </div>
+  </div>
+  <div class="form-check">
+    <input type="checkbox" class="form-check-input" (change)="onCheckChange($event)">
+    <label class="form-check-label" for="exampleCheck1">
+      {{'login-page.remember-me' | translate}}
+    </label>
+  </div>
+  <div class="form-actions">
+    <button type="submit" class="btn btn-primary">
+    {{'login-page.sign-in' | translate}}
+    </button>
+  </div>
+</form>
+
+<div class="register-user">
+  <span>{{'login-page.new-user' | translate}}</span>
+  <a [routerLink]="['register']" class="m-nav__link">
+    <span class="m-nav__link-text">
+      {{'login-page.register' | translate}}
+    </span>
+  </a>
+</div>

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-loading-view',
@@ -11,9 +12,9 @@ export class LoadingViewComponent implements OnInit {
   icon: string = 'fa-search';
 
   @Input()
-  message: string = 'Loading...';
+  message: string = this.translate.instant('loading-view.title');
   
-  constructor() { }
+  constructor(private translate: TranslateService) { }
 
   ngOnInit(): void {
   }

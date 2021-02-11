@@ -2,15 +2,18 @@ package com.ikons.requestmanagement.dataprovider.database.services;
 
 import com.ikons.requestmanagement.config.Constants;
 import com.ikons.requestmanagement.core.dto.UserDTO;
+import com.ikons.requestmanagement.core.usecase.request.exception.MissingRequestException;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import com.ikons.requestmanagement.core.usecase.user.exception.EmailAlreadyUsedException;
 import com.ikons.requestmanagement.core.usecase.user.exception.InvalidPasswordException;
 import com.ikons.requestmanagement.core.usecase.user.exception.MissingUserException;
 import com.ikons.requestmanagement.core.usecase.user.exception.UsernameAlreadyUsedException;
 import com.ikons.requestmanagement.dataprovider.database.entity.Authority;
+import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity;
 import com.ikons.requestmanagement.dataprovider.database.entity.User;
 import com.ikons.requestmanagement.dataprovider.database.mapper.UserMapper;
 import com.ikons.requestmanagement.dataprovider.database.repository.AuthorityRepository;
+import com.ikons.requestmanagement.dataprovider.database.repository.RequestRepository;
 import com.ikons.requestmanagement.dataprovider.database.repository.UserRepository;
 import com.ikons.requestmanagement.security.AuthoritiesConstants;
 import com.ikons.requestmanagement.security.SecurityUtils;
@@ -32,6 +35,7 @@ import java.util.stream.Collectors;
 
 @Service
 @Log4j2
+@Transactional
 public class UserManagementImpl implements UserManagement {
     private static final List<String> ALLOWED_ORDERED_PROPERTIES = Collections.unmodifiableList(Arrays.asList("id", "login", "firstName", "lastName", "email", "activated", "langKey"));
 
@@ -39,17 +43,19 @@ public class UserManagementImpl implements UserManagement {
     private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
     private final CacheManager cacheManager;
+    private final RequestRepository requestRepository;
 
     public UserManagementImpl(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
             AuthorityRepository authorityRepository,
-            CacheManager cacheManager
-    ) {
+            CacheManager cacheManager,
+            final RequestRepository requestRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.requestRepository = requestRepository;
     }
 
     @Override
@@ -61,7 +67,8 @@ public class UserManagementImpl implements UserManagement {
                     user.setActivationKey(null);
                     this.clearUserCaches(user);
                     log.debug("Activated user: {}", user);
-                    return UserMapper.userToUserDTO(user);
+                    // avoid using UserMapper because authorities aren't loaded, and it'll throw LazyInitializationException
+                    return UserMapper.userToUserDTO(user, true);
                 });
     }
 
@@ -75,7 +82,7 @@ public class UserManagementImpl implements UserManagement {
                     user.setResetKey(null);
                     user.setResetDate(null);
                     this.clearUserCaches(user);
-                    return UserMapper.userToUserDTO(user);
+                    return UserMapper.userToUserDTO(user, true);
                 });
     }
 
@@ -87,7 +94,7 @@ public class UserManagementImpl implements UserManagement {
                     user.setResetKey(RandomUtil.generateResetKey());
                     user.setResetDate(Instant.now());
                     this.clearUserCaches(user);
-                    return UserMapper.userToUserDTO(user);
+                    return UserMapper.userToUserDTO(user, true);
                 });
     }
 
@@ -122,7 +129,7 @@ public class UserManagementImpl implements UserManagement {
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         Set<Authority> authorities = new HashSet<>();
-        authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+        authorityRepository.findById(AuthoritiesConstants.REQUESTER).ifPresent(authorities::add);
         newUser.setAuthorities(authorities);
         userRepository.save(newUser);
         this.clearUserCaches(newUser);
@@ -219,17 +226,23 @@ public class UserManagementImpl implements UserManagement {
     }
 
     @Override
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl) {
+    public void updateAuthenticatedUser(UserDTO userDTO) {
+        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
+        if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
+            throw new EmailAlreadyUsedException();
+        }
+        userRepository.findOneByLogin(userDTO.getLogin()).orElseThrow(() -> new RuntimeException("User could not be found"));
+
         SecurityUtils.getCurrentUserLogin()
                 .flatMap(userRepository::findOneByLogin)
                 .ifPresent(user -> {
-                    user.setFirstName(firstName);
-                    user.setLastName(lastName);
-                    if (email != null) {
-                        user.setEmail(email.toLowerCase());
+                    user.setFirstName(userDTO.getFirstName());
+                    user.setLastName(userDTO.getLastName());
+                    if (userDTO.getEmail() != null) {
+                        user.setEmail(userDTO.getEmail().toLowerCase());
                     }
-                    user.setLangKey(langKey);
-                    user.setImageUrl(imageUrl);
+                    user.setLangKey(userDTO.getLangKey());
+                    user.setImageUrl(userDTO.getImageUrl());
                     this.clearUserCaches(user);
                     log.debug("Changed Information for User: {}", user);
                 });
@@ -255,7 +268,7 @@ public class UserManagementImpl implements UserManagement {
     @Override
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(UserMapper::userToUserDTO);
+        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(user -> UserMapper.userToUserDTO(user, true));
     }
 
     @Override
@@ -287,9 +300,14 @@ public class UserManagementImpl implements UserManagement {
     @Override
     public List<String> getAdministratorsEmails() {
         List<User> administrators = userRepository.findAllByAuthoritiesNameIn(Collections.singletonList("ROLE_ADMIN"));
-        return administrators.stream().filter(Objects::nonNull).map(a -> {
-            return a.getEmail();
-        }).collect(Collectors.toList());
+        return administrators.stream().filter(Objects::nonNull).map(User::getEmail).collect(Collectors.toList());
+    }
+
+    @Override
+    public String getRequesterEmail(long requestId) {
+        final RequestEntity requestEntity = requestRepository.findById(requestId).orElseThrow(() -> new MissingRequestException(requestId));
+        final User user = userRepository.findOneByLogin(requestEntity.getCreatedBy()).orElseThrow(() -> new MissingUserException());
+        return user.getEmail();
     }
 
 

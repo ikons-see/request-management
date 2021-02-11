@@ -14,3 +14,34 @@
 
     padding: 0;
 }
+
+ul {
+    padding: 0;
+}
+
+.dropdown {
+    border-top: 4px solid #1C202A;
+    span {
+        padding-right: .5rem;
+    }
+
+    li {
+        padding: .5rem;
+        padding-left: 1rem;
+        border-bottom: 1px solid #D3D3D3;
+        cursor: pointer;
+    }
+
+    .active {
+        background-color: #F1EDEE;
+    }
+}
+
+.dropdown-toggle {
+    padding: 1rem;
+    color: white;
+}
+
+.dropdown-toggle:focus {
+    outline: none;
+}

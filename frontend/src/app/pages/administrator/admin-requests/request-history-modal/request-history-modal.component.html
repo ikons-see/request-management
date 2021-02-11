@@ -1,1 +1,24 @@
-<p>request-history-modal works!</p>
+<app-modal [title]="('view-history.title' | translate) + requestId" [buttons]="buttons">
+  <table *ngIf="(events$ | async)?.length > 0">
+    <tr *ngFor="let event of events$ | async">
+      <div class="generic-info">
+        <td class="status {{event.operation.toLocaleLowerCase()}}">{{event.operation}}</td>
+        <td>by</td>
+        <td class="user">{{event.createdBy}}</td>
+        <td class="date">{{event.createdDate | date}}</td>
+      </div>
+      <div class="notes-container">
+        <td *ngIf="event.notes" class="notes">{{event.notes}}</td>
+      </div>
+    </tr>
+  </table>
+
+  <div class="error-container">
+    <app-error-view *ngIf="error$ | async"></app-error-view>
+  </div>
+
+  <div class="empty-container">
+    <app-empty-page icon="fa-info-circle" title="{{'view-history.no-records' | translate}}"
+       *ngIf="(events$ | async)?.length == 0"></app-empty-page>
+  </div>
+</app-modal>

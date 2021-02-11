@@ -1,10 +1,18 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from '@angular/common/http';
+import {HttpClient, HttpResponse} from '@angular/common/http';
 import { Observable, of } from "rxjs";
-import { RequestsListResponse } from "../types/response-types";
-import { AddRequest, ChangeStatusRequest, RequestFilters, UpdateRequest } from "../types/request-types";
+import { AccountData, AuditEvent, RequestsListResponse } from "../types/response-types";
+import {
+  AddRequest,
+  ChangeStatusRequest,
+  RegisterUserRequest,
+  RequestDetails,
+  RequestFilters,
+  UpdateRequest
+} from "../types/request-types";
 import { JWTToken } from "../types/data-types";
 import { tap } from "rxjs/operators";
+import {createRequestOption} from "./http-rest-utils";
 
 @Injectable({
     providedIn: 'root'
@@ -29,6 +37,11 @@ export class RequestsManagementService {
             size: 10
         }
         return this.httpClient.post<RequestsListResponse>(`api/requests-management/list-requests`, request);
+    }
+
+    getRequests(req?: any): Observable<HttpResponse<RequestDetails[]>> {
+      const options = createRequestOption(req);
+      return this.httpClient.get<RequestDetails[]>('api/requests-management/requests', {params: options, observe: 'response'});
     }
 
     addNewRequest(request: AddRequest): Observable<void> {
@@ -81,5 +94,17 @@ export class RequestsManagementService {
 
     changeRequestStatus(request: ChangeStatusRequest) {
         return this.httpClient.post<void>(`api/requests-management/change-status`, request);
+    }
+
+    registerUser(request: RegisterUserRequest) {
+        return this.httpClient.post<void>(`api/register`, request);
+    }
+
+    getUserInfo() {
+        return this.httpClient.get<AccountData>(`api/account`);
+    }
+
+    getStatusLog(requestId: number): Observable<Array<AuditEvent>> {
+        return this.httpClient.get<Array<AuditEvent>>(`api/requests-management/state-history/${requestId}`);
     }
 }

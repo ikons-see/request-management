@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { ApplicationState } from '../../app.module';
 import {
@@ -32,6 +33,7 @@ import { RequestDetails, RequestFilters } from '../../types/request-types';
 export class RequesterComponent implements OnInit, OnDestroy {
 
   tableConfiguration: TableConfig;
+  dropdownConfig: DropdownColumn;
   requests$: Observable<Array<RequestDetails>>;
   totalNumber$: Observable<number>;
   currentPage$: Observable<number>;
@@ -40,9 +42,16 @@ export class RequesterComponent implements OnInit, OnDestroy {
   showFilters: boolean = false;
   filters: RequestFilters;
   filtersSubscribtion: Subscription;
+  translationSub: Subscription;
+  itemsPerPage: number = 10;
+  links: any;
+  page: number;
+  predicate = 'requestId';
+  ascending: boolean;
 
-  constructor(private store: Store<ApplicationState>) {
-    this.loadData(1);
+  constructor(private store: Store<ApplicationState>,
+    private translate: TranslateService) {
+    this.loadData(0);
 
     this.currentPage$ = this.store.select(getCurrentPage);
     this.requests$ = this.store.select(getRequestsList);
@@ -53,75 +62,86 @@ export class RequesterComponent implements OnInit, OnDestroy {
     this.filtersSubscribtion = this.store.select(getFilters).subscribe(value => {
       this.filters = value;
     });
+    this.predicate = 'requestId';
+    this.ascending = true;
   }
 
   ngOnInit(): void {
-    this.initTable();
+    this.translationSub =  this.translate.get('requester').subscribe(translations => {
+      this.init(translations);
+     });
   }
 
   loadData(page: number) {
-    this.store.dispatch(requestData({ page }));
+
+    this.store.dispatch(requestData({ query: {page} }));
   }
 
-  initDropdown(): DropdownColumn {
-    return {
+  sort(): string[] {
+    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
+    if (this.predicate !== 'requestId') {
+      result.push('requestId');
+    }
+    return result;
+  }
+
+  init(translations: { [key: string]: string }) {
+    this.dropdownConfig = {
       button: {
-        text: 'Actions',
+        text: translations['actions'],
         icon: ''
       },
       values: [
         {
-          text: 'View details',
+          text: translations['view-details'],
           icon: 'fa-list',
           onClick: (e) => this.openDetailsModal(e)
         },
         {
-          text: 'Edit',
+          text: translations['edit'],
           icon: 'fa-edit',
           onClick: (e) => this.openEditRequestModal(e)
         },
         {
-          text: 'Delete',
+          text: translations['delete'],
           icon: 'fa-trash',
           onClick: (e) => this.deleteRequest(e)
         },
         {
-          text: 'Close',
+          text: translations['close'],
           icon: 'fa-close',
           onClick: (e) => this.closeRequest(e)
         }
       ]
-    }
-  };
+    };
 
-  initTable() {
     this.tableConfiguration = {
       columns: [
         {
           type: ColumnType.STRING,
           field: 'areaOfInterest',
-          text: 'Area of interest'
+          text: translations['area-of-interest']
         },
         {
           type: ColumnType.STATUS,
           field: 'status',
-          text: 'Status'
+          text: translations['status']
         },
         {
           type: ColumnType.DATE,
           field: 'startDate',
-          text: 'Start Date'
+          text: translations['start-date']
         },
         {
           type: ColumnType.DATE,
           field: 'endDate',
-          text: 'End Date'
+          text: translations['end-date']
         },
         {
           type: ColumnType.DROPDOWN,
           field: 'requestId',
-          text: 'Manage Request',
-          defaultContent: (datum) => this.initDropdown()
+          text: translations['manage-request'],
+          defaultContent: (datum) => this.dropdownConfig
         }
       ]
     };
@@ -166,5 +186,6 @@ export class RequesterComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.filtersSubscribtion.unsubscribe();
+    this.translationSub.unsubscribe();
   }
 }

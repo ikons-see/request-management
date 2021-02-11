@@ -9,6 +9,10 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserManagement {
+    public static final int PASSWORD_MIN_LENGTH = 4;
+
+    public static final int PASSWORD_MAX_LENGTH = 100;
+
     public Optional<UserDTO> activateRegistration(String key);
 
     public Optional<UserDTO> completePasswordReset(String newPassword, String key);
@@ -23,7 +27,7 @@ public interface UserManagement {
 
     public void deleteUser(String login);
 
-    public void updateUser(String firstName, String lastName, String email, String langKey, String imageUrl);
+    public void updateAuthenticatedUser(UserDTO userDTO);
 
     public void changePassword(String currentClearTextPassword, String newPassword);
 
@@ -36,5 +40,7 @@ public interface UserManagement {
     List<String> getAuthorities();
 
     List<String> getAdministratorsEmails();
+
+    String getRequesterEmail(long requestId);
 
 }

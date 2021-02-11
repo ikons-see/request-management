@@ -13,16 +13,9 @@ export class PageComponent implements OnInit {
 
   @Input()
   navigationTabs: Array<NavigationTab>;
-
-  @Output()
-  signingOut = new EventEmitter();
   
   constructor() { }
 
   ngOnInit(): void {
-  }
-
-  signOut() {
-    this.signingOut.emit();
   }
 }

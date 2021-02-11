@@ -58,6 +58,7 @@ public class UserResource {
     }
     try {
       UserDTO user = this.userUseCase.createUser(userDTO);
+
       HttpHeaders headers = HeaderUtil.createAlert("", "userManagement.created", user.getLogin());
       return ResponseEntity
           .created(new URI("/api/users/" + user.getLogin()))

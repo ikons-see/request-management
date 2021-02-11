@@ -1,11 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
+import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { ApplicationState } from '../../../app.module';
 import {
   addRequestFilters,
   openChangeStatusModal,
   openViewDetailsModal,
+  openViewHistoryModal,
   pageChanged,
   requestData,
   resetRequestFilters
@@ -26,9 +28,10 @@ import { RequestDetails, RequestFilters } from '../../../types/request-types';
   templateUrl: './admin-requests.component.html',
   styleUrls: ['./admin-requests.component.scss']
 })
-export class AdminRequestsComponent implements OnInit {
+export class AdminRequestsComponent implements OnInit, OnDestroy {
 
   tableConfiguration: TableConfig;
+  dropdownConfig: DropdownColumn;
   requests$: Observable<Array<RequestDetails>>;
   totalNumber$: Observable<number>;
   currentPage$: Observable<number>;
@@ -37,8 +40,10 @@ export class AdminRequestsComponent implements OnInit {
   showFilters: boolean = false;
   filters: RequestFilters;
   filtersSubscribtion: Subscription;
+  translationSub: Subscription;
 
-  constructor(private store: Store<ApplicationState>) {
+  constructor(private store: Store<ApplicationState>,
+    private translate: TranslateService) {
     this.loadData(1);
 
     this.currentPage$ = this.store.select(getCurrentPage);
@@ -53,78 +58,79 @@ export class AdminRequestsComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.initTable();
+    this.translationSub =  this.translate.get('admin').subscribe(translations => {
+      this.init(translations);
+     });
   }
 
-  initDropdown(): DropdownColumn {
-    return {
+  init(translations: { [key: string]: string }) {
+    this.dropdownConfig = {
       button: {
-        text: 'Actions',
+        text: translations['actions'],
         icon: ''
       },
       values: [
         {
-          text: 'View details',
+          text: translations['view-details'],
           icon: 'fa-list',
           onClick: (e) => this.openDetailsModal(e)
         },
         {
-          text: 'View history',
+          text: translations['view-history'],
           icon: 'fa-history',
           onClick: (e) => this.openViewHistoryModal(e)
         },
         {
-          text: 'Take charge',
+          text: translations['take-charge'],
           icon: 'fa-edit',
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.ON_GOING)
         },
         {
-          text: 'Reject',
+          text: translations['reject'],
           icon: 'fa-trash',
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.REJECTED)
         },
         {
-          text: 'Pending information',
+          text: translations['pending-information'],
           icon: 'fa-info-circle',
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.PENDING)
         },
         {
-          text: 'Close',
+          text: translations['close'],
           icon: 'fa-close',
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.CLOSED)
         }
       ]
-    }
-  };
+    };
 
-  initTable() {
+
     this.tableConfiguration = {
       columns: [
         {
           type: ColumnType.STRING,
           field: 'areaOfInterest',
-          text: 'Area of interest'
+          text: translations['area-of-interest']
         },
         {
           type: ColumnType.STATUS,
           field: 'status',
-          text: 'Status'
+          text: translations['status']
         },
         {
           type: ColumnType.DATE,
           field: 'startDate',
-          text: 'Start Date'
+          text: translations['start-date']
         },
         {
           type: ColumnType.DATE,
           field: 'endDate',
-          text: 'End Date'
+          text: translations['end-date']
         },
         {
           type: ColumnType.DROPDOWN,
           field: 'requestId',
-          text: 'Manage Request',
-          defaultContent: (datum) => this.initDropdown()
+          text: translations['manage-request'],
+          defaultContent: (datum) => this.dropdownConfig
         }
       ]
     };
@@ -152,7 +158,7 @@ export class AdminRequestsComponent implements OnInit {
   }
 
   openViewHistoryModal(e) {
-    console.log('View history');
+    this.store.dispatch(openViewHistoryModal({requestId: e}));
   }
 
   applyFilters(e) {
@@ -163,5 +169,8 @@ export class AdminRequestsComponent implements OnInit {
     this.store.dispatch(resetRequestFilters());
   }
 
-
+  ngOnDestroy() {
+    this.filtersSubscribtion.unsubscribe();
+    this.translationSub.unsubscribe();
+  }
 }
