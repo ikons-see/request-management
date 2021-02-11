@@ -97,7 +97,7 @@ public class RequestsResource {
     return listRequestsUseCase.getAllRequests(pageable);
   }
 
-  @GetMapping("/request")
+  @GetMapping("/requests")
   public ResponseEntity<List<RequestDetailsDTO>> getRequests(
       final RequestCriteria criteria,
       final Pageable pageable

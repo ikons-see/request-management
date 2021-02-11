@@ -206,8 +206,8 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   protected Specification<RequestEntity> createSpecification(RequestCriteria criteria) {
     Specification<RequestEntity> specification = Specification.where(null);
     if (criteria != null) {
-      if (criteria.getAreOfInterest() != null) {
-        specification = specification.and(buildSpecification(criteria.getAreOfInterest(), RequestEntity_.areaOfInterest));
+      if (criteria.getAreaOfInterest() != null) {
+        specification = specification.and(buildSpecification(criteria.getAreaOfInterest(), RequestEntity_.areaOfInterest));
       }
       if (criteria.getDisplayName() != null) {
         specification = specification.and(buildStringSpecification(criteria.getDisplayName(), RequestEntity_.createdBy));

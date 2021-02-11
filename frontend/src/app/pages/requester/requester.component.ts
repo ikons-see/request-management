@@ -43,10 +43,15 @@ export class RequesterComponent implements OnInit, OnDestroy {
   filters: RequestFilters;
   filtersSubscribtion: Subscription;
   translationSub: Subscription;
+  itemsPerPage: number = 10;
+  links: any;
+  page: number;
+  predicate = 'requestId';
+  ascending: boolean;
 
   constructor(private store: Store<ApplicationState>,
     private translate: TranslateService) {
-    this.loadData(1);
+    this.loadData(0);
 
     this.currentPage$ = this.store.select(getCurrentPage);
     this.requests$ = this.store.select(getRequestsList);
@@ -57,6 +62,8 @@ export class RequesterComponent implements OnInit, OnDestroy {
     this.filtersSubscribtion = this.store.select(getFilters).subscribe(value => {
       this.filters = value;
     });
+    this.predicate = 'requestId';
+    this.ascending = true;
   }
 
   ngOnInit(): void {
@@ -66,7 +73,16 @@ export class RequesterComponent implements OnInit, OnDestroy {
   }
 
   loadData(page: number) {
-    this.store.dispatch(requestData({ page }));
+
+    this.store.dispatch(requestData({ query: {page} }));
+  }
+
+  sort(): string[] {
+    const result = [this.predicate + ',' + (this.ascending ? 'asc' : 'desc')];
+    if (this.predicate !== 'requestId') {
+      result.push('requestId');
+    }
+    return result;
   }
 
   init(translations: { [key: string]: string }) {
