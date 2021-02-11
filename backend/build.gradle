@@ -5,6 +5,7 @@ plugins {
 	id 'org.springframework.boot' apply true
 	id 'io.spring.dependency-management' apply true
 	id 'org.liquibase.gradle' apply true
+	id "com.google.cloud.tools.jib" apply true
 }
 
 
@@ -17,6 +18,8 @@ configurations {
 repositories {
 	mavenCentral()
 }
+
+apply from: "gradle/docker.gradle"
 
 if (project.hasProperty("prod")) {
 	apply from: "gradle/profile.prod.gradle"

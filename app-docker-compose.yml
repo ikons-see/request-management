@@ -1,0 +1,19 @@
+version: '2'
+services:
+  requestmanagement-mariadb:
+    extends:
+      file: backend/src/main/docker/mariadb.yml
+      service: requestmanagement-mariadb
+  requestmanagement-app:
+    image: requestmanagament:0.0.1-SNAPSHOT
+    environment:
+      - _JAVA_OPTIONS=-Xmx512m -Xms256m
+      - SPRING_PROFILES_ACTIVE=prod
+      - SPRING_DATASOURCE_URL=jdbc:mariadb://requestmanagement-mariadb:3306/requestmanagement?useLegacyDatetimeCode=false&serverTimezone=UTC
+      - IKONS_SLEEP=30 # gives time for other services to boot before the application
+    depends_on:
+      - requestmanagement-mariadb
+  requestmanagement-ui:
+    build: frontend
+    ports:
+    - "80:80"
