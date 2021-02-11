@@ -7,7 +7,6 @@ import {
   ChangeStatusRequest,
   RegisterUserRequest,
   RequestDetails,
-  RequestFilters,
   UpdateRequest
 } from "../types/request-types";
 import { JWTToken } from "../types/data-types";

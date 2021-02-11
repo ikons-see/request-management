@@ -6,11 +6,13 @@ import { Store } from "@ngrx/store";
 import { TranslateService } from "@ngx-translate/core";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { Observable, of } from "rxjs";
-import { catchError, flatMap, map, mergeMap, switchMap } from "rxjs/operators";
+import { catchError, flatMap, mergeMap, switchMap } from "rxjs/operators";
 import { ApplicationState } from "../../app.module";
 import { RequestsManagementService } from "../../endpoint/requests-management.service";
 import {
     changeLanguage,
+    loadProfile,
+    loadProfileFailure,
     loadProfileSuccessful,
     loginFailure,
     loginRequest,
@@ -57,8 +59,9 @@ export class GlobalEffects {
                 .pipe(
                     mergeMap(_ => this.requestsService.getUserInfo()),
                     mergeMap(response => {
+                        console.log('user info', response);
                         return [
-                            loadProfileSuccessful({userData: response}),
+                            loadProfileSuccessful({ userData: response }),
                             loginSuccess({})
                         ]
                     }),
@@ -67,6 +70,29 @@ export class GlobalEffects {
                         ))
                 )
         })));
+
+    loadUserData$ = createEffect(() => this.actions$.pipe(
+        ofType(loadProfile),
+        switchMap((action) => {
+            return this.requestsService.getUserInfo()
+                .pipe(
+                    switchMap(response => {
+                        return [
+                            loadProfileSuccessful({ userData: response })
+                        ]
+                    }),
+                    catchError((error: HttpErrorResponse) =>
+                        of(loadProfileFailure({ errorMessage: error.message }),
+                        ))
+                )
+        })));
+
+    loadProfileAfterRehydrate$ = createEffect(() => this.actions$.pipe(
+        ofType(rehydrateSuccess),
+        mergeMap(() => [
+            loadProfile()
+        ])
+    ));
 
     forceRedirectToAppliation$ = createEffect(() => this.actions$.pipe(
         ofType(loginSuccess),
