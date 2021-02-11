@@ -6,6 +6,7 @@ import { logoutRequest } from '../../store/global/global-actions';
 import { ApplicationState } from '../../app.module';
 import { NavigationTab, Role } from '../../types/data-types';
 import { getUserRole } from 'src/app/store/global/global-reducer';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-authenticated-app',
@@ -22,7 +23,8 @@ export class AuthenticatedAppComponent implements OnInit, OnDestroy {
   role: Role;
 
   constructor(private store: Store<ApplicationState>,
-    private translate: TranslateService) {
+    private translate: TranslateService,
+    private route: Router) {
       this.store.select(getUserRole).subscribe(value => {
         this.role = value;
       });
@@ -62,6 +64,8 @@ export class AuthenticatedAppComponent implements OnInit, OnDestroy {
       tabName: translations['sign-out'],
       tabId: String(this.tabs.length)
     }
+    
+    this.route.navigate(['/app/' + this.tabs[0].href]);
   }
 
   signOut() {

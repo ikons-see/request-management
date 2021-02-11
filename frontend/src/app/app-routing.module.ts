@@ -10,6 +10,7 @@ import { SignInComponent } from './pages/login/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/login/sign-up/sign-up.component';
 import { LoginPageComponent } from './pages/login/login.component';
 import { RouteAccessGuard } from './endpoint/guards/route-access.guard';
+import { Role } from './types/data-types';
 
 const routes: Routes = [
   {
@@ -25,10 +26,22 @@ const routes: Routes = [
     component: AuthenticatedAppComponent,
     canActivate: [AuthenticationGuard],
     children: [
-      { path: '', redirectTo: 'requester', pathMatch: 'full' },
-      { path: 'requester', component: RequesterComponent},
+      { 
+        path: 'requester', 
+        component: RequesterComponent,
+        canActivate: [RouteAccessGuard],
+        data: {
+          role: Role.requester,
+        },
+      },
       {
-        path: 'administrator', component: AdministratorComponent, children: [
+        path: 'administrator', 
+        component: AdministratorComponent, 
+        canActivate: [RouteAccessGuard],
+        data: {
+          role: Role.admin,
+        },
+        children: [
           { path: '', redirectTo: 'requests', pathMatch: 'full' },
           { path: 'requests', component: AdminRequestsComponent },
           { path: 'charts', component: ChartsViewComponent }

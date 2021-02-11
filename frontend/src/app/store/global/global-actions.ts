@@ -20,4 +20,6 @@ export const logoutRequest = createAction(`[${featureKey}] logoutRequest`);
 export const registerUser = createAction(`[${featureKey}] registerUser`, props<{ userData: RegisterUserRequest }>());
 export const registerUserSuccess = createAction(`[${featureKey}] registerUserSuccess`);
 export const registerUserFailure = createAction(`[${featureKey}] registerUserFailure`, props<{ errorMessage: string }>());
+export const loadProfile = createAction(`[${featureKey}] loadProfile`);
 export const loadProfileSuccessful = createAction(`[${featureKey}] loadProfileSuccessful`, props<{ userData: AccountData }>());
+export const loadProfileFailure = createAction(`[${featureKey}] loadProfileFailure`, props<{ errorMessage: string }>());
