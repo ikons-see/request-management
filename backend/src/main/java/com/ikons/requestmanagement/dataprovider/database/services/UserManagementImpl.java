@@ -2,15 +2,18 @@ package com.ikons.requestmanagement.dataprovider.database.services;
 
 import com.ikons.requestmanagement.config.Constants;
 import com.ikons.requestmanagement.core.dto.UserDTO;
+import com.ikons.requestmanagement.core.usecase.request.exception.MissingRequestException;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
 import com.ikons.requestmanagement.core.usecase.user.exception.EmailAlreadyUsedException;
 import com.ikons.requestmanagement.core.usecase.user.exception.InvalidPasswordException;
 import com.ikons.requestmanagement.core.usecase.user.exception.MissingUserException;
 import com.ikons.requestmanagement.core.usecase.user.exception.UsernameAlreadyUsedException;
 import com.ikons.requestmanagement.dataprovider.database.entity.Authority;
+import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity;
 import com.ikons.requestmanagement.dataprovider.database.entity.User;
 import com.ikons.requestmanagement.dataprovider.database.mapper.UserMapper;
 import com.ikons.requestmanagement.dataprovider.database.repository.AuthorityRepository;
+import com.ikons.requestmanagement.dataprovider.database.repository.RequestRepository;
 import com.ikons.requestmanagement.dataprovider.database.repository.UserRepository;
 import com.ikons.requestmanagement.security.AuthoritiesConstants;
 import com.ikons.requestmanagement.security.SecurityUtils;
@@ -40,17 +43,19 @@ public class UserManagementImpl implements UserManagement {
     private final PasswordEncoder passwordEncoder;
     private final AuthorityRepository authorityRepository;
     private final CacheManager cacheManager;
+    private final RequestRepository requestRepository;
 
     public UserManagementImpl(
             UserRepository userRepository,
             PasswordEncoder passwordEncoder,
             AuthorityRepository authorityRepository,
-            CacheManager cacheManager
-    ) {
+            CacheManager cacheManager,
+            final RequestRepository requestRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.authorityRepository = authorityRepository;
         this.cacheManager = cacheManager;
+        this.requestRepository = requestRepository;
     }
 
     @Override
@@ -222,13 +227,13 @@ public class UserManagementImpl implements UserManagement {
 
     @Override
     public void updateAuthenticatedUser(UserDTO userDTO) {
-      Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
-      if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
-        throw new EmailAlreadyUsedException();
-      }
-      userRepository.findOneByLogin(userDTO.getLogin()).orElseThrow(() -> new RuntimeException("User could not be found"));
+        Optional<User> existingUser = userRepository.findOneByEmailIgnoreCase(userDTO.getEmail());
+        if (existingUser.isPresent() && (!existingUser.get().getLogin().equalsIgnoreCase(userDTO.getLogin()))) {
+            throw new EmailAlreadyUsedException();
+        }
+        userRepository.findOneByLogin(userDTO.getLogin()).orElseThrow(() -> new RuntimeException("User could not be found"));
 
-      SecurityUtils.getCurrentUserLogin()
+        SecurityUtils.getCurrentUserLogin()
                 .flatMap(userRepository::findOneByLogin)
                 .ifPresent(user -> {
                     user.setFirstName(userDTO.getFirstName());
@@ -263,7 +268,7 @@ public class UserManagementImpl implements UserManagement {
     @Override
     @Transactional(readOnly = true)
     public Page<UserDTO> getAllManagedUsers(Pageable pageable) {
-        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map( user -> UserMapper.userToUserDTO(user, true));
+        return userRepository.findAllByLoginNot(pageable, Constants.ANONYMOUS_USER).map(user -> UserMapper.userToUserDTO(user, true));
     }
 
     @Override
@@ -296,6 +301,13 @@ public class UserManagementImpl implements UserManagement {
     public List<String> getAdministratorsEmails() {
         List<User> administrators = userRepository.findAllByAuthoritiesNameIn(Collections.singletonList("ROLE_ADMIN"));
         return administrators.stream().filter(Objects::nonNull).map(User::getEmail).collect(Collectors.toList());
+    }
+
+    @Override
+    public String getRequesterEmail(long requestId) {
+        final RequestEntity requestEntity = requestRepository.findById(requestId).orElseThrow(() -> new MissingRequestException(requestId));
+        final User user = userRepository.findOneByLogin(requestEntity.getCreatedBy()).orElseThrow(() -> new MissingUserException());
+        return user.getEmail();
     }
 
 

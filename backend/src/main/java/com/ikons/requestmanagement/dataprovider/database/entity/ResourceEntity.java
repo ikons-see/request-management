@@ -1,5 +1,6 @@
 package com.ikons.requestmanagement.dataprovider.database.entity;
 
+import com.ikons.requestmanagement.core.dto.SeniorityDTO;
 import lombok.*;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
@@ -18,8 +19,9 @@ public class ResourceEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long resourceId;
 
+    @Enumerated(EnumType.STRING)
     @Column
-    private String seniority;
+    private SeniorityDTO seniority;
 
     @Column
     private String skills;

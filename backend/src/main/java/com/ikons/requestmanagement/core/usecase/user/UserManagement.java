@@ -41,4 +41,6 @@ public interface UserManagement {
 
     List<String> getAdministratorsEmails();
 
+    String getRequesterEmail(long requestId);
+
 }

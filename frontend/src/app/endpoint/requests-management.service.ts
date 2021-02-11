@@ -31,6 +31,8 @@ export class RequestsManagementService {
         return this.httpClient.post<RequestsListResponse>(`api/requests-management/list-requests`, request);
     }
 
+    getRequests() {}
+
     addNewRequest(request: AddRequest): Observable<void> {
         return this.httpClient.post<void>(`api/requests-management/create-new-request`, request);
     }
