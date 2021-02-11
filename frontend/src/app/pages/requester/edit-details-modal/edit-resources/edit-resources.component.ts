@@ -72,7 +72,7 @@ export class EditResourcesComponent implements OnInit {
   removeResource(index: number, item: Resource) {
     this.isCollapsed.splice(index, 1);
     this.currentResources.splice(index, 1);
-    this.deletedResources.push(item.id);
+    this.deletedResources.push(item.resourceId);
   }
 
   getCurrentResources() {
