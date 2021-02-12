@@ -1,6 +1,6 @@
 package com.ikons.requestmanagement.web.rest;
 
-import com.ikons.requestmanagement.core.dto.MonthlyReportsDto;
+import com.ikons.requestmanagement.core.dto.ReportsResponseDto;
 import com.ikons.requestmanagement.core.dto.TotalReportsDto;
 import com.ikons.requestmanagement.core.usecase.reports.TotalRequestsUseCase;
 import com.ikons.requestmanagement.core.usecase.reports.TotalRequestsPerMonthUseCase;
@@ -35,13 +35,13 @@ public class ReportsResource {
 
   @GetMapping("/total-resources-per-month")
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-  public List<MonthlyReportsDto> totalRequestsPerMonth() {
+  public List<ReportsResponseDto> totalRequestsPerMonth() {
     return totalResourcesPerMonthUseCase.totalResourcesPerMonth();
   }
 
   @GetMapping("/total-requests-per-month")
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
-  public List<MonthlyReportsDto> totalResourcesPerMonth() {
+  public List<ReportsResponseDto> totalResourcesPerMonth() {
     return totalRequestsPerMonthUseCase.totalRequestsPerMonth();
   }
 
