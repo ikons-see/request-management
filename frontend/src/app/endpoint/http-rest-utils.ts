@@ -26,10 +26,10 @@ export const filterTransform = (reqFilter: RequestFilters): { [key: string]: str
     trasnformedFilter['status.in'] = reqFilter.statuses;
   }
   if (reqFilter.startDate) {
-    trasnformedFilter['startDate.greaterThan'] = reqFilter.startDate;
+    trasnformedFilter['startDate.greaterThan'] = reqFilter.startDate.toISOString();
   }
   if (reqFilter.endDate) {
-    trasnformedFilter['endDate.lessThan'] = reqFilter.endDate;
+    trasnformedFilter['endDate.lessThan'] = reqFilter.endDate.toISOString();
   }
   if (reqFilter.total) {
     trasnformedFilter['numberOfResource.equals'] = reqFilter.total;

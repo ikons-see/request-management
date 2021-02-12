@@ -128,13 +128,17 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   }
 
   @Override
-  public Page<RequestDetailsDTO> getRequests(final RequestCriteria criteria, final Pageable pageable) {
+  public Page<RequestDetailsDTO> getRequests(RequestCriteria criteria, final Pageable pageable) {
     log.debug("find by criteria : {}", criteria);
-    final Specification<RequestEntity> specification = createSpecification(criteria);
+    if(criteria == null) {
+      criteria = new RequestCriteria();
+    }
     if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
       StringFilter stringFilter = new StringFilter();
       stringFilter.setEquals(SecurityUtils.getCurrentUserLogin().get());
+      criteria.setDisplayName(stringFilter);
     }
+    final Specification<RequestEntity> specification = createSpecification(criteria);
 
     return requestRepository.findAll(specification, pageable).map(requestMapper::toDto);
   }

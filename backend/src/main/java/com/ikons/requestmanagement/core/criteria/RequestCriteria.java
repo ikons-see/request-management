@@ -6,6 +6,7 @@ import com.ikons.requestmanagement.core.dto.AreaOfInterestDTO;
 import com.ikons.requestmanagement.core.dto.SeniorityDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 public class RequestCriteria implements Serializable, Criteria {
   private AreaOfInterestFilter areaOfInterest;
   private StringFilter displayName;

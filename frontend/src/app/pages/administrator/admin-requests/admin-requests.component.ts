@@ -4,14 +4,12 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { ApplicationState } from '../../../app.module';
 import {
-  addRequestFilters,
   openChangeStatusModal,
-  openViewDetailsModal,
-  openViewHistoryModal,
-  pageChanged,
-  requestData,
-  resetRequestFilters
+  openViewHistoryModal
 } from '../../../store/administrator/administrator-actions';
+
+import { ActionType, ColumnType, DropdownColumn, RequestStatus, TableConfig } from '../../../types/data-types';
+import { RequestDetails, RequestFilters } from '../../../types/request-types';
 import {
   getCurrentPage,
   getErrorMessage,
@@ -19,9 +17,13 @@ import {
   getLoadingRequests,
   getRequestsList,
   getTotalNumber
-} from '../../../store/administrator/administrator-reducer';
-import { ActionType, ColumnType, DropdownColumn, RequestStatus, TableConfig } from '../../../types/data-types';
-import { RequestDetails, RequestFilters } from '../../../types/request-types';
+} from "../../../store/requester/requester-reducer";
+import {
+  addRequestFilters, openViewDetailsModal,
+  pageChanged,
+  requestData,
+  resetRequestFilters
+} from "../../../store/requester/requester-actions";
 
 @Component({
   selector: 'app-admin-requests',
@@ -44,7 +46,7 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
 
   constructor(private store: Store<ApplicationState>,
     private translate: TranslateService) {
-    this.loadData(1);
+    this.loadData(0);
 
     this.currentPage$ = this.store.select(getCurrentPage);
     this.requests$ = this.store.select(getRequestsList);
@@ -141,7 +143,7 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
   }
 
   loadData(page: number) {
-    this.store.dispatch(requestData({ page }));
+    this.store.dispatch(requestData({ query: {page} }));
   }
 
   toogleFiltersPanel() {
