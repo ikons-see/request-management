@@ -1,5 +1,10 @@
 <form class="form-group" [formGroup]="formGroup">
     <div class="form-group">
+        <label for="created-by">{{'requester.created-by' | translate}}</label>
+        <input id="created-by" type="text" class="form-control" formControlName="createdBy"
+            [attr.disabled]="true">
+    </div>
+    <div class="form-group">
         <label for="area-of-interest">{{'requester.area-of-interest' | translate}}</label>
         <input id="area-of-interest" type="text" class="form-control" formControlName="areaOfInterest"
             [attr.disabled]="true">

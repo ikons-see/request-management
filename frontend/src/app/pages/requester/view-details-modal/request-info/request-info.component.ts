@@ -26,6 +26,7 @@ export class RequestInfoComponent implements OnInit {
 
   initForm() {
     this.formGroup = this.formBuilder.group({
+      createdBy: this.request.displayName,
       areaOfInterest: this.request.areaOfInterest,
       startDate: this.datePipe.transform(this.request.startDate, 'dd MMM yyyy'),
       endDate: this.datePipe.transform(this.request.endDate, 'dd MMM yyyy'),
