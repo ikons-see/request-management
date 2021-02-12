@@ -1,6 +1,8 @@
 import { createAction, props } from "@ngrx/store";
 import { AddRequest, RequestDetails, RequestFilters, UpdateRequest } from "../../types/request-types";
 import {SearchWithPagination} from "../../endpoint/http-rest-utils";
+import { RequestStatus } from "src/app/types/data-types";
+import { AuditEvent } from "src/app/types/response-types";
 
 export const featureKey = 'requester';
 
@@ -36,3 +38,8 @@ export const addRequestFilters = createAction(`[${featureKey}] addRequestFilters
 export const resetRequestFilters = createAction(`[${featureKey}] resetRequestFilters`);
 
 export const openViewDetailsModal = createAction(`[${featureKey}] openViewDetailsModal`, props<{ requestId: number }>());
+export const openChangeStatusModal = createAction(`[${featureKey}] openChangeStatusModal`, props<{ requestId: number, status: RequestStatus }>());
+
+export const changeRequestStatus = createAction(`[${featureKey}] changeRequestStatus`, props<{ requestId: number, status: RequestStatus, notes: string}>());
+export const changeRequestSuccess = createAction(`[${featureKey}] changeRequestSuccesss`);
+export const changeRequestFailure = createAction(`[${featureKey}] changeRequestFailure`, props<{ errorMessage: string }>());

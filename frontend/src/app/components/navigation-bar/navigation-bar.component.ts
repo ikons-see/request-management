@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable } from 'rxjs';
 import { ApplicationState } from 'src/app/app.module';
-import { changeLanguage } from 'src/app/store/global/global-actions';
-import { getAvailableLanguages, getCurrentLanguage } from 'src/app/store/global/global-reducer';
+import { changeLanguage } from 'src/app/store/common/common-actions';
+import { getAvailableLanguages, getCurrentLanguage } from 'src/app/store/common/common-reducer';
 import { NavigationTab } from 'src/app/types/data-types';
 
 @Component({

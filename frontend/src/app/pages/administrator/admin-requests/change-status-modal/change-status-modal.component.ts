@@ -1,11 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { BsModalRef } from 'ngx-bootstrap/modal';
-import { changeRequestStatus } from '../../../../store/administrator/administrator-actions';
-import { ApplicationState } from '../../../../app.module';
-import { ButtonConfiguration, ButtonType, RequestStatus } from '../../../../types/data-types';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
+import { BsModalRef } from 'ngx-bootstrap/modal';
+import { ApplicationState } from '../../../../app.module';
+import { ButtonConfiguration, ButtonType, RequestStatus } from '../../../../types/data-types';
+import { changeRequestStatus } from '../../../../store/requests/requests-actions';
 
 @Component({
   selector: 'app-change-status-modal',

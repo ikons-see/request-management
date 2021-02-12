@@ -13,7 +13,7 @@ import {
   pageChanged,
   requestData,
   resetRequestFilters
-} from '../../store/requester/requester-actions';
+} from '../../store/requests/requests-actions';
 import {
   getCurrentPage,
   getErrorMessage,
@@ -21,7 +21,7 @@ import {
   getLoadingRequests,
   getRequestsList,
   getTotalNumber
-} from '../../store/requester/requester-reducer';
+} from '../../store/requests/requests-reducer';
 import { ActionType, ColumnType, DropdownColumn, RequestStatus, TableConfig } from '../../types/data-types';
 import { RequestDetails, RequestFilters } from '../../types/request-types';
 

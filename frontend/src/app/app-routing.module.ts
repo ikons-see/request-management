@@ -11,7 +11,6 @@ import { SignUpComponent } from './pages/login/sign-up/sign-up.component';
 import { LoginPageComponent } from './pages/login/login.component';
 import { RouteAccessGuard } from './endpoint/guards/route-access.guard';
 import { Role } from './types/data-types';
-import { ActivationGuard } from './endpoint/guards/activation.guard';
 import { ActivateAccountComponent } from './pages/login/activate-account/activate-account.component';
 
 const routes: Routes = [

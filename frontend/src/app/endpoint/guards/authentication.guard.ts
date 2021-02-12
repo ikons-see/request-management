@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { Store } from '@ngrx/store';
 import { switchMap } from 'rxjs/operators';
 import { ApplicationState } from 'src/app/app.module';
-import { isAuthenticated } from 'src/app/store/global/global-reducer';
+import { isAuthenticated } from 'src/app/store/common/common-reducer';
 
 @Injectable({
     providedIn: 'root'
@@ -17,8 +17,6 @@ export class AuthenticationGuard implements CanActivate {
     }
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
-        console.log('Route state:', state);
-        console.log('Next', next);
         return this.isAuthenticated$.pipe(switchMap(isLoggedIn => {
             if (!isLoggedIn) {
                 return this.router.navigate(['login']);

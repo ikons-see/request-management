@@ -3,11 +3,6 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { ApplicationState } from '../../../app.module';
-import {
-  openChangeStatusModal,
-  openViewHistoryModal
-} from '../../../store/administrator/administrator-actions';
-
 import { ActionType, ColumnType, DropdownColumn, RequestStatus, TableConfig } from '../../../types/data-types';
 import { RequestDetails, RequestFilters } from '../../../types/request-types';
 import {
@@ -17,13 +12,16 @@ import {
   getLoadingRequests,
   getRequestsList,
   getTotalNumber
-} from "../../../store/requester/requester-reducer";
+} from "../../../store/requests/requests-reducer";
 import {
-  addRequestFilters, openViewDetailsModal,
+  addRequestFilters, 
+  openChangeStatusModal, 
+  openViewDetailsModal,
   pageChanged,
   requestData,
   resetRequestFilters
-} from "../../../store/requester/requester-actions";
+} from "../../../store/requests/requests-actions";
+import { openViewHistoryModal } from '../../../store/administrator/administrator-actions';
 
 @Component({
   selector: 'app-admin-requests',
@@ -60,9 +58,9 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.translationSub =  this.translate.get('admin').subscribe(translations => {
+    this.translationSub = this.translate.get('admin').subscribe(translations => {
       this.init(translations);
-     });
+    });
   }
 
   init(translations: { [key: string]: string }) {
@@ -143,7 +141,7 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
   }
 
   loadData(page: number) {
-    this.store.dispatch(requestData({ query: {page} }));
+    this.store.dispatch(requestData({ query: { page } }));
   }
 
   toogleFiltersPanel() {
@@ -164,7 +162,7 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
   }
 
   openViewHistoryModal(e) {
-    this.store.dispatch(openViewHistoryModal({requestId: e}));
+    this.store.dispatch(openViewHistoryModal({ requestId: e }));
   }
 
   applyFilters(e) {

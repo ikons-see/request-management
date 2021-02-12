@@ -1,6 +1,14 @@
 import { Action, createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
 import { AccountData } from "src/app/types/response-types";
-import { changeLanguage, loadProfileSuccessful, loginFailure, loginSuccess, logoutRequest, rehydrateSuccess, resetMessage } from "./global-actions";
+import { 
+    changeLanguage, 
+    loadProfileSuccessful, 
+    loginFailure, 
+    loginSuccess, 
+    logoutRequest, 
+    rehydrateSuccess, 
+    resetMessage 
+} from "./common-actions";
 
 
 export const featureKey = 'global';

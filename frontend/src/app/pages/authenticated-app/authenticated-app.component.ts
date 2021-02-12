@@ -2,10 +2,10 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
-import { logoutRequest } from '../../store/global/global-actions';
+import { logoutRequest } from '../../store/common/common-actions';
 import { ApplicationState } from '../../app.module';
 import { NavigationTab, Role } from '../../types/data-types';
-import { getUserRole } from 'src/app/store/global/global-reducer';
+import { getUserRole } from 'src/app/store/common/common-reducer';
 import { Router } from '@angular/router';
 
 @Component({

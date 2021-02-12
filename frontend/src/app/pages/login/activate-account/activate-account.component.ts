@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { ApplicationState } from 'src/app/app.module';
 import { RequestsManagementService } from 'src/app/endpoint/requests-management.service';
-import { activateAccount } from 'src/app/store/global/global-actions';
+import { activateAccount } from 'src/app/store/common/common-actions';
 
 @Component({
   selector: 'app-activate-account',

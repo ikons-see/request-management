@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
-import { closeRequest } from '../../../store/requester/requester-actions';
+import { closeRequest } from '../../../store/requests/requests-actions';
 import { ApplicationState } from '../../../app.module';
 import { ButtonConfiguration, ButtonType } from '../../../types/data-types';
 

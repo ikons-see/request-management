@@ -4,8 +4,8 @@ import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable, Subscription } from 'rxjs';
 import { ApplicationState } from 'src/app/app.module';
-import { deleteRequest } from 'src/app/store/requester/requester-actions';
-import { getLoadingRequests } from 'src/app/store/requester/requester-reducer';
+import { deleteRequest } from 'src/app/store/requests/requests-actions';
+import { getLoadingRequests } from 'src/app/store/requests/requests-reducer';
 import { ButtonConfiguration, ButtonType } from 'src/app/types/data-types';
 
 @Component({

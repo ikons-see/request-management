@@ -34,12 +34,12 @@ import { ViewDetailsModalComponent } from './pages/requester/view-details-modal/
 import { EditDetailsModalComponent } from './pages/requester/edit-details-modal/edit-details-modal.component';
 import { DeleteRequestModalComponent } from './pages/requester/delete-request-modal/delete-request-modal.component';
 
-import * as requesterReducer from './store/requester/requester-reducer';
+import * as requesterReducer from './store/requests/requests-reducer';
 import * as adminReducer from './store/administrator/administrator-reducer';
-import * as globalReducer from './store/global/global-reducer';
-import { RequesterEffects } from './store/requester/requester-effects';
+import * as globalReducer from './store/common/common-reducer';
+import { RequesterEffects } from './store/requests/requests-effects';
 import { AdministratorEffects } from './store/administrator/administrator-effects';
-import { GlobalEffects } from './store/global/global-effects';
+import { GlobalEffects } from './store/common/common-effects';
 import { PaginationComponent } from './page-utils/pagination/pagination.component';
 import { DateColumnComponent } from './components/table/date-column/date-column.component';
 import { LoadingViewComponent } from './page-utils/loading-view/loading-view.component';

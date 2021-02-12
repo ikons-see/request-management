@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { Subscription } from 'rxjs';
 import { ApplicationState } from 'src/app/app.module';
-import { registerUser } from 'src/app/store/global/global-actions';
+import { registerUser } from 'src/app/store/common/common-actions';
 
 @Component({
   selector: 'app-sign-up',

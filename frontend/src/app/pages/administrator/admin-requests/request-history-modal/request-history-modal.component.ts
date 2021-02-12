@@ -2,8 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Observable } from 'rxjs';
-import { ApplicationState } from 'src/app/app.module';
-import { getAuditError, getStatusLog } from 'src/app/store/administrator/administrator-reducer';
+import { ApplicationState } from '../../../../app.module';
+import { getAuditError, getStatusLog } from '../../../../store/administrator/administrator-reducer';
 import { ButtonConfiguration, ButtonType } from 'src/app/types/data-types';
 import { AuditEvent } from 'src/app/types/response-types';
 

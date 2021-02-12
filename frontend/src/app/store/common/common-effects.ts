@@ -28,7 +28,7 @@ import {
     registerUserFailure,
     registerUserSuccess,
     rehydrateSuccess
-} from "./global-actions";
+} from "./common-actions";
 
 @Injectable()
 export class GlobalEffects {

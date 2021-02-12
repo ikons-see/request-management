@@ -4,7 +4,7 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
 import { ApplicationState } from 'src/app/app.module';
-import { addNewRequest } from 'src/app/store/requester/requester-actions';
+import { addNewRequest } from 'src/app/store/requests/requests-actions';
 import { ButtonConfiguration, ButtonType, Tab } from 'src/app/types/data-types';
 import { Resource } from 'src/app/types/request-types';
 import { AddGeneralInfoComponent } from './add-general-info/add-general-info.component';

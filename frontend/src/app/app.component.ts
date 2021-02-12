@@ -3,7 +3,7 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { distinctUntilChanged } from 'rxjs/operators';
 import { ApplicationState } from './app.module';
-import { getAvailableLanguages } from './store/global/global-reducer';
+import { getAvailableLanguages } from './store/common/common-reducer';
 
 @Component({
   selector: 'app-root',

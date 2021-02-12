@@ -8,7 +8,7 @@ import {
     resetRequestFilters,
     setData,
     setDataFailure
-} from "./requester-actions";
+} from "./requests-actions";
 
 export const featureKey = 'requester';
 
