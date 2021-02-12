@@ -28,7 +28,7 @@ export const deleteRequestSuccess = createAction(`[${featureKey}] deleteRequestS
 export const deleteRequestFailure = createAction(`[${featureKey}] deleteRequestFailure`, props<{ errorMessage: string }>());
 
 export const openCloseRequestModal = createAction(`[${featureKey}] OpenCloseRequestModal`, props<{ requestId: number }>());
-export const closeRequest = createAction(`[${featureKey}] closeRequest`, props<{ requestId: number }>());
+export const closeRequest = createAction(`[${featureKey}] closeRequest`, props<{ requestId: number, notes: string }>());
 export const closeRequestSuccess = createAction(`[${featureKey}] closeRequestSuccess`);
 export const closeRequestFailure = createAction(`[${featureKey}] closeRequestFailure`, props<{ errorMessage: string }>());
 

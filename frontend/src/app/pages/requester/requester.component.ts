@@ -22,7 +22,7 @@ import {
   getRequestsList,
   getTotalNumber
 } from '../../store/requester/requester-reducer';
-import { ColumnType, DropdownColumn, TableConfig } from '../../types/data-types';
+import { ActionType, ColumnType, DropdownColumn, RequestStatus, TableConfig } from '../../types/data-types';
 import { RequestDetails, RequestFilters } from '../../types/request-types';
 
 @Component({
@@ -73,7 +73,6 @@ export class RequesterComponent implements OnInit, OnDestroy {
   }
 
   loadData(page: number) {
-
     this.store.dispatch(requestData({ query: {page} }));
   }
 
@@ -100,6 +99,7 @@ export class RequesterComponent implements OnInit, OnDestroy {
         {
           text: translations['edit'],
           icon: 'fa-edit',
+          action: ActionType.edit,
           onClick: (e) => this.openEditRequestModal(e)
         },
         {
@@ -110,6 +110,7 @@ export class RequesterComponent implements OnInit, OnDestroy {
         {
           text: translations['close'],
           icon: 'fa-close',
+          action: ActionType.close,
           onClick: (e) => this.closeRequest(e)
         }
       ]

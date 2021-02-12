@@ -14,133 +14,149 @@
         }
     },
     "requester": {
-        "actions": "Actions",
-        "add-filters": "Add filters",
-        "add-request": "Add request",
-        "back": "Back",
-        "view-details": "View details",
-        "edit": "Edit",
-        "delete": "Delete",
-        "close": "Close",
-        "area-of-interest": "Area of interest",
-        "status": "Status",
-        "project-description": "Project Description",
-        "date-range": "Date Range",
-        "start-date": "Start Date",
-        "end-date": "End Date",
-        "notes": "Notes",
-        "closing-notes": "Closing notes",
-        "total": "Total",
+        "actions": "Azioni",
+        "add-filters": "Aggiungi Filtri",
+        "add-request": "Aggiungi Richiesta",
+        "back": "Indietro",
+        "view-details": "Visualizza dettagli",
+        "edit": "Modifica",
+        "delete": "Elimina",
+        "close": "Chiudi",
+        "area-of-interest": "Area di interesse",
+        "status": "Stato",
+        "project-description": "Descrizione del progetto",
+        "date-range": "Intervallo di date",
+        "start-date": "Data d'inizio",
+        "end-date": "Data di fine",
+        "notes": "Note",
+        "closing-notes": "Note di chiusura",
+        "total": "Totale",
         "seniority": "Seniority",
-        "skills": "Skills",
-        "manage-request": "Manage Request",
-        "required-field": "*This field is required",
-        "add-resource": "Add Resource"
+        "skills": "Abilità",
+        "manage-request": "Gestisci la richiesta",
+        "required-field": "*Questo campo è obbligatorio",
+        "add-resource": "Aggiungi risorsa"
     },
     "add-request": {
-        "title": "Add Request",
-        "general-info": "General Info",
-        "resources": "Resources",
-        "add-request": "Add request",
-        "add-resource": "Add Resource",
+        "title": "Aggiungi Richiesta",
+        "general-info": "Informazioni generali",
+        "resources": "Risorse",
+        "add-request": "Aggiungi richiesta",
+        "add-resource": "Aggiungi risorsa",
         "next": "Next",
-        "back": "Back",
-        "total-error": "*The total input has to be larger or equal to 1",
-        "required-notes": "*Notes are required in case you want to add other skills"
+        "back": "Indietro",
+        "total-error": "*L'input per il totale deve essere maggiore o uguale a 1",
+        "required-notes": "*Le note sono necessarie nel caso in cui desideri aggiungere altre abilità"
     },
     "view-details": {
-        "title": "View details for request #",
-        "general-info": "General Info",
-        "resources": "Resources"
+        "title": "Visualizza i dettagli per la richiesta #",
+        "general-info": "Informazioni generali",
+        "resources": "Risorse"
     },
     "edit-request": {
         "next": "Next",
-        "back": "Back",
-        "title": "Edit Request #",
-        "general-info": "General Info",
-        "resources": "Resources",
-        "update-request": "Update Request",
-        "total-error": "*The total input has to be larger or equal to 1"
+        "back": "Indietro",
+        "title": "Modifica richiesta #",
+        "general-info": "Informazioni generali",
+        "resources": "Risorse",
+        "update-request": "Aggiorna la richiesta",
+        "total-error": "*L'input per il totale deve essere maggiore o uguale a 1"
     },
     "close-request": {
-        "title": "Close Request #",
-        "cancel": "Cancel",
-        "continue": "Continue",
-        "proceed": "Are you sure you want to proceed?"
+        "title": "Chiudi la richiesta #",
+        "cancel": "Annulla",
+        "continue": "Continua",
+        "proceed": "Sei sicuro di voler procedere?"
     },
     "delete-request": {
-        "title": "Delete Request #",
-        "cancel": "Cancel",
-        "continue": "Continue",
-        "proceed": "Are you sure you want to proceed?"
+        "title": "Elimina la richiesta #",
+        "cancel": "Annulla",
+        "continue": "Continua",
+        "proceed": "Sei sicuro di voler procedere?"
     },
     "filters": {
-        "general-information": "General information",
-        "request-state": "Request State",
-        "resources": "Resources",
-        "number-of-resources": "Number of Resources",
-        "apply-filters": "Apply filters",
-        "reset-filters": "Reset filters",
-        "total": "Total",
+        "general-information": "Informazioni generali",
+        "request-state": "Stato richiesta",
+        "resources": "Risorse",
+        "number-of-resources": "Numero di risorse",
+        "apply-filters": "Applica filtri",
+        "reset-filters": "Resetta i filtri",
+        "total": "Totale",
         "seniority": "Seniority",
-        "skills": "Skills",
-        "notes": "Notes"
+        "skills": "Abilità",
+        "notes": "Note"
     },
     "admin": {
-        "actions": "Actions",
-        "add-filters": "Add filters",
-        "view-details": "View details",
-        "view-history": "View history",
-        "take-charge": "Take charge",
-        "reject": "Reject",
-        "pending-information": "Pending information",
-        "edit": "Edit",
-        "delete": "Delete",
-        "close": "Close",
-        "cancel": "Cancel",
-        "continue": "Continue",
-        "area-of-interest": "Area of interest",
-        "status": "Status",
-        "start-date": "Start Date",
-        "end-date": "End Date",
-        "manage-request": "Manage Request"
+        "actions": "Azioni",
+        "add-filters": "Aggiungi Filtri",
+        "view-details": "Visualizza dettagli",
+        "view-history": "Visualizza la cronologia",
+        "take-charge": "Prendi la carica",
+        "reject": "Rifiuta",
+        "pending-information": "In attesa di informazioni",
+        "edit": "Modifica",
+        "delete": "Elimina",
+        "close": "Chiudi",
+        "cancel": "Annulla",
+        "continue": "Continua",
+        "area-of-interest": "Area di interesse",
+        "status": "Stato",
+        "start-date": "Data d'inizio",
+        "end-date": "Data di fine",
+        "manage-request": "Gestisci la richiesta"
     },
     "change-status": {
-        "message": "Are you sure you want to proceed?",
-        "additional-notes": "Additional notes",
-        "invalid-notes": "*Please insert valid notes",
-        "take-in-charge": "Taking in charge request #",
-        "pending": "Pending request #",
-        "reject": "Rejecting request #",
-        "close-request": "Closing request #",
-        "default-title": "Changing status for request #",
-        "cancel": "Cancel",
-        "continue": "Continue"
+        "message": "Sei sicuro di voler procedere?",
+        "additional-notes": "Note aggiuntive",
+        "invalid-notes": "*Si prega di inserire note valide",
+        "take-in-charge": "Prendendo in carico la richiesta #",
+        "pending": "Richiesta in sospeso #",
+        "reject": "Rifiutando la richiesta #",
+        "close-request": "Chiudendo la richiesta #",
+        "default-title": "Cambiando stato per richiesta #",
+        "cancel": "Annulla",
+        "continue": "Continua"
     },
     "view-history": {
-        "title": "History for request #",
-        "no-records": "No records found for this request"
+        "title": "La Storia per la richiesta #",
+        "no-records": "Nessun record trovato per questa richiesta"
     },
     "error-page": {
-        "title": "Something went wrong",
-        "subtitle": "Please try again later"
+        "title": "Qualcosa è andato storto",
+        "subtitle": "Per favore riprova più tardi"
     },
     "empty-page": {
-        "title": "No records found for your requests list",
-        "subtitle": "Try adding a new request to your list"
+        "title": "Nessun record trovato per il tuo elenco di richieste",
+        "subtitle": "Prova ad aggiungere una nuova richiesta al tuo elenco"
     },
     "loading-view": {
-        "title": "Loading..."
+        "title": "Caricando..."
     },
     "navigation-pane": {
-        "requests": "Requests",
-        "reports": "Reports",
-        "sign-out": "Sign out"
+        "requests": "Richieste",
+        "reports": "Rapporti",
+        "sign-out": "Esci"
     },
     "pagination": {
-        "first": "First",
-        "previous": "Previous",
-        "next": "Next",
-        "last": "Last"
+        "first": "Prima",
+        "previous": "Precedente",
+        "next": "Successiva",
+        "last": "Ultima"
+    },
+    "global-errors": {
+            "request-data-failure": "Impossibile caricare l'elenco delle richieste.",
+            "add-request-failure": "Impossibile aggiungere la richiesta. Per favore riprova più tardi!",
+            "update-request-failure": "Si è verificato un errore! Impossibile aggiornare la richiesta.",
+            "delete-request-failure": "Si è verificato un errore! Impossibile eliminare la richiesta.",
+            "close-request-failure": "Si è verificato un errore! Impossibile chiudere la richiesta.",
+            "status-change-failure": "Si è verificato un errore! Non è stato possibile modificare lo stato della richiesta.",
+            "user-register-failure": "Si è verificato un errore! L'utente non può essere registrato."
+    },
+    "global-success": {
+        "add-request-success": "La richiesta è stata aggiunta con successo!",
+        "update-request-success": "La richiesta è stata aggiornata con successo!",
+        "delete-request-success": "La richiesta è stata eliminata con successo!",
+        "close-request-success": "La richiesta è stata chiusa con successo!",
+        "status-change-success": "Lo stato della richiesta è stato modificato con successo!"
     }
 }

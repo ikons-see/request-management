@@ -3,8 +3,8 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
-import { ApplicationState } from '../../../app.module';
 import { closeRequest } from '../../../store/requester/requester-actions';
+import { ApplicationState } from '../../../app.module';
 import { ButtonConfiguration, ButtonType } from '../../../types/data-types';
 
 @Component({
@@ -22,6 +22,8 @@ export class CloseRequestModalComponent implements OnInit, OnDestroy {
 
   buttons: Array<ButtonConfiguration>;
   translationSub: Subscription;
+  notes: string = null;
+  validNotes: boolean = true;
   
   constructor(private store: Store<ApplicationState>,
     public bsModalRef: BsModalRef,
@@ -50,7 +52,16 @@ export class CloseRequestModalComponent implements OnInit, OnDestroy {
   }
 
   closeRequest() {
-    this.store.dispatch(closeRequest({requestId: this.requestId}));
+    this.checkNotes();
+    if(this.validNotes) {
+      this.store.dispatch(closeRequest({requestId: this.requestId, notes: this.notes}));
+    }
+  }
+
+  checkNotes() {
+    if (this.notes) {
+      this.validNotes = true;
+    } else this.validNotes = false;
   }
 
   closeModal() {

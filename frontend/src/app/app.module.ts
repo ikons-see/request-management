@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { APP_INITIALIZER, Injector, NgModule } from '@angular/core';
-import { CommonModule, LOCATION_INITIALIZED } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClient, HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
@@ -14,7 +14,10 @@ import { ActionReducerMap, StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgSelectModule } from '@ng-select/ng-select';
-import {TranslateModule, TranslateService} from '@ngx-translate/core';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { TranslateLoader } from '@ngx-translate/core';
+import { ToastrModule } from 'ngx-toastr';
+import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
 
 import { AppComponent } from './app.component';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
@@ -63,8 +66,9 @@ import { RequestHistoryModalComponent } from './pages/administrator/admin-reques
 import { SignInComponent } from './pages/login/sign-in/sign-in.component';
 import { SignUpComponent } from './pages/login/sign-up/sign-up.component';
 import { LoginPageComponent } from './pages/login/login.component';
-import { TranslateLoader } from '@ngx-translate/core';
-import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import { ActiveRequestsChartComponent } from './pages/administrator/charts-view/active-requests-chart/active-requests-chart.component';
+import { AssignedRequestsChartComponent } from './pages/administrator/charts-view/assigned-requests-chart/assigned-requests-chart.component';
+import { MonthlyRequestsChartComponent } from './pages/administrator/charts-view/monthly-requests-chart/monthly-requests-chart.component';
 
 export interface ApplicationState {
   [requesterReducer.featureKey]: requesterReducer.State,
@@ -128,7 +132,10 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ChangeStatusModalComponent,
     RequestHistoryModalComponent,
     SignInComponent,
-    SignUpComponent
+    SignUpComponent,
+    ActiveRequestsChartComponent,
+    AssignedRequestsChartComponent,
+    MonthlyRequestsChartComponent
   ],
   imports: [
     BrowserModule,
@@ -151,6 +158,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     BsDropdownModule.forRoot(),
     BsDatepickerModule.forRoot(),
     CollapseModule.forRoot(),
+    ToastrModule.forRoot(),
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot(effects),
     StoreDevtoolsModule.instrument({

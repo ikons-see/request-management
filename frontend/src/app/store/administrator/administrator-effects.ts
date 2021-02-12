@@ -12,6 +12,7 @@ import { ApplicationState } from "../../app.module";
 import { RequestsManagementService } from "../../endpoint/requests-management.service";
 import { ViewDetailsModalComponent } from "../../pages/requester/view-details-modal/view-details-modal.component";
 import { globalModalConfig } from "../../types/data-types";
+import { globalError, globalSuccess } from "../global/global-actions";
 import {
     addRequestFilters,
     changeRequestFailure,
@@ -51,6 +52,7 @@ export class AdministratorEffects {
                     })),
                     catchError((error: HttpErrorResponse) =>
                         of(setDataFailure({ errorMessage: error.message }),
+                        globalError({error: 'global-errors.request-data-failure'})
                         ))
                 );
         })
@@ -113,10 +115,12 @@ export class AdministratorEffects {
                 .pipe(
                     mergeMap(res => [
                         changeRequestSuccess(),
-                        requestData({ page })
+                        requestData({ page }),
+                        globalSuccess({message: 'global-success.status-change-success'})
                     ]),
                     catchError((error: HttpErrorResponse) =>
                         of(changeRequestFailure({ errorMessage: error.message }),
+                        globalError({error: 'global-errors.status-change-failure'})
                         ))
                 );
         })

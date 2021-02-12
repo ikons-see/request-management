@@ -42,6 +42,7 @@ import {ViewDetailsModalComponent} from "src/app/pages/requester/view-details-mo
 import {TranslateService} from "@ngx-translate/core";
 import {RequestDetails} from "../../types/request-types";
 import {filterTransform, parsePaginationResponseHeader} from "../../endpoint/http-rest-utils";
+import { globalError, globalSuccess } from "../global/global-actions";
 
 @Injectable()
 export class RequesterEffects {
@@ -72,6 +73,7 @@ export class RequesterEffects {
           }),
           catchError((error: HttpErrorResponse) =>
             of(setDataFailure({errorMessage: error.message}),
+            globalError({error: 'global-errors.request-data-failure'})
             ))
         )
     })
@@ -97,10 +99,12 @@ export class RequesterEffects {
         .pipe(
           mergeMap(res => [
             addRequestSuccess(),
-            requestData({query: {page: 0}})
+            requestData({query: {page: 0}}),
+            globalSuccess({message: 'global-success.add-request-success'})
           ]),
           catchError((error: HttpErrorResponse) =>
             of(addRequestFailure({errorMessage: error.message}),
+            globalError({error: 'global-errors.add-request-failure'})
             ))
         );
     })
@@ -143,9 +147,11 @@ export class RequesterEffects {
         .pipe(
           mergeMap(res => [
             updateRequestSuccess(),
-            requestData({query: {page: 0}})]),
+            requestData({query: {page: 0}}),
+            globalSuccess({message: 'global-success.update-request-success'})]),
           catchError((error: HttpErrorResponse) =>
             of(updateRequestFailure({errorMessage: error.message}),
+            globalError({error: 'global-errors.update-request-failure'})
             ))
         );
     })
@@ -188,10 +194,12 @@ export class RequesterEffects {
         .pipe(
           mergeMap(res => [
             deleteRequestSuccess(),
-            requestData({query: {page: 0}})
+            requestData({query: {page: 0}}),
+            globalSuccess({message: 'global-success.delete-request-success'})
           ]),
           catchError((error: HttpErrorResponse) =>
             of(deleteRequestFailure({errorMessage: error.message}),
+            globalError({error: 'global-errors.delete-request-failure'})
             ))
         );
     })
@@ -215,14 +223,16 @@ export class RequesterEffects {
     ofType(closeRequest),
     withLatestFrom(this.store.select(getCurrentPage)),
     switchMap(([action, page]) => {
-      return this.requestsService.closeRequest(action.requestId)
+      return this.requestsService.closeRequest(action.requestId, action.notes)
         .pipe(
           mergeMap(res => [
             closeRequestSuccess(),
-            requestData({query: {page}})
+            requestData({query: {page}}),
+            globalSuccess({message: 'global-success.close-request-success'})
           ]),
           catchError((error: HttpErrorResponse) =>
             of(closeRequestFailure({errorMessage: error.message}),
+            globalError({error: 'global-errors.close-request-failure'})
             ))
         );
     })

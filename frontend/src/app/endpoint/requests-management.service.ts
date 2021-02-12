@@ -81,14 +81,14 @@ export class RequestsManagementService {
     }
 
     deleteRequest(requestId: number): Observable<void> {
-        const request = {
-            requestId: requestId
-        };
-        return this.httpClient.post<void>(`api/requests-management/delete-request`, request);
+        return this.httpClient.get<void>(`api/requests-management/delete-request/${requestId}`);
     }
 
-    closeRequest(requestId: number): Observable<void> {
-        return this.httpClient.get<void>(`api/requests-management/close-request/${requestId}`);
+    closeRequest(requestId: number, notes: string): Observable<void> {
+        const request = {
+            notes: notes
+        };
+        return this.httpClient.post<void>(`api/requests-management/close-request/${requestId}`, request);
     }
 
     changeRequestStatus(request: ChangeStatusRequest) {

@@ -20,7 +20,7 @@ import {
   getRequestsList,
   getTotalNumber
 } from '../../../store/administrator/administrator-reducer';
-import { ColumnType, DropdownColumn, RequestStatus, TableConfig } from '../../../types/data-types';
+import { ActionType, ColumnType, DropdownColumn, RequestStatus, TableConfig } from '../../../types/data-types';
 import { RequestDetails, RequestFilters } from '../../../types/request-types';
 
 @Component({
@@ -83,21 +83,25 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
         {
           text: translations['take-charge'],
           icon: 'fa-edit',
+          action: ActionType.on_going,
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.ON_GOING)
         },
         {
           text: translations['reject'],
           icon: 'fa-trash',
+          action: ActionType.reject,
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.REJECTED)
         },
         {
           text: translations['pending-information'],
           icon: 'fa-info-circle',
+          action: ActionType.pending,
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.PENDING)
         },
         {
           text: translations['close'],
           icon: 'fa-close',
+          action: ActionType.close,
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.CLOSED)
         }
       ]
