@@ -11,6 +11,7 @@ content-type: application/json
 GET http://localhost:8080/api/users HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfUkVRVUVTVEVSIiwiZXhwIjoxNjEyNDM1MDEzfQ.CNviWotA7S1IEFsZRq_JFocZRubtU0mEUyLBMLCSerrbZlCxMVp9vZLyfqbHxs_Wylqz_wBEOQlUhJMQbSyNwg
 
+
 ###
 GET http://localhost:8080/api/requests-management/requests?page=0&size=20&sort=requestId,desc&skillsOfResource[0].contains=SpringBoot&skillsOfResource[1].contains=Java&numberOfResource.lessThan=15 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJ1c2VyIiwiYXV0aCI6IlJPTEVfUkVRVUVTVEVSIiwiZXhwIjoxNjEzMDU2OTE0fQ.PM1zvdfHDwmHhXFZ71LMyvcPtPgggbrQOjutfI2w_r0fGQL3Ct59RGMDL56TAqpqNIyi9XQEU2NohD1__7uNSg

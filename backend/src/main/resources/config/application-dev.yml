@@ -45,10 +45,10 @@ spring:
     contexts: dev, faker
   mail:
     default-encoding: UTF-8
-    host: email-smtp.eu-west-1.amazonaws.com
-    username: AKIAI7VMAWXG5OJ3WGDQ
-    password: AqVsX+dcbFgvrjNiSxhRCTvoH2qGVZI/lObHTU4EVQlM
-    port: ${port:587}
+    host: smtp.gmail.com
+    username: noreply@ikons-see.com
+    password: Ikons2021noreply
+    port: 587
     properties:
       mail:
         smtp:
@@ -89,7 +89,7 @@ ikons:
         token-validity-in-seconds-for-remember-me: 2592000
   mail: # specific ikons mail property, for standard properties see MailProperties
     base-url: http://127.0.0.1:8080
-    from: no-reply@creactives.com
+    from: noreply@ikons-see.com
   logging:
     use-json-format: false # By default, logs are not in Json format
     logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration

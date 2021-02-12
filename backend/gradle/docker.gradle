@@ -1,0 +1,22 @@
+jib {
+    println("project path " + file("$projectDir/src/main/jib"));
+    from {
+        image = "adoptopenjdk:11-jre-hotspot"
+    }
+    to {
+        image = "requestmanagament:${project.version}"
+    }
+    container {
+        entrypoint = ["bash", "-c", "/entrypoint.sh"]
+        ports = ["8080"]
+        environment = [
+                SPRING_OUTPUT_ANSI_ENABLED: "ALWAYS",
+                IKONS_SLEEP               : "5"
+        ]
+        creationTime = "USE_CURRENT_TIMESTAMP"
+    }
+    extraDirectories {
+        paths = file("$projectDir/src/main/jib")
+        permissions = ["/entrypoint.sh": "755"]
+    }
+}
