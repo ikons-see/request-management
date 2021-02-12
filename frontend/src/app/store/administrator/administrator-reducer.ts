@@ -15,8 +15,8 @@ export interface State {
     auditErrorMessage: string;
     statusLog?: Array<AuditEvent>;
     totalChartsData?: TotalChartData;
-    requestsMonthlyChartData?: MonthlyChartData;
-    resourcesMonthlyChartData?: MonthlyChartData;
+    requestsMonthlyChartData?: Array<MonthlyChartData>;
+    resourcesMonthlyChartData?: Array<MonthlyChartData>;
 }
 
 export const initialState: State = {
@@ -69,3 +69,5 @@ export const getRequestById = createSelector(featureState,
 export const getStatusLog = createSelector(featureState, state => state.statusLog ? state.statusLog : null);
 export const getAuditError = createSelector(featureState, state => state.auditErrorMessage);
 export const getTotalChartData = createSelector(featureState, state => state.totalChartsData);
+export const getRequestsChartData = createSelector(featureState, state => state.requestsMonthlyChartData);
+export const getResourcesChartData = createSelector(featureState, state => state.resourcesMonthlyChartData);

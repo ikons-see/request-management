@@ -4,6 +4,10 @@ import { Component, Inject, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
+import { MonthlyChartData } from 'src/app/types/response-types';
+import { ApplicationState } from 'src/app/app.module';
+import { getRequestsChartData } from 'src/app/store/administrator/administrator-reducer';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-monthly-requests-chart',
@@ -12,9 +16,13 @@ import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 })
 export class MonthlyRequestsChartComponent implements OnInit {
 
+  chartData: Array<MonthlyChartData>;
 
-  constructor(@Inject(PLATFORM_ID) private platformId, private zone: NgZone) {
+  constructor(@Inject(PLATFORM_ID) private platformId, private zone: NgZone, private store: Store<ApplicationState>) {
     am4core.useTheme(am4themes_animated);
+    this.store.select(getRequestsChartData).pipe().subscribe(value => {
+      this.chartData = value;
+    })
   }
 
   ngOnInit(): void {
@@ -24,36 +32,7 @@ export class MonthlyRequestsChartComponent implements OnInit {
     let chart = am4core.create("chartdiv", am4charts.XYChart);
     chart.hiddenState.properties.opacity = 0;
 
-    chart.data = [
-      {
-        month: new Date('2021-03-12T09:51:51.188+00:00'),
-        total: 25
-      },
-      {
-        month:  new Date(2020, 2),
-        total: 4
-      },
-      {
-        month:  new Date(2020, 3),
-        total: 0
-      },
-      {
-        month:  new Date(2020, 4),
-        total: 16
-      },
-      {
-        month:  new Date(2020, 5),
-        total: 30
-      },
-      {
-        month:  new Date(2020, 6),
-        total: 0
-      },
-      {
-        month:  new Date(2020, 7),
-        total: 8
-      }
-    ];
+    chart.data = this.chartData;
 
     var categoryAxis = chart.xAxes.push(new am4charts.DateAxis());
     categoryAxis.renderer.grid.template.location = 0;
@@ -69,7 +48,7 @@ export class MonthlyRequestsChartComponent implements OnInit {
 
 
     let series = chart.series.push(new am4charts.ColumnSeries());
-    series.dataFields.dateX = "month";
+    series.dataFields.dateX = "period";
     series.dataFields.valueY = "total";
     series.columns.template.tooltipText = "{valueY.value}";
     series.columns.template.tooltipY = 0;

@@ -116,10 +116,10 @@ export class RequestsManagementService {
     }
 
     getRequestsMonthlyChartData() {
-        return this.httpClient.get<MonthlyChartData>(`api/reports/total-requests-per-month`);
+        return this.httpClient.get<Array<MonthlyChartData>>(`api/reports/total-requests-per-month`);
     }
 
     getResourcesMonthlyChartData() {
-        return this.httpClient.get<MonthlyChartData>(`api/reports/total-resources-per-month`);
+        return this.httpClient.get<Array<MonthlyChartData>>(`api/reports/total-resources-per-month`);
     }
 }
