@@ -73,11 +73,13 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
         {
           text: translations['view-details'],
           icon: 'fa-list',
+          action: ActionType.view,
           onClick: (e) => this.openDetailsModal(e)
         },
         {
           text: translations['view-history'],
           icon: 'fa-history',
+          action: ActionType.history,
           onClick: (e) => this.openViewHistoryModal(e)
         },
         {
