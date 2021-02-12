@@ -17,6 +17,8 @@ export class AuthenticationGuard implements CanActivate {
     }
 
     canActivate(next: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> {
+        console.log('Route state:', state);
+        console.log('Next', next);
         return this.isAuthenticated$.pipe(switchMap(isLoggedIn => {
             if (!isLoggedIn) {
                 return this.router.navigate(['login']);

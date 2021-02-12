@@ -61,7 +61,11 @@ export class RequesterEffects {
     switchMap(([action, filters]) => {
       // const filter = composeFilter();
       const transFilters = filterTransform(filters);
-      return this.requestsService.getRequests({...action.query, ...transFilters })
+      const newAction = {...action};
+      if (!newAction.hasOwnProperty('query')) {
+        newAction['query'] = {page: 0};
+      }
+      return this.requestsService.getRequests({...newAction.query, ...transFilters })
         .pipe(
           map((res: HttpResponse<RequestDetails[]>) => {
             const dataFromHeader = parsePaginationResponseHeader(res.headers);

@@ -7,10 +7,13 @@ import { TranslateService } from "@ngx-translate/core";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { ToastrService } from "ngx-toastr";
 import { Observable, of } from "rxjs";
-import { catchError, flatMap, mergeMap, switchMap, tap, withLatestFrom } from "rxjs/operators";
+import { catchError, flatMap, mergeMap, switchMap, tap } from "rxjs/operators";
 import { ApplicationState } from "../../app.module";
 import { RequestsManagementService } from "../../endpoint/requests-management.service";
 import {
+    activateAccount,
+    activateAccountFailure,
+    activateAccountSuccess,
     changeLanguage,
     globalError,
     globalSuccess,
@@ -140,14 +143,16 @@ export class GlobalEffects {
                     }),
                     catchError((error: HttpErrorResponse) =>
                         of(registerUserFailure({ errorMessage: error.message }),
-                        globalError({error: 'global-errors.user-register-failure'})
+                            globalError({ error: 'global-errors.user-register-failure' })
                         ))
                 )
         })));
 
     redirectAfterUserRegister$ = createEffect(() => this.actions$.pipe(
         ofType(registerUserSuccess,
-            registerUserFailure),
+            registerUserFailure,
+            activateAccountSuccess,
+            activateAccountFailure),
         switchMap(() => [
             this.router.navigate(['login'])
         ])
@@ -159,4 +164,28 @@ export class GlobalEffects {
             this.translate.use(action.language)
         ])
     ), { dispatch: false });
+
+    onActivateAccount$ = createEffect(() => this.actions$.pipe(
+        ofType(activateAccount),
+        switchMap((action) => {
+            return this.requestsService.activateAccount(action.activationKey)
+                .pipe(
+                    switchMap(response => {
+                        return [
+                            activateAccountSuccess()
+                        ]
+                    }),
+                    catchError((error: HttpErrorResponse) =>
+                        of(activateAccountFailure({ errorMessage: error.message }),
+                            globalError({ error: 'global-errors.account-activation-failure' })
+                        ))
+                )
+        })));
+
+    onActivateProfileSuccess$ = createEffect(() => this.actions$.pipe(
+        ofType(activateAccountSuccess),
+        mergeMap(() => [
+            globalSuccess({ message: 'global-success.account-activated-success' })
+        ])
+    ));
 }

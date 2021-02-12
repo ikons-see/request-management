@@ -106,4 +106,8 @@ export class RequestsManagementService {
     getStatusLog(requestId: number): Observable<Array<AuditEvent>> {
         return this.httpClient.get<Array<AuditEvent>>(`api/requests-management/state-history/${requestId}`);
     }
+
+    activateAccount(activationKey: string): Observable<void> {
+        return this.httpClient.get<void>(`api/activate`, {params: {key: activationKey}});
+    }
 }

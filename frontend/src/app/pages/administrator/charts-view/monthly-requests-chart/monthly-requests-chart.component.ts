@@ -22,62 +22,41 @@ export class MonthlyRequestsChartComponent implements OnInit {
 
   ngAfterViewInit() {
     let chart = am4core.create("chartdiv", am4charts.XYChart);
-    chart.hiddenState.properties.opacity = 0; // this creates initial fade-in
+    chart.hiddenState.properties.opacity = 0;
 
     chart.data = [
       {
-        month: "January",
+        month: new Date('2021-03-12T09:51:51.188+00:00'),
         total: 25
       },
       {
-        month: "February",
+        month:  new Date(2020, 2),
         total: 4
       },
       {
-        month: "March",
+        month:  new Date(2020, 3),
         total: 0
       },
       {
-        month: "April",
+        month:  new Date(2020, 4),
         total: 16
       },
       {
-        month: "May",
+        month:  new Date(2020, 5),
         total: 30
       },
       {
-        month: "June",
+        month:  new Date(2020, 6),
         total: 0
       },
       {
-        month: "July",
+        month:  new Date(2020, 7),
         total: 8
-      },
-      {
-        month: "August",
-        total: 20
-      },
-      {
-        month: "September",
-        total: 10
-      },
-      {
-        month: "October",
-        visits: 5
-      },
-      {
-        month: "November",
-        visits: 0
-      },
-      {
-        month: "December",
-        visits: 0
       }
     ];
 
-    let categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+    var categoryAxis = chart.xAxes.push(new am4charts.DateAxis());
     categoryAxis.renderer.grid.template.location = 0;
-    categoryAxis.dataFields.category = "month";
     categoryAxis.renderer.minGridDistance = 40;
     categoryAxis.fontSize = 11;
 
@@ -86,27 +65,11 @@ export class MonthlyRequestsChartComponent implements OnInit {
     valueAxis.max = 50;
     valueAxis.strictMinMax = true;
     valueAxis.renderer.minGridDistance = 30;
-    // axis break
-    // let axisBreak = valueAxis.axisBreaks.create();
-    // axisBreak.startValue = 5;
-    // axisBreak.endValue = 20;
-    //axisBreak.breakSize = 0.005;
 
-    // fixed axis break
-    // let d = (axisBreak.endValue - axisBreak.startValue) / (valueAxis.max - valueAxis.min);
-    // axisBreak.breakSize = 0.05 * (1 - d) / d; // 0.05 means that the break will take 5% of the total value axis height
-
-    // make break expand on hover
-    // let hoverState = axisBreak.states.create("hover");
-    // hoverState.properties.breakSize = 1;
-    // hoverState.properties.opacity = 0.1;
-    // hoverState.transitionDuration = 1500;
-
-    // axisBreak.defaultState.transitionDuration = 1000;
 
 
     let series = chart.series.push(new am4charts.ColumnSeries());
-    series.dataFields.categoryX = "month";
+    series.dataFields.dateX = "month";
     series.dataFields.valueY = "total";
     series.columns.template.tooltipText = "{valueY.value}";
     series.columns.template.tooltipY = 0;

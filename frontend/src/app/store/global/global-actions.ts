@@ -26,3 +26,7 @@ export const loadProfileFailure = createAction(`[${featureKey}] loadProfileFailu
 
 export const globalSuccess = createAction(`[${featureKey}] globalSuccess`, props<{ message: string }>());
 export const globalError = createAction(`[${featureKey}] globalError`, props<{ error: string }>());
+
+export const activateAccount = createAction(`[${featureKey}] activateAccount`, props<{ activationKey: string }>());
+export const activateAccountSuccess = createAction(`[${featureKey}] activateAccountSuccess`);
+export const activateAccountFailure = createAction(`[${featureKey}] activateAccountFailure`, props<{ errorMessage: string }>());

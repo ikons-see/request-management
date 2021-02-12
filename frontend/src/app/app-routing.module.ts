@@ -11,6 +11,8 @@ import { SignUpComponent } from './pages/login/sign-up/sign-up.component';
 import { LoginPageComponent } from './pages/login/login.component';
 import { RouteAccessGuard } from './endpoint/guards/route-access.guard';
 import { Role } from './types/data-types';
+import { ActivationGuard } from './endpoint/guards/activation.guard';
+import { ActivateAccountComponent } from './pages/login/activate-account/activate-account.component';
 
 const routes: Routes = [
   {
@@ -18,7 +20,11 @@ const routes: Routes = [
     component: LoginPageComponent,
     children: [
       { path: '', component: SignInComponent, pathMatch: 'full' },
-      { path: 'register', component: SignUpComponent },
+      { path: 'register', component: SignUpComponent},
+      {
+        path: 'account/activate', 
+        component: ActivateAccountComponent
+      }
     ]
   },
   {
@@ -46,7 +52,7 @@ const routes: Routes = [
           { path: 'requests', component: AdminRequestsComponent },
           { path: 'charts', component: ChartsViewComponent }
         ]
-      },
+      }
     ],
   },
   {

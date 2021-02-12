@@ -150,13 +150,15 @@
             "delete-request-failure": "An error occurred! The request couldn't be deleted.",
             "close-request-failure": "An error occurred! The request couldn't be closed.",
             "status-change-failure": "An error occurred! The request status couldn't be changed.",
-            "user-register-failure": "An error occurred! The user couldn't be registered."
+            "user-register-failure": "An error occurred! The user couldn't be registered.",
+            "account-activation-failure": "An error occurred! Your account couldn't be activated"
     },
     "global-success": {
         "add-request-success": "The request was successfully added!",
         "update-request-success": "The request was successfully updated!",
         "delete-request-success": "The request was successfully deleted!",
         "close-request-success": "The request was successfully closed!",
-        "status-change-success": "The request status was changed successfully!"
+        "status-change-success": "The request status was changed successfully!",
+        "account-activated-success": "Your account has been successfully activated!"
     }
 }
