@@ -23,3 +23,5 @@ export const changeRequestFailure = createAction(`[${featureKey}] changeRequestF
 export const openViewHistoryModal = createAction(`[${featureKey}] openViewHistoryModal`, props<{ requestId: number }>());
 export const requestStatusLogSuccess = createAction(`[${featureKey}] requestStatusLogSuccess`, props<{ events: Array<AuditEvent> }>());
 export const requestStatusLogFailure = createAction(`[${featureKey}] requestStatusLogFailure`, props<{ errorMessage: string }>());
+
+export const getPieChartsData = createAction(`[${featureKey}] getPieChartsData`);

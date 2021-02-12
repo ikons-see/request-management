@@ -14,6 +14,11 @@ export interface State {
     errorMessage: string;
     auditErrorMessage: string;
     statusLog?: Array<AuditEvent>;
+    pieChartsData?: {
+        totalActiveRequests: number,
+        totalOnGoingRequests: number,
+        totalRequests: number
+    }
 }
 
 export const initialState: State = {
