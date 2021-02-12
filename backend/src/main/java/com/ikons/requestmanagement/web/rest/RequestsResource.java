@@ -13,6 +13,7 @@ import com.ikons.requestmanagement.security.SecurityUtils;
 import com.ikons.requestmanagement.web.rest.requests.ChangeStatusRequest;
 import com.ikons.requestmanagement.web.rest.requests.RequestData;
 import com.ikons.requestmanagement.web.rest.requests.RequestUpdate;
+import com.ikons.requestmanagement.web.rest.requests.StatusNote;
 import com.ikons.web.util.PaginationUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -113,10 +114,10 @@ public class RequestsResource {
         updateRequestUseCase.updateRequest(requestUpdate, user);
     }
 
-    @GetMapping("/close-request/{requestId}")
-    public void closeRequest(@PathVariable final Long requestId) {
+    @PostMapping("/close-request/{requestId}")
+    public void closeRequest(@PathVariable final Long requestId, @RequestBody final StatusNote statusNote) {
         final String user = Optional.ofNullable(SecurityUtils.getCurrentUserLogin()).get().orElseThrow(() -> new MissingUserException());
-        closeRequestUseCase.closeRequest(requestId, user);
+        closeRequestUseCase.closeRequest(requestId, user, statusNote);
     }
 
     @GetMapping("delete-request/{requestId}")

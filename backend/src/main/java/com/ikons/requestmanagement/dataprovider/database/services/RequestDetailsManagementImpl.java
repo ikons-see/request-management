@@ -28,7 +28,10 @@ import com.ikons.requestmanagement.dataprovider.database.mapper.StateHistoryMapp
 import com.ikons.requestmanagement.dataprovider.database.repository.RequestRepository;
 import com.ikons.requestmanagement.dataprovider.database.repository.ResourceRepository;
 import com.ikons.requestmanagement.dataprovider.database.repository.StateHistoryRepository;
+import com.ikons.requestmanagement.security.AuthoritiesConstants;
+import com.ikons.requestmanagement.security.SecurityUtils;
 import com.ikons.requestmanagement.web.rest.requests.RequestUpdate;
+import com.ikons.requestmanagement.web.rest.requests.StatusNote;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -128,6 +131,11 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   public Page<RequestDetailsDTO> getRequests(final RequestCriteria criteria, final Pageable pageable) {
     log.debug("find by criteria : {}", criteria);
     final Specification<RequestEntity> specification = createSpecification(criteria);
+    if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
+      StringFilter stringFilter = new StringFilter();
+      stringFilter.setEquals(SecurityUtils.getCurrentUserLogin().get());
+    }
+
     return requestRepository.findAll(specification, pageable).map(requestMapper::toDto);
   }
 
@@ -194,9 +202,10 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
 
   @Override
   @Transactional
-  public void close(final Long requestId) {
+  public void close(final Long requestId, final StatusNote statusNote) {
     requestRepository.findById(requestId).ifPresent(requestEntity -> {
       requestEntity.setStatus(RequestStatusDTO.CLOSED.toString());
+      requestEntity.setStatusNotes(statusNote.getNote());
       requestRepository.saveAndFlush(requestEntity);
     });
   }
