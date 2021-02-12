@@ -61,6 +61,14 @@ export enum RequestStatus {
     DELETED = 'DELETED'
 }
 
+export enum ActionType {
+    edit = 'EDIT',
+    close = 'CLOSE',
+    reject = 'REJECT',
+    pending = 'PENDING',
+    on_going = 'ON_GOING'
+}
+
 export interface Column {
     type: ColumnType;
     field: string;
@@ -78,7 +86,7 @@ export interface ButtonConfiguration {
     icon?: string;
     text: string;
     disabled?: boolean;
-    hidden?: boolean;
+    action?: ActionType;
     onClick?: (e: MouseEvent, value?: any) => void;
 }
 

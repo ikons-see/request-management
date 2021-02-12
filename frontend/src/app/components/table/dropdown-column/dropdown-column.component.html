@@ -7,7 +7,8 @@
     </button>
     <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu show"
         role="menu" aria-labelledby="button-basic">
-      <li role="menuitem" *ngFor="let item of dropdown.values" (click)="handleClick($event, item)">
+      <li role="menuitem" *ngFor="let item of dropdown.values" (click)="handleClick($event, item)" 
+      [hidden]="checkIfHidden(item.action)">
           <i class="fa {{item.icon}}"></i>
           <a class="dropdown-item" href="#">{{item.text}}</a>
         </li>

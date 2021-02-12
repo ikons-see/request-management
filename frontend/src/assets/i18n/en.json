@@ -142,5 +142,21 @@
         "previous": "Previous",
         "next": "Next",
         "last": "Last"
+    },
+    "global-errors": {
+            "request-data-failure": "List of requests couldn't be loaded.",
+            "add-request-failure": "The request couldn't be added. Please try again later!",
+            "update-request-failure": "An error occurred! The request couldn't be updated.",
+            "delete-request-failure": "An error occurred! The request couldn't be deleted.",
+            "close-request-failure": "An error occurred! The request couldn't be closed.",
+            "status-change-failure": "An error occurred! The request status couldn't be changed.",
+            "user-register-failure": "An error occurred! The user couldn't be registered."
+    },
+    "global-success": {
+        "add-request-success": "The request was successfully added!",
+        "update-request-success": "The request was successfully updated!",
+        "delete-request-success": "The request was successfully deleted!",
+        "close-request-success": "The request was successfully closed!",
+        "status-change-success": "The request status was changed successfully!"
     }
 }

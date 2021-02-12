@@ -16,7 +16,7 @@
                             [className]="col.type">
                             <ng-container [ngSwitch]="col.type">
                                 <app-dropdown-column *ngSwitchCase="columnType.DROPDOWN"
-                                    [dropdown]="getDropdownConfig(datum, col)" [value]="getFormattedValue(datum, col)">
+                                    [dropdown]="getDropdownConfig(datum, col)" [value]="datum">
                                 </app-dropdown-column>
                                 <app-date-column *ngSwitchCase="columnType.DATE"
                                     [value]="getFormattedValue(datum, col)"></app-date-column>

@@ -23,3 +23,6 @@ export const registerUserFailure = createAction(`[${featureKey}] registerUserFai
 export const loadProfile = createAction(`[${featureKey}] loadProfile`);
 export const loadProfileSuccessful = createAction(`[${featureKey}] loadProfileSuccessful`, props<{ userData: AccountData }>());
 export const loadProfileFailure = createAction(`[${featureKey}] loadProfileFailure`, props<{ errorMessage: string }>());
+
+export const globalSuccess = createAction(`[${featureKey}] globalSuccess`, props<{ message: string }>());
+export const globalError = createAction(`[${featureKey}] globalError`, props<{ error: string }>());

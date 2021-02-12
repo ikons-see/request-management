@@ -5,12 +5,15 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { TranslateService } from "@ngx-translate/core";
 import { BsModalService } from "ngx-bootstrap/modal";
+import { ToastrService } from "ngx-toastr";
 import { Observable, of } from "rxjs";
-import { catchError, flatMap, mergeMap, switchMap } from "rxjs/operators";
+import { catchError, flatMap, mergeMap, switchMap, tap, withLatestFrom } from "rxjs/operators";
 import { ApplicationState } from "../../app.module";
 import { RequestsManagementService } from "../../endpoint/requests-management.service";
 import {
     changeLanguage,
+    globalError,
+    globalSuccess,
     loadProfile,
     loadProfileFailure,
     loadProfileSuccessful,
@@ -31,6 +34,7 @@ export class GlobalEffects {
         private store: Store<ApplicationState>,
         private modalService: BsModalService,
         private router: Router,
+        private toastr: ToastrService,
         private translate: TranslateService,
         private requestsService: RequestsManagementService) {
     }
@@ -49,6 +53,24 @@ export class GlobalEffects {
         }
     }
 
+    showToastrError$ = createEffect(() => this.actions$.pipe(
+        ofType(globalError),
+        tap((action) => {
+            const errorMessage = this.translate.instant(action.error);
+            this.modalService.hide(1);
+            this.toastr.error(errorMessage, 'FAILED');
+        })
+    ), { dispatch: false });
+
+    showToastrSuccess$ = createEffect(() => this.actions$.pipe(
+        ofType(globalSuccess),
+        tap(action => {
+            const successMessage = action.message ? this.translate.instant(action.message) : 'Completed successfully';
+            this.modalService.hide(1);
+            this.toastr.success(successMessage, 'SUCCESS');
+        })
+    ), { dispatch: false });
+
     processLoginRequest$ = createEffect(() => this.actions$.pipe(
         ofType(loginRequest),
         switchMap((action) => {
@@ -59,7 +81,6 @@ export class GlobalEffects {
                 .pipe(
                     mergeMap(_ => this.requestsService.getUserInfo()),
                     mergeMap(response => {
-                        console.log('user info', response);
                         return [
                             loadProfileSuccessful({ userData: response }),
                             loginSuccess({})
@@ -119,6 +140,7 @@ export class GlobalEffects {
                     }),
                     catchError((error: HttpErrorResponse) =>
                         of(registerUserFailure({ errorMessage: error.message }),
+                        globalError({error: 'global-errors.user-register-failure'})
                         ))
                 )
         })));

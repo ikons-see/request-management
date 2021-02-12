@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { ButtonConfiguration, DropdownColumn } from 'src/app/types/data-types';
+import { ActionType, ButtonConfiguration, DropdownColumn, RequestStatus } from 'src/app/types/data-types';
 
 @Component({
   selector: 'app-dropdown-column',
@@ -21,8 +21,25 @@ export class DropdownColumnComponent implements OnInit {
 
   handleClick(event, btn: ButtonConfiguration) {
     if (!btn.disabled) {
-      btn.onClick(this.value);
+      btn.onClick(this.value.requestId);
     }
     event.stopPropagation();
+  }
+
+  checkIfHidden(e) {
+    if (this.value.status == RequestStatus.CLOSED) {
+      if (e == ActionType.close || e == ActionType.edit) {
+        return true;
+      }
+    } else if (this.value.status == RequestStatus.REJECTED) {
+      if (e == ActionType.reject) {
+        return true;
+      }
+    } else if (this.value.status == RequestStatus.PENDING) {
+      if (e == ActionType.pending) {
+        return true;
+      }
+    }
+    else return false;
   }
 }
