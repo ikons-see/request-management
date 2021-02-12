@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { AuditEvent } from "src/app/types/response-types";
+import { AuditEvent, MonthlyChartData, TotalChartData } from "src/app/types/response-types";
 import { RequestStatus } from "../../types/data-types";
 import { RequestDetails, RequestFilters } from "../../types/request-types";
 
@@ -24,4 +24,9 @@ export const openViewHistoryModal = createAction(`[${featureKey}] openViewHistor
 export const requestStatusLogSuccess = createAction(`[${featureKey}] requestStatusLogSuccess`, props<{ events: Array<AuditEvent> }>());
 export const requestStatusLogFailure = createAction(`[${featureKey}] requestStatusLogFailure`, props<{ errorMessage: string }>());
 
-export const getPieChartsData = createAction(`[${featureKey}] getPieChartsData`);
+export const getTotalChartsData = createAction(`[${featureKey}] getTotalChartsData`);
+export const setTotalChartsData = createAction(`[${featureKey}] setTotalChartsData`, props<{ data: TotalChartData }>());
+export const getRequestsMonthlyData = createAction(`[${featureKey}] getRequestsMonthlyChartData`);
+export const setRequestsMonthlyData = createAction(`[${featureKey}] setRequestsMonthlyData`, props<{ data: MonthlyChartData }>());
+export const getResourcesMonthlyData = createAction(`[${featureKey}] getResourcesMonthlyChartData`);
+export const setResourcesMonthlyData = createAction(`[${featureKey}] setResourcesMonthlyData`, props<{ data: MonthlyChartData }>());

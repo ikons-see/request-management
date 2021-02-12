@@ -152,7 +152,8 @@
             "close-request-failure": "An error occurred! The request couldn't be closed.",
             "status-change-failure": "An error occurred! The request status couldn't be changed.",
             "user-register-failure": "An error occurred! The user couldn't be registered.",
-            "account-activation-failure": "An error occurred! Your account couldn't be activated"
+            "account-activation-failure": "An error occurred! Your account couldn't be activated",
+            "chart-data-error": "Couldn't load data for chart"
     },
     "global-success": {
         "add-request-success": "The request was successfully added!",

@@ -11,10 +11,12 @@
         </li>
     </ul>
     <div class="tab-content">
-        <div class="tab-pane active">
+        <div class="tab-pane active" *ngIf="!(loading$ | async)">
                 <app-active-requests-chart *ngIf="activeTab == '0'"></app-active-requests-chart>
                 <app-assigned-requests-chart *ngIf="activeTab == '1'"></app-assigned-requests-chart>
                 <app-monthly-requests-chart *ngIf="activeTab == '2'"></app-monthly-requests-chart>
+                <app-monthly-resources-chart *ngIf="activeTab == '3'"></app-monthly-resources-chart>
         </div>
+        <app-loading-view *ngIf="loading$ | async"></app-loading-view>
     </div>
 </div>

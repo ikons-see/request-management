@@ -1,7 +1,7 @@
 import { Action, createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
-import { AuditEvent } from "src/app/types/response-types";
+import { AuditEvent, MonthlyChartData, TotalChartData } from "src/app/types/response-types";
 import { RequestDetails, RequestFilters } from "../../types/request-types";
-import { openViewHistoryModal, pageChanged, requestData, requestStatusLogFailure, requestStatusLogSuccess, setData, setDataFailure } from "./administrator-actions";
+import { getTotalChartsData, openViewHistoryModal, pageChanged, requestData, requestStatusLogFailure, requestStatusLogSuccess, setData, setDataFailure, setRequestsMonthlyData, setResourcesMonthlyData, setTotalChartsData } from "./administrator-actions";
 
 export const featureKey = 'administrator';
 
@@ -14,11 +14,9 @@ export interface State {
     errorMessage: string;
     auditErrorMessage: string;
     statusLog?: Array<AuditEvent>;
-    pieChartsData?: {
-        totalActiveRequests: number,
-        totalOnGoingRequests: number,
-        totalRequests: number
-    }
+    totalChartsData?: TotalChartData;
+    requestsMonthlyChartData?: MonthlyChartData;
+    resourcesMonthlyChartData?: MonthlyChartData;
 }
 
 export const initialState: State = {
@@ -45,9 +43,13 @@ const requesterReducer = createReducer(
     on(setData, (state, { requests, totalNumber }) => ({ ...state, requests, totalNumber, loading: false })),
     on(setDataFailure, (state, { errorMessage }) => ({ ...state, errorMessage, loading: false })),
     on(pageChanged, (state, { page }) => ({ ...state, currentPage: page })),
-    on(openViewHistoryModal, (state) => ({...state, auditErrorMessage: null})),
-    on(requestStatusLogSuccess, (state, {events}) => ({...state, statusLog: events})),
-    on(requestStatusLogFailure, (state, {errorMessage}) => ({...state, auditErrorMessage: errorMessage}))
+    on(openViewHistoryModal, (state) => ({ ...state, auditErrorMessage: null })),
+    on(requestStatusLogSuccess, (state, { events }) => ({ ...state, statusLog: events })),
+    on(requestStatusLogFailure, (state, { errorMessage }) => ({ ...state, auditErrorMessage: errorMessage })),
+    on(getTotalChartsData, (state) => ({...state, loading: true})),
+    on(setTotalChartsData, (state, { data }) => ({ ...state, totalChartsData: data , loading: false})),
+    on(setRequestsMonthlyData, (state, { data }) => ({...state, requestsMonthlyChartData: data})),
+    on(setResourcesMonthlyData, (state, { data }) => ({...state, resourcesMonthlyChartData: data}))
 );
 
 export function reducer(state: State | undefined, action: Action) {
@@ -66,3 +68,4 @@ export const getRequestById = createSelector(featureState,
     (state: State, requestId: number) => state.requests.find(el => el.requestId == requestId));
 export const getStatusLog = createSelector(featureState, state => state.statusLog ? state.statusLog : null);
 export const getAuditError = createSelector(featureState, state => state.auditErrorMessage);
+export const getTotalChartData = createSelector(featureState, state => state.totalChartsData);

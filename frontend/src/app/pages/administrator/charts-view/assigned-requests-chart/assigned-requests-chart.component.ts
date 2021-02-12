@@ -6,6 +6,10 @@ import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { Tab } from 'src/app/types/data-types';
+import { TotalChartData } from 'src/app/types/response-types';
+import { Store } from '@ngrx/store';
+import { ApplicationState } from 'src/app/app.module';
+import { getTotalChartData } from 'src/app/store/administrator/administrator-reducer';
 
 @Component({
   selector: 'app-assigned-requests-chart',
@@ -16,10 +20,15 @@ export class AssignedRequestsChartComponent implements OnInit {
 
   totalRequests: number = 16;
   totalAssignedRequests: number = 2;
+  chartData: TotalChartData;
 
   private chart: am4charts.XYChart;
 
-  constructor(@Inject(PLATFORM_ID) private platformId, private zone: NgZone) { }
+  constructor(@Inject(PLATFORM_ID) private platformId, private zone: NgZone, private store: Store<ApplicationState>) {
+    this.store.select(getTotalChartData).pipe().subscribe(value => {
+      this.chartData = value;
+    });
+   }
 
   ngOnInit(): void {
   }
@@ -40,11 +49,11 @@ export class AssignedRequestsChartComponent implements OnInit {
     activeChart.data = [
       {
         "type": "Assigned Requests",
-        "number": this.totalAssignedRequests
+        "number": this.chartData.totalOnGoingRequests
       },
       {
         "type": "Unassigned Requests",
-        "number": this.totalRequests - this.totalAssignedRequests
+        "number": this.chartData.totalRequests - this.chartData.totalOnGoingRequests
       },
     ];
 

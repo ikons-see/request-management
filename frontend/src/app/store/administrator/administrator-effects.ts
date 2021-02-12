@@ -18,6 +18,9 @@ import {
     changeRequestFailure,
     changeRequestStatus,
     changeRequestSuccess,
+    getRequestsMonthlyData,
+    getResourcesMonthlyData,
+    getTotalChartsData,
     openChangeStatusModal,
     openViewDetailsModal,
     openViewHistoryModal,
@@ -26,7 +29,10 @@ import {
     requestStatusLogSuccess,
     resetRequestFilters,
     setData,
-    setDataFailure
+    setDataFailure,
+    setRequestsMonthlyData,
+    setResourcesMonthlyData,
+    setTotalChartsData
 } from "./administrator-actions";
 import { getCurrentPage, getFilters, getRequestById } from "./administrator-reducer";
 
@@ -158,6 +164,51 @@ export class AdministratorEffects {
                     })),
                     catchError((error: HttpErrorResponse) =>
                         of(requestStatusLogFailure({ errorMessage: error.message }),
+                        ))
+                );
+        })
+    ));
+
+    getTotalChartData$ = createEffect(() => this.actions$.pipe(
+        ofType(getTotalChartsData),
+        switchMap((action) => {
+            return this.requestsService.getTotalChartData()
+                .pipe(
+                    map(res => setTotalChartsData({
+                        data: res
+                    })),
+                    catchError((error: HttpErrorResponse) =>
+                        of(globalError({error: 'global-errors.chart-data-error'}),
+                        ))
+                );
+        })
+    ));
+
+    getRequestsMonthlyChartData$ = createEffect(() => this.actions$.pipe(
+        ofType(getRequestsMonthlyData),
+        switchMap((action) => {
+            return this.requestsService.getRequestsMonthlyChartData()
+                .pipe(
+                    map(res => setRequestsMonthlyData({
+                        data: res
+                    })),
+                    catchError((error: HttpErrorResponse) =>
+                        of(globalError({error: 'global-errors.chart-data-error'}),
+                        ))
+                );
+        })
+    ));
+
+    getResourcesMonthlyChartData$ = createEffect(() => this.actions$.pipe(
+        ofType(getResourcesMonthlyData),
+        switchMap((action) => {
+            return this.requestsService.getResourcesMonthlyChartData()
+                .pipe(
+                    map(res => setResourcesMonthlyData({
+                        data: res
+                    })),
+                    catchError((error: HttpErrorResponse) =>
+                        of(globalError({error: 'global-errors.chart-data-error'}),
                         ))
                 );
         })

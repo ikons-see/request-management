@@ -29,3 +29,14 @@ export interface AuditEvent {
     operation: string,
     notes?: string
 }
+
+export interface TotalChartData {
+    totalActiveRequests: number,
+    totalOnGoingRequests: number,
+    totalRequests: number
+}
+
+export interface MonthlyChartData {
+    period: Date,
+    total: number
+}

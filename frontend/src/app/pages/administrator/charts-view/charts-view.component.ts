@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { ApplicationState } from 'src/app/app.module';
+import { getRequestsMonthlyData, getResourcesMonthlyData, getTotalChartsData } from 'src/app/store/administrator/administrator-actions';
+import { getLoadingRequests } from 'src/app/store/administrator/administrator-reducer';
 import { Tab } from 'src/app/types/data-types';
 
 @Component({
@@ -10,8 +15,9 @@ export class ChartsViewComponent implements OnInit {
 
   tabs: Array<Tab>;
   activeTab: string = '0';
+  loading$: Observable<boolean>;
 
-  constructor() {
+  constructor(private store: Store<ApplicationState>) {
     this.tabs = [
       {
         id: '0',
@@ -30,10 +36,14 @@ export class ChartsViewComponent implements OnInit {
       },
       {
         id: '3',
-        name: 'Something else',
+        name: 'Monthly Resources',
         onClick: (e) => this.tabChanged(e)
       },
     ];
+    this.store.dispatch(getTotalChartsData());
+    this.store.dispatch(getRequestsMonthlyData());
+    this.store.dispatch(getResourcesMonthlyData());
+    this.loading$ = this.store.select(getLoadingRequests);
   }
 
   ngOnInit() { }

@@ -70,6 +70,7 @@ import { ActiveRequestsChartComponent } from './pages/administrator/charts-view/
 import { AssignedRequestsChartComponent } from './pages/administrator/charts-view/assigned-requests-chart/assigned-requests-chart.component';
 import { MonthlyRequestsChartComponent } from './pages/administrator/charts-view/monthly-requests-chart/monthly-requests-chart.component';
 import { ActivateAccountComponent } from './pages/login/activate-account/activate-account.component';
+import { MonthlyResourcesChartComponent } from './pages/administrator/charts-view/monthly-resources-chart/monthly-resources-chart.component';
 
 export interface ApplicationState {
   [requesterReducer.featureKey]: requesterReducer.State,
@@ -137,6 +138,7 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
     ActiveRequestsChartComponent,
     AssignedRequestsChartComponent,
     MonthlyRequestsChartComponent,
+    MonthlyResourcesChartComponent,
     ActivateAccountComponent
   ],
   imports: [
