@@ -29,6 +29,7 @@ import com.ikons.requestmanagement.dataprovider.database.repository.RequestRepos
 import com.ikons.requestmanagement.dataprovider.database.repository.ResourceRepository;
 import com.ikons.requestmanagement.dataprovider.database.repository.StateHistoryRepository;
 import com.ikons.requestmanagement.web.rest.requests.RequestUpdate;
+import com.ikons.requestmanagement.web.rest.requests.StatusNote;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -194,9 +195,10 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
 
   @Override
   @Transactional
-  public void close(final Long requestId) {
+  public void close(final Long requestId, final StatusNote statusNote) {
     requestRepository.findById(requestId).ifPresent(requestEntity -> {
       requestEntity.setStatus(RequestStatusDTO.CLOSED.toString());
+      requestEntity.setStatusNotes(statusNote.getNote());
       requestRepository.saveAndFlush(requestEntity);
     });
   }

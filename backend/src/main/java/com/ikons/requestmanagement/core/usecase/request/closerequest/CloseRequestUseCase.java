@@ -6,6 +6,7 @@ import com.ikons.requestmanagement.core.usecase.request.RequestActionNotificatio
 import com.ikons.requestmanagement.core.usecase.request.RequestDetailsManagement;
 import com.ikons.requestmanagement.core.usecase.request.RequestMailContentUseCase;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
+import com.ikons.requestmanagement.web.rest.requests.StatusNote;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.mail.MailSendException;
@@ -25,9 +26,9 @@ public class CloseRequestUseCase {
     private final RequestDetailsManagement requestDetailsManagement;
 
 
-    public void closeRequest(final Long requestId, String user) {
-        closeRequest.close(requestId);
-        requestDetailsManagement.logRequestState(requestId, user, RequestStatusDTO.CLOSED, "notess");
+    public void closeRequest(final Long requestId, final String user, final StatusNote statusNote) {
+        closeRequest.close(requestId, statusNote);
+        requestDetailsManagement.logRequestState(requestId, user, RequestStatusDTO.CLOSED, statusNote.getNote());
         sendRequestCloseEmail(requestId);
     }
 
