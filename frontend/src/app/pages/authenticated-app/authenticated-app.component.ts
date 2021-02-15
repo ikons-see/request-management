@@ -7,6 +7,7 @@ import { ApplicationState } from '../../app.module';
 import { NavigationTab, Role } from '../../types/data-types';
 import { getUserRole } from 'src/app/store/common/common-reducer';
 import { Router } from '@angular/router';
+import { getLoadingRequests } from 'src/app/store/requests/requests-reducer';
 
 @Component({
   selector: 'app-authenticated-app',
@@ -28,6 +29,7 @@ export class AuthenticatedAppComponent implements OnInit, OnDestroy {
       this.store.select(getUserRole).subscribe(value => {
         this.role = value;
       });
+      this.loading$ = this.store.select(getLoadingRequests);
   }
 
   ngOnInit(): void {

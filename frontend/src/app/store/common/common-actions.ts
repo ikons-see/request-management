@@ -3,7 +3,7 @@ import { RegisterUserRequest } from "../../types/request-types";
 import { JWTToken } from "../../types/data-types";
 import { AccountData } from "src/app/types/response-types";
 
-export const featureKey = 'global';
+export const featureKey = 'common';
 
 export const resetMessage = createAction(`[${featureKey}] resetMessage`);
 export const changeLanguage = createAction(`[${featureKey}] changeLanguage`, props<{ language: string }>());

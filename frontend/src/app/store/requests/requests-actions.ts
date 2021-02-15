@@ -2,9 +2,8 @@ import { createAction, props } from "@ngrx/store";
 import { AddRequest, RequestDetails, RequestFilters, UpdateRequest } from "../../types/request-types";
 import {SearchWithPagination} from "../../endpoint/http-rest-utils";
 import { RequestStatus } from "src/app/types/data-types";
-import { AuditEvent } from "src/app/types/response-types";
 
-export const featureKey = 'requester';
+export const featureKey = 'requests';
 
 export const resetMessage = createAction(`[${featureKey}] resetMessage`);
 

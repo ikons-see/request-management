@@ -11,7 +11,7 @@ import {
 } from "./common-actions";
 
 
-export const featureKey = 'global';
+export const featureKey = 'common';
 
 export interface State {
     authenticated: boolean;

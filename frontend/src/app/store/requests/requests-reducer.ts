@@ -10,7 +10,7 @@ import {
     setDataFailure
 } from "./requests-actions";
 
-export const featureKey = 'requester';
+export const featureKey = 'requests';
 
 export interface State {
     requests: Array<RequestDetails>;
@@ -40,7 +40,7 @@ export const initialState: State = {
 
 const requesterReducer = createReducer(
     initialState,
-    on(requestData, (state, { query }) => ({ ...state, loadingRequests: true, currentPage: query ? query.page : 0 })),
+    on(requestData, (state, { query }) => ({ ...state, loading: true, currentPage: query ? query.page : 0 })),
     on(setData, (state, { requests, totalNumber }) => ({ ...state, requests, totalNumber, loading: false })),
     on(setDataFailure, (state, { errorMessage }) => ({ ...state, errorMessage, loading: false })),
     on(pageChanged, (state, { page }) => ({ ...state, currentPage: page })),
