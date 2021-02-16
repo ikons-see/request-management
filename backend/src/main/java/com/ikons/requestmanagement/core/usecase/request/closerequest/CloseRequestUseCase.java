@@ -28,7 +28,7 @@ public class CloseRequestUseCase {
 
     public void closeRequest(final Long requestId, final String user, final StatusNote statusNote) {
         closeRequest.close(requestId, statusNote);
-        requestDetailsManagement.logRequestState(requestId, user, RequestStatusDTO.CLOSED, statusNote.getNote());
+        requestDetailsManagement.logRequestState(requestId, user, RequestStatusDTO.CLOSED, statusNote.getNotes());
         sendRequestCloseEmail(requestId);
     }
 

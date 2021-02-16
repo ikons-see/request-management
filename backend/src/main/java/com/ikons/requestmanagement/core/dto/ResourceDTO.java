@@ -17,5 +17,5 @@ public class ResourceDTO {
     private int total;
     private String seniority;
     private List<String> skills;
-    private String notes;
+    private String note;
 }

@@ -21,6 +21,7 @@ public interface ResourceMapper extends EntityMapper<ResourceEntity, ResourceDTO
   @Mapping(target = "resourceId", ignore = true)
   @Mapping(target = "request", ignore = true)
   @Mapping(source = "skills", target = "skills", qualifiedByName = "listToString")
+  @Mapping(source = "note", target = "notes")
   ResourceEntity toEntity(ResourceDTO resourceDTO);
 
   @Named("stringToList")

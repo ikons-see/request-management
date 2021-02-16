@@ -209,7 +209,7 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   public void close(final Long requestId, final StatusNote statusNote) {
     requestRepository.findById(requestId).ifPresent(requestEntity -> {
       requestEntity.setStatus(RequestStatusDTO.CLOSED.toString());
-      requestEntity.setStatusNotes(statusNote.getNote());
+      requestEntity.setStatusNotes(statusNote.getNotes());
       requestRepository.saveAndFlush(requestEntity);
     });
   }

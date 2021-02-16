@@ -11,5 +11,5 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class StatusNote {
 
-    private String note;
+    private String notes;
 }
