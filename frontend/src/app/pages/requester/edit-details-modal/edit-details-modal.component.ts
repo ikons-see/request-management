@@ -3,11 +3,11 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { Subscription } from 'rxjs';
-import { ApplicationState } from 'src/app/app.module';
-import { updateRequest } from 'src/app/store/requests/requests-actions';
-import { getRequestById } from 'src/app/store/requests/requests-reducer';
-import { ButtonConfiguration, ButtonType, Tab } from 'src/app/types/data-types';
-import { RequestDetails, Resource } from 'src/app/types/request-types';
+import { ApplicationState } from '../../../app.module';
+import { updateRequest } from '../../../store/requests/requests-actions';
+import { getRequestById } from '../../../store/requests/requests-reducer';
+import { ButtonConfiguration, ButtonType, Tab } from '../../../types/data-types';
+import { RequestDetails, Resource } from '../../../types/request-types';
 import { EditGeneralInfoComponent } from './edit-general-info/edit-general-info.component';
 import { EditResourcesComponent } from './edit-resources/edit-resources.component';
 
@@ -145,8 +145,15 @@ export class EditDetailsModalComponent implements OnInit, OnDestroy {
   }
 
   updateRequest(e) {
+    console.log('update request: ', this.generalInfoForm.value, this.request);
+    const values = this.generalInfoForm.value;
     let data = {
-      ...this.request,
+      requestId: this.request.requestId,
+      areaOfInterest: values.areaOfInterest[0],
+      startDate: values.dateRange[0],
+      endDate: values.dateRange[1],
+      projectDescription: values.projectDescription,
+      notes: values.notes,
       newResources: this.resourcesCmp.getNewResources(),
       deletedResourceIds: this.resourcesCmp.getDeletedResources()
     }

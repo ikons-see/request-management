@@ -17,7 +17,7 @@ export const addRequestSuccess = createAction(`[${featureKey}] requestData`);
 export const addRequestFailure = createAction(`[${featureKey}] addRequestFailure`, props<{ errorMessage: string }>());
 
 export const openEditRequestModal = createAction(`[${featureKey}] openEditRequestModal`, props<{ requestId: number }>());
-export const updateRequest = createAction(`[${featureKey}] updateRequest`, props<{ request: UpdateRequest }>());
+export const updateRequest = createAction(`[${featureKey}] updateRequest`, props<{ request: Partial<UpdateRequest> }>());
 export const updateRequestSuccess = createAction(`[${featureKey}] updateRequestSuccess`);
 export const updateRequestFailure = createAction(`[${featureKey}] updateRequestFailure`, props<{ errorMessage: string }>());
 

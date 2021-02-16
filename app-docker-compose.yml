@@ -7,7 +7,7 @@ services:
     depends_on:
       - requestmanagement-app
   requestmanagement-app:
-    image: requestmanagament:0.0.1-SNAPSHOT
+    image: requestmanagament:0.0.2-SNAPSHOT
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod

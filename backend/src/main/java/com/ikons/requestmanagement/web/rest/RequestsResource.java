@@ -70,25 +70,25 @@ public class RequestsResource {
         .collect(Collectors.toList());
   }
 
-    @PostMapping("/create-new-request")
-    public void createNewRequest(@RequestBody final RequestData requestData) {
-        final Optional<String> user = SecurityUtils.getCurrentUserLogin();
-         createNewRequestUseCase.createRequest(
-                requestData.getAreaOfInterest(),
-                requestData.getStartDate(),
-                requestData.getEndDate(),
-                requestData.getProjectDescription(),
-                requestData.getOtherNotes(),
-                user.get(),
-                requestData.getResources()
-        );
-    }
+  @PostMapping("/create-new-request")
+  public void createNewRequest(@RequestBody final RequestData requestData) {
+    final Optional<String> user = SecurityUtils.getCurrentUserLogin();
+    createNewRequestUseCase.createRequest(
+        requestData.getAreaOfInterest(),
+        requestData.getStartDate(),
+        requestData.getEndDate(),
+        requestData.getProjectDescription(),
+        requestData.getOtherNotes(),
+        user.get(),
+        requestData.getResources()
+    );
+  }
 
-    @PostMapping("/my-requests")
-    public ResponseEntity<RequestsDTO> listUserRequests(final Pageable page) {
-        Optional<RequestsDTO> requestsDTO = SecurityUtils.getCurrentUserLogin().map(login -> listRequestsUseCase.getUserRequests(login, page));
-        return ResponseEntity.of(requestsDTO);
-    }
+  @PostMapping("/my-requests")
+  public ResponseEntity<RequestsDTO> listUserRequests(final Pageable page) {
+    Optional<RequestsDTO> requestsDTO = SecurityUtils.getCurrentUserLogin().map(login -> listRequestsUseCase.getUserRequests(login, page));
+    return ResponseEntity.of(requestsDTO);
+  }
 
   @PostMapping("/list-requests")
   public RequestsDTO listRequests(final Pageable pageable) {
@@ -100,40 +100,40 @@ public class RequestsResource {
       final RequestCriteria criteria,
       final Pageable pageable
   ) {
-      Page<RequestDetailsDTO> page = listRequestsUseCase.getRequests(criteria, pageable);
-      HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
-          ServletUriComponentsBuilder.fromCurrentRequest(),
-          page
-      );
-      return ResponseEntity.ok().headers(headers).body(page.getContent());
+    Page<RequestDetailsDTO> page = listRequestsUseCase.getRequests(criteria, pageable);
+    HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(
+        ServletUriComponentsBuilder.fromCurrentRequest(),
+        page
+    );
+    return ResponseEntity.ok().headers(headers).body(page.getContent());
   }
 
-    @PostMapping("/update-request")
-    public void updateRequest(@RequestBody final RequestUpdate requestUpdate) {
-        final String user = Optional.ofNullable(SecurityUtils.getCurrentUserLogin()).get().orElseThrow(() -> new MissingUserException());
-        updateRequestUseCase.updateRequest(requestUpdate, user);
-    }
+  @PostMapping("/update-request")
+  public void updateRequest(@RequestBody final RequestUpdate requestUpdate) {
+    final String user = Optional.ofNullable(SecurityUtils.getCurrentUserLogin()).get().orElseThrow(() -> new MissingUserException());
+    updateRequestUseCase.updateRequest(requestUpdate, user);
+  }
 
-    @PostMapping("/close-request/{requestId}")
-    public void closeRequest(@PathVariable final Long requestId, @RequestBody final StatusNote statusNote) {
-        final String user = Optional.ofNullable(SecurityUtils.getCurrentUserLogin()).get().orElseThrow(() -> new MissingUserException());
-        closeRequestUseCase.closeRequest(requestId, user, statusNote);
-    }
+  @PostMapping("/close-request/{requestId}")
+  public void closeRequest(@PathVariable final Long requestId, @RequestBody final StatusNote statusNote) {
+    final String user = Optional.ofNullable(SecurityUtils.getCurrentUserLogin()).get().orElseThrow(() -> new MissingUserException());
+    closeRequestUseCase.closeRequest(requestId, user, statusNote);
+  }
 
-    @GetMapping("delete-request/{requestId}")
-    public void deleteRequest(@PathVariable final Long requestId) {
-        deleteRequestUseCase.deleteRequest(requestId);
-    }
+  @GetMapping("delete-request/{requestId}")
+  public void deleteRequest(@PathVariable final Long requestId) {
+    deleteRequestUseCase.deleteRequest(requestId);
+  }
 
-    @PostMapping("/change-status")
-    public void changeStatus(@RequestBody final ChangeStatusRequest changeStatusRequest) {
-        final String user = Optional.ofNullable(SecurityUtils.getCurrentUserLogin()).get().orElseThrow(() -> new MissingUserException());
-        requestStatusUseCase.changeRequestStatus(changeStatusRequest, user);
-    }
+  @PostMapping("/change-status")
+  public void changeStatus(@RequestBody final ChangeStatusRequest changeStatusRequest) {
+    final String user = Optional.ofNullable(SecurityUtils.getCurrentUserLogin()).get().orElseThrow(() -> new MissingUserException());
+    requestStatusUseCase.changeRequestStatus(changeStatusRequest, user);
+  }
 
-    @GetMapping("state-history/{requestId}")
-    public List<RequestStateHistoryDTO> getRequestStateHistory(@PathVariable final Long requestId) {
-        return requestStatusUseCase.getRequestStateHistory(requestId);
-    }
+  @GetMapping("state-history/{requestId}")
+  public List<RequestStateHistoryDTO> getRequestStateHistory(@PathVariable final Long requestId) {
+    return requestStatusUseCase.getRequestStateHistory(requestId);
+  }
 
 }
