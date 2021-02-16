@@ -1,7 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { AreaOfInterest } from 'src/app/types/data-types';
-import { RequestDetails } from 'src/app/types/request-types';
 
 @Component({
   selector: 'app-edit-general-info',

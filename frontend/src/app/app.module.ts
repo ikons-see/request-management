@@ -18,6 +18,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 import { TranslateLoader } from '@ngx-translate/core';
 import { ToastrModule } from 'ngx-toastr';
 import { MultiTranslateHttpLoader } from 'ngx-translate-multi-http-loader';
+import { defineLocale } from 'ngx-bootstrap/chronos';
+import { itLocale } from 'ngx-bootstrap/locale';
+import { enGbLocale } from 'ngx-bootstrap/locale';
+defineLocale('it', itLocale); 
+defineLocale('en', enGbLocale); 
 
 import { AppComponent } from './app.component';
 import { NavigationBarComponent } from './components/navigation-bar/navigation-bar.component';
