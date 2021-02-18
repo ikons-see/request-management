@@ -9,7 +9,7 @@ import { NavigationTab } from 'src/app/types/data-types';
 export class PageComponent implements OnInit {
 
   @Input()
-  loading = true;
+  loading = false;
 
   @Input()
   navigationTabs: Array<NavigationTab>;

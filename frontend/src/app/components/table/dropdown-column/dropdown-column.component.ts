@@ -32,7 +32,7 @@ export class DropdownColumnComponent implements OnInit {
         return true;
       }
     } else if (this.value.status == RequestStatus.REJECTED) {
-      if (e != ActionType.view && e!= ActionType.history) {
+      if (e != ActionType.view && e != ActionType.history && e != ActionType.delete) {
         return true;
       }
     } else if (this.value.status == RequestStatus.PENDING) {

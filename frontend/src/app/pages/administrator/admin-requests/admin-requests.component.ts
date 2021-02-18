@@ -16,6 +16,7 @@ import {
 import {
   addRequestFilters, 
   openChangeStatusModal, 
+  openEditRequestModal, 
   openViewDetailsModal,
   pageChanged,
   requestData,
@@ -83,8 +84,14 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
           onClick: (e) => this.openViewHistoryModal(e)
         },
         {
-          text: translations['take-charge'],
+          text: translations['edit'],
           icon: 'fa-edit',
+          action: ActionType.edit,
+          onClick: (e) => this.openEditRequestModal(e)
+        },
+        {
+          text: translations['take-charge'],
+          icon: 'fa-user',
           action: ActionType.on_going,
           onClick: (e) => this.openChangeStatusModal(e, RequestStatus.ON_GOING)
         },
@@ -165,6 +172,10 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
 
   openViewHistoryModal(e) {
     this.store.dispatch(openViewHistoryModal({ requestId: e }));
+  }
+
+  openEditRequestModal(e) {
+    this.store.dispatch(openEditRequestModal({ requestId: e }));
   }
 
   applyFilters(e) {

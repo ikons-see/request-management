@@ -17,7 +17,6 @@ import { getLoadingRequests } from 'src/app/store/requests/requests-reducer';
 export class AuthenticatedAppComponent implements OnInit, OnDestroy {
 
   tabs: Array<NavigationTab>;
-  loading$: Observable<boolean>;
   isAdmin: boolean = true;
   translationSub: Subscription;
   signOutTab: NavigationTab;
@@ -29,7 +28,6 @@ export class AuthenticatedAppComponent implements OnInit, OnDestroy {
       this.store.select(getUserRole).subscribe(value => {
         this.role = value;
       });
-      this.loading$ = this.store.select(getLoadingRequests);
   }
 
   ngOnInit(): void {

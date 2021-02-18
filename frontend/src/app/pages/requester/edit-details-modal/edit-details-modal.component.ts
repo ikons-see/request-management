@@ -145,7 +145,6 @@ export class EditDetailsModalComponent implements OnInit, OnDestroy {
   }
 
   updateRequest(e) {
-    console.log('update request: ', this.generalInfoForm.value, this.request);
     const values = this.generalInfoForm.value;
     let data = {
       requestId: this.request.requestId,

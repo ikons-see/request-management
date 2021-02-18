@@ -47,7 +47,7 @@ export class RequestsManagementService {
         return this.httpClient.post<void>(`api/requests-management/create-new-request`, request);
     }
 
-    updateRequest(request: UpdateRequest): Observable<void> {
+    updateRequest(request: Partial<UpdateRequest>): Observable<void> {
         return this.httpClient.post<void>(`api/requests-management/update-request`, request);
     }
 

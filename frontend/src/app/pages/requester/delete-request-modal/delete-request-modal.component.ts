@@ -22,13 +22,11 @@ export class DeleteRequestModalComponent implements OnInit, OnDestroy {
   title: string;
 
   buttons: Array<ButtonConfiguration>;
-  loading$: Observable<boolean>;
   translationSub: Subscription;
 
   constructor(private store: Store<ApplicationState>,
     public bsModalRef: BsModalRef,
     private translate: TranslateService) {
-    this.loading$ = this.store.select(getLoadingRequests);
    }
 
   ngOnInit(): void {

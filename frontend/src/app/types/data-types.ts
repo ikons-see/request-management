@@ -68,7 +68,8 @@ export enum ActionType {
     pending = 'PENDING',
     on_going = 'ON_GOING',
     view = 'VIEW',
-    history = 'HISTORY'
+    history = 'HISTORY',
+    delete = 'DELETE'
 }
 
 export interface Column {

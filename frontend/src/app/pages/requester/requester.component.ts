@@ -94,6 +94,7 @@ export class RequesterComponent implements OnInit, OnDestroy {
         {
           text: translations['view-details'],
           icon: 'fa-list',
+          action: ActionType.view,
           onClick: (e) => this.openDetailsModal(e)
         },
         {
@@ -105,6 +106,7 @@ export class RequesterComponent implements OnInit, OnDestroy {
         {
           text: translations['delete'],
           icon: 'fa-trash',
+          action: ActionType.delete,
           onClick: (e) => this.deleteRequest(e)
         },
         {
