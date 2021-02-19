@@ -14,20 +14,13 @@ import com.ikons.requestmanagement.core.usecase.request.RequestDetailsManagement
 import com.ikons.requestmanagement.core.usecase.request.closerequest.CloseRequest;
 import com.ikons.requestmanagement.core.usecase.request.deleterequest.DeleteRequest;
 import com.ikons.requestmanagement.core.usecase.request.exception.MissingRequestException;
+import com.ikons.requestmanagement.core.usecase.request.getconstants.GetConstants;
 import com.ikons.requestmanagement.core.usecase.request.newrequest.CreateRequest;
 import com.ikons.requestmanagement.core.usecase.request.updaterequest.UpdateRequest;
 import com.ikons.requestmanagement.core.usecase.user.UserManagement;
-import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity;
-import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity_;
-import com.ikons.requestmanagement.dataprovider.database.entity.ResourceEntity;
-import com.ikons.requestmanagement.dataprovider.database.entity.StateHistoryEntity;
-import com.ikons.requestmanagement.dataprovider.database.entity.ResourceEntity_;
-import com.ikons.requestmanagement.dataprovider.database.mapper.RequestMapper;
-import com.ikons.requestmanagement.dataprovider.database.mapper.ResourceMapper;
-import com.ikons.requestmanagement.dataprovider.database.mapper.StateHistoryMapper;
-import com.ikons.requestmanagement.dataprovider.database.repository.RequestRepository;
-import com.ikons.requestmanagement.dataprovider.database.repository.ResourceRepository;
-import com.ikons.requestmanagement.dataprovider.database.repository.StateHistoryRepository;
+import com.ikons.requestmanagement.dataprovider.database.entity.*;
+import com.ikons.requestmanagement.dataprovider.database.mapper.*;
+import com.ikons.requestmanagement.dataprovider.database.repository.*;
 import com.ikons.requestmanagement.security.AuthoritiesConstants;
 import com.ikons.requestmanagement.security.SecurityUtils;
 import com.ikons.requestmanagement.web.rest.requests.RequestUpdate;
@@ -41,11 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.JoinType;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Log4j2
 @Service
@@ -55,54 +46,62 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
     DeleteRequest,
     UpdateRequest,
     CloseRequest,
-    ReportResults
-{
+    ReportResults,
+    GetConstants {
 
-    private static final ObjectMapper objectMapper = new ObjectMapper();
-    private final RequestRepository requestRepository;
-    private final ResourceRepository resourceRepository;
-    private final UserManagement userManagement;
-    private final RequestMapper requestMapper;
-    private final ResourceMapper resourceMapper;
-    private final StateHistoryMapper stateHistoryMapper;
-    private final StateHistoryRepository stateHistoryRepository;
+  private static final ObjectMapper objectMapper = new ObjectMapper();
+  private final RequestRepository requestRepository;
+  private final ResourceRepository resourceRepository;
+  private final UserManagement userManagement;
+  private final RequestMapper requestMapper;
+  private final ResourceMapper resourceMapper;
+  private final StateHistoryMapper stateHistoryMapper;
+  private final StateHistoryRepository stateHistoryRepository;
+  private final SkillRepository skillRepository;
+  private final SkillMapper skillMapper;
+  private final AreaOfInterestRepository areaOfInterestRepository;
+  private final AreaOfInterestMapper areaOfInterestMapper;
 
-    public RequestDetailsManagementImpl(
-            final RequestRepository requestRepository,
-            final ResourceRepository resourcesRepository,
-            final UserManagement userManagement,
-            final RequestMapper requestMapper,
-            final ResourceMapper resourceMapper,
-            final StateHistoryMapper stateHistoryMapper, final StateHistoryRepository stateHistoryRepository) {
-        this.requestRepository = requestRepository;
-        this.resourceRepository = resourcesRepository;
-        this.userManagement = userManagement;
-        this.requestMapper = requestMapper;
-        this.resourceMapper = resourceMapper;
-        this.stateHistoryMapper = stateHistoryMapper;
-        this.stateHistoryRepository = stateHistoryRepository;
-    }
+  public RequestDetailsManagementImpl(
+      final RequestRepository requestRepository,
+      final ResourceRepository resourcesRepository,
+      final UserManagement userManagement,
+      final RequestMapper requestMapper,
+      final ResourceMapper resourceMapper,
+      final StateHistoryMapper stateHistoryMapper, final StateHistoryRepository stateHistoryRepository, SkillRepository skillRepository, SkillMapper skillMapper, AreaOfInterestRepository areaOfInterestRepository, AreaOfInterestMapper areaOfInterestMapper) {
+    this.requestRepository = requestRepository;
+    this.resourceRepository = resourcesRepository;
+    this.userManagement = userManagement;
+    this.requestMapper = requestMapper;
+    this.resourceMapper = resourceMapper;
+    this.stateHistoryMapper = stateHistoryMapper;
+    this.stateHistoryRepository = stateHistoryRepository;
+    this.skillRepository = skillRepository;
+    this.skillMapper = skillMapper;
+    this.areaOfInterestRepository = areaOfInterestRepository;
+    this.areaOfInterestMapper = areaOfInterestMapper;
+  }
 
-    @Override
-    @Transactional
-    public long createNewRequest(
-            final AreaOfInterestDTO areaOfInterest,
-            final Instant startDate,
-            final Instant endDate,
-            final String projectDescription,
-            final String otherNotes,
-            final String user,
-            final List<ResourceDTO> resources
-    ) {
-        final RequestEntity entity = RequestEntity.builder()
-                .areaOfInterest(areaOfInterest)
-                .startDate(startDate)
-                .endDate(endDate)
-                .status(RequestStatusDTO.CREATED.name())
-                .projectDescription(projectDescription)
-                .notes(otherNotes)
-                .resources(new ArrayList<>())
-                .build();
+  @Override
+  @Transactional
+  public long createNewRequest(
+      final AreaOfInterestDTO areaOfInterest,
+      final Instant startDate,
+      final Instant endDate,
+      final String projectDescription,
+      final String otherNotes,
+      final String user,
+      final List<ResourceDTO> resources
+  ) {
+    final RequestEntity entity = RequestEntity.builder()
+        .areaOfInterest(createAreaOfInterestEntity(areaOfInterest))
+        .startDate(startDate)
+        .endDate(endDate)
+        .status(RequestStatusDTO.CREATED.name())
+        .projectDescription(projectDescription)
+        .notes(otherNotes)
+        .resources(new ArrayList<>())
+        .build();
 
     if (resources != null) {
       createNewResources(resources, entity);
@@ -111,6 +110,10 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
     requestRepository.save(entity);
 
     return entity.getRequestId();
+  }
+
+  private AreaOfInterestEntity createAreaOfInterestEntity(AreaOfInterestDTO areaOfInterest) {
+    return AreaOfInterestEntity.builder().areaOfInterest(areaOfInterest.getAreaOfInterest()).build();
   }
 
   @Override
@@ -130,7 +133,7 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   @Override
   public Page<RequestDetailsDTO> getRequests(RequestCriteria criteria, final Pageable pageable) {
     log.debug("find by criteria : {}", criteria);
-    if(criteria == null) {
+    if (criteria == null) {
       criteria = new RequestCriteria();
     }
     if (!SecurityUtils.isCurrentUserInRole(AuthoritiesConstants.ADMIN)) {
@@ -159,32 +162,34 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
     return requestEntities.stream().filter(Objects::nonNull).map(a -> requestMapper.toDto(a)).collect(Collectors.toList());
   }
 
-    @Override
-    @Transactional
-    public void logRequestState(long requestId, String user, RequestStatusDTO status, String notes) {
-        final StateHistoryEntity stateHistoryEntity = StateHistoryEntity.builder()
-                .operation(status.name())
-                .createdBy(user)
-                .requestId(requestId)
-                .notes(notes)
-                .build();
-        stateHistoryRepository.save(stateHistoryEntity);
+  @Override
+  @Transactional
+  public void logRequestState(long requestId, String user, RequestStatusDTO status, String notes) {
+    final StateHistoryEntity stateHistoryEntity = StateHistoryEntity.builder()
+        .operation(status.name())
+        .createdBy(user)
+        .requestId(requestId)
+        .notes(notes)
+        .build();
+    stateHistoryRepository.save(stateHistoryEntity);
 
-    }
+  }
 
-    @Override
-    public List<RequestStateHistoryDTO> getStateHistory(long requestId) {
-        final List<StateHistoryEntity> stateHistoryEntities = stateHistoryRepository.findByRequestId(requestId);
-        return stateHistoryEntities.stream().filter(Objects::nonNull).map(a-> {return stateHistoryMapper.toDto(a);}).collect(Collectors.toList());
-    }
+  @Override
+  public List<RequestStateHistoryDTO> getStateHistory(long requestId) {
+    final List<StateHistoryEntity> stateHistoryEntities = stateHistoryRepository.findByRequestId(requestId);
+    return stateHistoryEntities.stream().filter(Objects::nonNull).map(a -> {
+      return stateHistoryMapper.toDto(a);
+    }).collect(Collectors.toList());
+  }
 
-    @Override
-    @Transactional
-    public void update(final RequestUpdate requestUpdate) {
-        Optional<RequestEntity> requestEntity = requestRepository.findById(requestUpdate.getRequestId());
+  @Override
+  @Transactional
+  public void update(final RequestUpdate requestUpdate) {
+    Optional<RequestEntity> requestEntity = requestRepository.findById(requestUpdate.getRequestId());
 
     requestEntity.ifPresent(entity -> {
-      entity.setAreaOfInterest(requestUpdate.getAreaOfInterest());
+      entity.setAreaOfInterest(createAreaOfInterestEntity(requestUpdate.getAreaOfInterest()));
       entity.setStatus(String.valueOf(RequestStatusDTO.UPDATED));
       entity.setStartDate(requestUpdate.getStartDate());
       entity.setEndDate(requestUpdate.getEndDate());
@@ -233,6 +238,10 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
     if (resources != null) {
       resources.stream().forEach(resourceDTO -> {
         ResourceEntity resourceEntity = resourceMapper.toEntity(resourceDTO);
+        final Set<SkillEntity> allBySkill = skillRepository.findAllById(resourceDTO.getSkills())
+            .stream()
+            .collect(Collectors.toSet());
+        resourceEntity.setSkills(allBySkill);
         resourceEntity.setRequest(entity);
         entity.getResources().add(resourceEntity);
       });
@@ -249,7 +258,11 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
     Specification<RequestEntity> specification = Specification.where(null);
     if (criteria != null) {
       if (criteria.getAreaOfInterest() != null) {
-        specification = specification.and(buildSpecification(criteria.getAreaOfInterest(), RequestEntity_.areaOfInterest));
+        specification = specification.and(buildSpecification(
+            criteria.getAreaOfInterest(),
+            root -> root.join(RequestEntity_.areaOfInterest, JoinType.LEFT).get(AreaOfInterestEntity_.areaOfInterest)
+            )
+        );
       }
       if (criteria.getDisplayName() != null) {
         specification = specification.and(buildStringSpecification(criteria.getDisplayName(), RequestEntity_.createdBy));
@@ -278,21 +291,14 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
             )
         );
       }
-      if (criteria.getSkillsOfResource() != null && criteria.getSkillsOfResource().length > 0) {
-        StringFilter[] skillsFilter = criteria.getSkillsOfResource();
-        Specification<RequestEntity> spec = buildSpecification(
-            skillsFilter[0],
-            root -> root.join(RequestEntity_.resources, JoinType.LEFT).get(ResourceEntity_.skills)
+      if (criteria.getSkillsOfResource() != null) {
+        specification = specification.and(buildSpecification(
+            criteria.getSkillsOfResource(),
+            root -> root.join(RequestEntity_.resources, JoinType.LEFT)
+                .join(ResourceEntity_.skills, JoinType.LEFT)
+                .get(SkillEntity_.skill)
+            )
         );
-        for (int i = 1; i < skillsFilter.length ; i++) {
-          spec = spec.or(
-              buildSpecification(
-                  skillsFilter[i],
-                  root -> root.join(RequestEntity_.resources, JoinType.LEFT).get(ResourceEntity_.skills)
-              )
-          );
-        }
-        specification = specification.and(spec);
       }
     }
     return specification;
@@ -323,5 +329,29 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   @Override
   public Long totalRequests() {
     return requestRepository.count();
+  }
+
+  @Override
+  public Set<SkillDTO> getAllSkills() {
+    final Iterable<SkillEntity> allSkillEntities = skillRepository.findAll();
+    return StreamSupport.stream(allSkillEntities.spliterator(), false)
+        .filter(Objects::nonNull)
+        .map(skillEntity -> {
+          return skillMapper.toDto(skillEntity);
+        }).collect(Collectors.toSet());
+  }
+
+  @Override
+  public Set<AreaOfInterestDTO> getAllAreaOfInterests() {
+    final Iterable<AreaOfInterestEntity> allAreaOfInterestEntities = areaOfInterestRepository.findAll();
+//    StreamSupport.stream(allAreaOfInterestEntities.spliterator(), false)
+//        .filter(Objects::nonNull)
+//        .map(AreaOfInterestEntity::getAreaOfInterest)
+//        .collect(Collectors.toList());
+    return StreamSupport.stream(allAreaOfInterestEntities.spliterator(), false)
+        .filter(Objects::nonNull)
+        .map(entity -> {
+          return areaOfInterestMapper.toDto(entity);
+        }).collect(Collectors.toSet());
   }
 }

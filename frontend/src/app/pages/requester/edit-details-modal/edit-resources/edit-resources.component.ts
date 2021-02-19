@@ -2,6 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { Seniority, Skills } from 'src/app/types/data-types';
 import { Resource } from 'src/app/types/request-types';
+import {Store} from "@ngrx/store";
+import {getSkills} from "../../../../store/requests/requests-reducer";
 
 @Component({
   selector: 'app-edit-resources',
@@ -17,14 +19,16 @@ export class EditResourcesComponent implements OnInit {
   resources: Array<Resource>;
 
   seniorities = Object.values(Seniority);
-  skills = Object.values(Skills);
+  skills = [];
   isCollapsed: Array<boolean> = [];
   submittedForm: boolean = false;
   currentResources: Array<Resource>;
   newResources: Array<Resource> = [];
   deletedResources: Array<number> = [];
 
-  constructor() { }
+  constructor(private store: Store) {
+    this.store.select(getSkills).subscribe(skills => this.skills = skills);
+  }
 
   ngOnInit(): void {
     if (this.resources.length > 0) {

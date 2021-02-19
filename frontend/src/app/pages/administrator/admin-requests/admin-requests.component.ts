@@ -14,9 +14,9 @@ import {
   getTotalNumber
 } from "../../../store/requests/requests-reducer";
 import {
-  addRequestFilters, 
-  openChangeStatusModal, 
-  openEditRequestModal, 
+  addRequestFilters, fetchAreaOfInterests, fetchSkills,
+  openChangeStatusModal,
+  openEditRequestModal,
   openViewDetailsModal,
   pageChanged,
   requestData,
@@ -151,6 +151,9 @@ export class AdminRequestsComponent implements OnInit, OnDestroy {
 
   loadData(page: number) {
     this.store.dispatch(requestData({ query: { page } }));
+    // fetch also the areas of interest and skills
+    this.store.dispatch(fetchAreaOfInterests());
+    this.store.dispatch(fetchSkills());
   }
 
   toogleFiltersPanel() {

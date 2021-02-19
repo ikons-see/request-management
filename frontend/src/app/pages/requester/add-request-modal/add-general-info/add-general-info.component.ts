@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { AreaOfInterest } from 'src/app/types/data-types';
+import {Store} from "@ngrx/store";
+import {getAreaOfInterests} from "../../../../store/requests/requests-reducer";
 
 @Component({
   selector: 'app-add-general-info',
@@ -13,12 +15,16 @@ export class AddGeneralInfoComponent implements OnInit {
   @Input()
   form: FormGroup;
 
-  areas = Object.values(AreaOfInterest);
+  areas = [];
   submittedForm: boolean = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private store: Store) {
+    this.init();
   }
 
+  private init() {
+    this.store.select(getAreaOfInterests).subscribe(areaOfInterests => this.areas = areaOfInterests);
+  }
   ngOnInit(): void {
     this.form.get('areaOfInterest').valueChanges
     .subscribe(area => {

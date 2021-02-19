@@ -1,13 +1,13 @@
 import { Action, createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
 import { RequestDetails, RequestFilters } from "../../types/request-types";
 import {
-    addRequestFilters,
-    pageChanged,
-    requestData,
-    resetMessage,
-    resetRequestFilters,
-    setData,
-    setDataFailure
+  addRequestFilters, setAreaOfInterests, setSkills,
+  pageChanged,
+  requestData,
+  resetMessage,
+  resetRequestFilters,
+  setData,
+  setDataFailure
 } from "./requests-actions";
 
 export const featureKey = 'requests';
@@ -19,6 +19,8 @@ export interface State {
     loading: boolean;
     currentPage: number;
     errorMessage: string;
+    areaOfInterests: string[];
+    skills: string[];
 }
 
 export const initialState: State = {
@@ -35,7 +37,9 @@ export const initialState: State = {
     totalNumber: 0,
     loading: false,
     currentPage: 0,
-    errorMessage: null
+    errorMessage: null,
+    areaOfInterests: [],
+    skills: []
 }
 
 const requesterReducer = createReducer(
@@ -46,7 +50,9 @@ const requesterReducer = createReducer(
     on(pageChanged, (state, { page }) => ({ ...state, currentPage: page })),
     on(resetMessage, (state) => ({ ...state, errorMessage: null })),
     on(addRequestFilters, (state, { requestFilters }) => ({ ...state, filters: requestFilters })),
-    on(resetRequestFilters, (state) => ({ ...state, filters: initialState.filters }))
+    on(resetRequestFilters, (state) => ({ ...state, filters: initialState.filters })),
+    on(setAreaOfInterests, (state, {areaOfInterests}) => ({...state, areaOfInterests})),
+    on(setSkills, (state, {skills}) => ({...state, skills}))
 );
 
 export function reducer(state: State | undefined, action: Action) {
@@ -63,3 +69,6 @@ export const getLoadingRequests = createSelector(featureState, state => state.lo
 export const getErrorMessage = createSelector(featureState, state => state.errorMessage);
 export const getRequestById = createSelector(featureState,
     (state: State, requestId: number) => state.requests.find(el => el.requestId == requestId));
+
+export const getAreaOfInterests = createSelector(featureState, state => state.areaOfInterests);
+export const getSkills = createSelector(featureState, state => state.skills);

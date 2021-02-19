@@ -1,22 +1,17 @@
 package com.ikons.requestmanagement.core.dto;
 
-import java.util.List;
-import java.util.Set;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResourceDTO {
+public class SkillDTO {
 
-    private long resourceId;
-    private int total;
-    private String seniority;
-    private Set<String> skills;
-    private String note;
+    private String skill;
 }

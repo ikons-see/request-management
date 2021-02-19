@@ -16,7 +16,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestCriteria implements Serializable, Criteria {
-  private AreaOfInterestFilter areaOfInterest;
+  private StringFilter areaOfInterest;
   private StringFilter displayName;
   private StringFilter status;
   private InstantFilter startDate;
@@ -24,7 +24,7 @@ public class RequestCriteria implements Serializable, Criteria {
 
   private IntegerFilter numberOfResource;
   private SeniorityFilter seniorityOfResource;
-  private StringFilter[] skillsOfResource;
+  private StringFilter skillsOfResource;
 
 
   @Override
@@ -39,25 +39,6 @@ public class RequestCriteria implements Serializable, Criteria {
         seniorityOfResource,
         skillsOfResource
     );
-  }
-
-  /**
-   * Class for filtering AreaOfInterest
-   */
-  public static class AreaOfInterestFilter extends Filter<AreaOfInterestDTO> {
-
-    public AreaOfInterestFilter() {
-    }
-
-    public AreaOfInterestFilter(AreaOfInterestFilter filter) {
-      super(filter);
-    }
-
-    @Override
-    public AreaOfInterestFilter copy() {
-      return new AreaOfInterestFilter(this);
-    }
-
   }
 
   /**

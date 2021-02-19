@@ -6,6 +6,9 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Table(name = "ik_resource")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -24,9 +27,6 @@ public class ResourceEntity implements Serializable {
     private SeniorityDTO seniority;
 
     @Column
-    private String skills;
-
-    @Column
     private String notes;
 
     @Column
@@ -35,4 +35,9 @@ public class ResourceEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")
     private RequestEntity request;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinTable(name = "ik_resource_skill", joinColumns = @JoinColumn(name = "resource_id"), inverseJoinColumns = @JoinColumn(name = "skill"))
+    private Set<SkillEntity> skills;
+
 }

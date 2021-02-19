@@ -38,9 +38,7 @@ export const filterTransform = (reqFilter: RequestFilters): { [key: string]: str
     trasnformedFilter['seniorityOfResource.equals'] = reqFilter.seniority;
   }
   if (reqFilter.skills && reqFilter.skills.length > 0) {
-    reqFilter.skills.forEach((val, index) => {
-      trasnformedFilter[`skillsOfResource[${index}].contains`] = val;
-    });
+    trasnformedFilter[`skillsOfResource.in`] = reqFilter.skills.join(',');
   }
 
   return trasnformedFilter;

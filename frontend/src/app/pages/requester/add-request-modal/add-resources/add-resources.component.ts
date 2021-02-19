@@ -2,6 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Seniority, Skills } from 'src/app/types/data-types';
 import { Resource } from 'src/app/types/request-types';
+import {Store} from "@ngrx/store";
+import {fetchSkills} from "../../../../store/requests/requests-actions";
+import {getSkills} from "../../../../store/requests/requests-reducer";
 
 @Component({
   selector: 'app-add-resources',
@@ -15,16 +18,19 @@ export class AddResourcesComponent implements OnInit {
 
   @Input()
   resources: Array<Resource>;
-  
+
   seniorities = Object.values(Seniority);
-  skills = Object.values(Skills);
+  skills = [];
   isCollapsed: Array<boolean> = [];
   submittedForm: boolean = false;
   infoText: boolean = false;
 
-  constructor(private formBuilder: FormBuilder) { 
+  constructor(private formBuilder: FormBuilder, private store: Store) {
+    this.init();
   }
-
+  private init() {
+    this.store.select(getSkills).subscribe(skills => this.skills = skills);
+  }
   ngOnInit(): void {
     if(this.resources.length > 0) {
       this.isCollapsed = new Array(this.resources.length).fill(true);

@@ -1,0 +1,177 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" xmlns:pro="http://www.liquibase.org/xml/ns/pro" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-3.10.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.10.xsd">
+    <changeSet author="admin (generated)" id="1613720746537-1">
+        <createTable tableName="ik_area_of_interest">
+            <column name="area_of_interest" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ik_area_of_interestPK"/>
+            </column>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/area_of_interest.csv"
+                separator=";"
+                tableName="ik_area_of_interest">
+            <column name="area_of_interest" type="STRING"/>
+        </loadData>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-2">
+        <createTable tableName="ik_authority">
+            <column name="name" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ik_authorityPK"/>
+            </column>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/authority.csv"
+                separator=";"
+                tableName="ik_authority">
+            <column name="name" type="string"/>
+        </loadData>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-3">
+        <createTable tableName="ik_request">
+            <column autoIncrement="true" name="request_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ik_requestPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime(6)"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="datetime(6)"/>
+            <column name="end_date" type="date"/>
+            <column name="notes" type="VARCHAR(255)"/>
+            <column name="project_description" type="VARCHAR(255)"/>
+            <column name="start_date" type="date"/>
+            <column name="status" type="VARCHAR(255)"/>
+            <column name="status_notes" type="VARCHAR(255)"/>
+            <column name="area_of_interest" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-4">
+        <createTable tableName="ik_resource">
+            <column autoIncrement="true" name="resource_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ik_resourcePK"/>
+            </column>
+            <column name="notes" type="VARCHAR(255)"/>
+            <column name="seniority" type="VARCHAR(255)"/>
+            <column name="total" type="INT"/>
+            <column name="request_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-5">
+        <createTable tableName="ik_resource_skill">
+            <column name="resource_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="skill" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-6">
+        <createTable tableName="ik_skill">
+            <column name="skill" type="VARCHAR(255)">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ik_skillPK"/>
+            </column>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/skill.csv"
+                separator=";"
+                tableName="ik_skill">
+            <column name="skill" type="STRING"/>
+        </loadData>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-7">
+        <createTable tableName="ik_state_history">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ik_state_historyPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="date"/>
+            <column name="notes" type="VARCHAR(255)"/>
+            <column name="operation" type="VARCHAR(255)"/>
+            <column name="request_id" type="BIGINT"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-8">
+        <createTable tableName="ik_user">
+            <column autoIncrement="true" name="id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="ik_userPK"/>
+            </column>
+            <column name="created_by" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_date" type="datetime(6)"/>
+            <column name="last_modified_by" type="VARCHAR(50)"/>
+            <column name="last_modified_date" type="datetime(6)"/>
+            <column name="activated" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="activation_key" type="VARCHAR(20)"/>
+            <column name="email" type="VARCHAR(254)"/>
+            <column name="first_name" type="VARCHAR(50)"/>
+            <column name="image_url" type="VARCHAR(256)"/>
+            <column name="lang_key" type="VARCHAR(10)"/>
+            <column name="last_name" type="VARCHAR(50)"/>
+            <column name="login" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password_hash" type="VARCHAR(60)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="reset_date" type="datetime(6)"/>
+            <column name="reset_key" type="VARCHAR(20)"/>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/user.csv"
+                separator=";"
+                tableName="ik_user">
+            <column name="id" type="numeric"/>
+            <column name="activated" type="boolean"/>
+            <column name="created_date" type="timestamp"/>
+        </loadData>
+        <dropDefaultValue tableName="ik_user" columnName="created_date" columnDataType="datetime"/>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-9">
+        <createTable tableName="ik_user_authority">
+            <column name="user_id" type="BIGINT">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+            <column name="authority_name" type="VARCHAR(50)">
+                <constraints nullable="false" primaryKey="true"/>
+            </column>
+        </createTable>
+        <loadData
+                file="config/liquibase/data/user_authority.csv"
+                separator=";"
+                tableName="ik_user_authority">
+            <column name="user_id" type="numeric"/>
+        </loadData>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-10">
+        <addUniqueConstraint columnNames="email" constraintName="UC_IK_USEREMAIL_COL" tableName="ik_user"/>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-11">
+        <addUniqueConstraint columnNames="login" constraintName="UC_IK_USERLOGIN_COL" tableName="ik_user"/>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-12">
+        <addForeignKeyConstraint baseColumnNames="request_id" baseTableName="ik_resource" constraintName="FKchgqbcfo3o6njm4g9d6inb50k" deferrable="false" initiallyDeferred="false" referencedColumnNames="request_id" referencedTableName="ik_request" validate="true"/>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-13">
+        <addForeignKeyConstraint baseColumnNames="resource_id" baseTableName="ik_resource_skill" constraintName="FKelnk6vw99y5774o21dauc1rhe" deferrable="false" initiallyDeferred="false" referencedColumnNames="resource_id" referencedTableName="ik_resource" validate="true"/>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-14">
+        <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="ik_user_authority" constraintName="FKf4bh4l04ypkjr2f7kggw8wbpp" deferrable="false" initiallyDeferred="false" referencedColumnNames="id" referencedTableName="ik_user" validate="true"/>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-15">
+        <addForeignKeyConstraint baseColumnNames="skill" baseTableName="ik_resource_skill" constraintName="FKmne6cesary6r5m4ofwpagbbl3" deferrable="false" initiallyDeferred="false" referencedColumnNames="skill" referencedTableName="ik_skill" validate="true"/>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-16">
+        <addForeignKeyConstraint baseColumnNames="authority_name" baseTableName="ik_user_authority" constraintName="FKofa25ifc5ql8xmrh8qgwwjkam" deferrable="false" initiallyDeferred="false" referencedColumnNames="name" referencedTableName="ik_authority" validate="true"/>
+    </changeSet>
+    <changeSet author="admin (generated)" id="1613720746537-17">
+        <addForeignKeyConstraint baseColumnNames="area_of_interest" baseTableName="ik_request" constraintName="FKowby6x7dl0v63b9bu56m2sg6y" deferrable="false" initiallyDeferred="false" referencedColumnNames="area_of_interest" referencedTableName="ik_area_of_interest" validate="true"/>
+    </changeSet>
+
+</databaseChangeLog>

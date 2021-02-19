@@ -4,6 +4,8 @@ import com.ikons.requestmanagement.core.criteria.RequestCriteria;
 import com.ikons.requestmanagement.core.dto.*;
 import com.ikons.requestmanagement.core.usecase.request.closerequest.CloseRequestUseCase;
 import com.ikons.requestmanagement.core.usecase.request.deleterequest.DeleteRequestUseCase;
+import com.ikons.requestmanagement.core.usecase.request.getconstants.ListAreaOfInterestUseCase;
+import com.ikons.requestmanagement.core.usecase.request.getconstants.ListSkillsUseCase;
 import com.ikons.requestmanagement.core.usecase.request.getrequests.ListRequestsUseCase;
 import com.ikons.requestmanagement.core.usecase.request.newrequest.CreateNewRequestUseCase;
 import com.ikons.requestmanagement.core.usecase.request.updaterequest.RequestStatusUseCase;
@@ -26,6 +28,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -41,6 +44,8 @@ public class RequestsResource {
   private final CloseRequestUseCase closeRequestUseCase;
   private final DeleteRequestUseCase deleteRequestUseCase;
   private final RequestStatusUseCase requestStatusUseCase;
+  private final ListSkillsUseCase listSkillsUseCase;
+  private final ListAreaOfInterestUseCase listAreaOfInterestUseCase;
 
   @PostMapping("/statuses")
   public List<String> getRequestStatuses() {
@@ -49,17 +54,19 @@ public class RequestsResource {
         .collect(Collectors.toList());
   }
 
-  @PostMapping("/skills")
+  @GetMapping("/skills")
   public List<String> getSkills() {
-    return Stream.of(SkillsDTO.values())
-        .map(Enum::name)
+    return listSkillsUseCase.getSkills()
+        .stream()
+        .map(SkillDTO::getSkill)
         .collect(Collectors.toList());
   }
 
-  @PostMapping("/area-of-interest")
+  @GetMapping("/area-of-interest")
   public List<String> getAreaOfInterest() {
-    return Stream.of(AreaOfInterestDTO.values())
-        .map(Enum::name)
+    return listAreaOfInterestUseCase.getAreaOfInterests()
+        .stream()
+        .map(AreaOfInterestDTO::getAreaOfInterest)
         .collect(Collectors.toList());
   }
 

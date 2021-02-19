@@ -42,3 +42,9 @@ export const openChangeStatusModal = createAction(`[${featureKey}] openChangeSta
 export const changeRequestStatus = createAction(`[${featureKey}] changeRequestStatus`, props<{ requestId: number, status: RequestStatus, notes: string}>());
 export const changeRequestSuccess = createAction(`[${featureKey}] changeRequestSuccesss`);
 export const changeRequestFailure = createAction(`[${featureKey}] changeRequestFailure`, props<{ errorMessage: string }>());
+
+export const fetchAreaOfInterests = createAction(`[${featureKey} fetchAreaOfInterests`);
+export const fetchSkills = createAction(`[${featureKey} fetchSkills`);
+
+export const setAreaOfInterests = createAction(`[${featureKey} setareaOfInterests`, props<{areaOfInterests: string[]}>());
+export const setSkills = createAction(`[${featureKey} setskills`, props<{skills: string[]}>());

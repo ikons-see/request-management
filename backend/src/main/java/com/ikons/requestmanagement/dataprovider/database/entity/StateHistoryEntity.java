@@ -9,7 +9,7 @@ import javax.persistence.*;
 import java.time.Instant;
 import java.util.Date;
 
-@Table(name = "state_history")
+@Table(name = "ik_state_history")
 @Data
 @Entity
 @Builder

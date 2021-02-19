@@ -5,6 +5,7 @@ import { Subscription } from 'rxjs';
 import { RequestFilters } from '../../../types/request-types';
 import { ApplicationState } from '../../../app.module';
 import { AreaOfInterest, RequestStatus, Seniority, Skills } from '../../../types/data-types';
+import {getAreaOfInterests, getSkills} from "../../../store/requests/requests-reducer";
 
 @Component({
   selector: 'app-filters-panel',
@@ -23,14 +24,17 @@ export class FiltersPanelComponent implements OnInit, OnChanges {
   removeFilters = new EventEmitter();
 
   formGroup: FormGroup;
-  areas = Object.values(AreaOfInterest);
+  areas = [];
   seniorities = Object.values(Seniority);
-  skills = Object.values(Skills);
+  skills = [];
   statuses = Object.values(RequestStatus);
   formGroupSubscription: Subscription;
 
   constructor(private formBuilder: FormBuilder,
     private store: Store<ApplicationState>) {
+
+    this.store.select(getAreaOfInterests).subscribe(areas => this.areas = areas);
+    this.store.select(getSkills).subscribe(skills => this.skills = skills);
 
     this.formGroup = this.formBuilder.group({
       statuses: [''],

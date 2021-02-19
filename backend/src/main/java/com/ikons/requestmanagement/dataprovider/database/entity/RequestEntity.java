@@ -26,10 +26,6 @@ public class RequestEntity extends AbstractAuditingEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long requestId;
 
-    @Enumerated(EnumType.STRING)
-    @Column
-    private AreaOfInterestDTO areaOfInterest;
-
     @Column
     private String status;
 
@@ -50,4 +46,8 @@ public class RequestEntity extends AbstractAuditingEntity {
 
     @OneToMany(targetEntity = ResourceEntity.class, mappedBy = "request", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<ResourceEntity> resources;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "area_of_interest")
+    private AreaOfInterestEntity areaOfInterest;
 }

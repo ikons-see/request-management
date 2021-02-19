@@ -4,7 +4,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { Observable, Subscription } from 'rxjs';
 import { ApplicationState } from '../../app.module';
 import {
-  addRequestFilters,
+  addRequestFilters, fetchAreaOfInterests, fetchSkills,
   openAddRequestModal,
   openCloseRequestModal,
   openDeleteRequestModal,
@@ -74,6 +74,9 @@ export class RequesterComponent implements OnInit, OnDestroy {
 
   loadData(page: number) {
     this.store.dispatch(requestData({ query: {page} }));
+    // fetch also the areas of interest and skills
+    this.store.dispatch(fetchAreaOfInterests());
+    this.store.dispatch(fetchSkills());
   }
 
   sort(): string[] {

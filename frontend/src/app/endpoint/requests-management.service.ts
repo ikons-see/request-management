@@ -122,4 +122,11 @@ export class RequestsManagementService {
     getResourcesMonthlyChartData() {
         return this.httpClient.get<Array<MonthlyChartData>>(`api/reports/total-resources-per-month`);
     }
+
+    getAreaOfInterests(): Observable<string[]> {
+      return this.httpClient.get<string[]>(`api/requests-management/area-of-interest`);
+    }
+    getSkills(): Observable<string[]> {
+      return this.httpClient.get<string[]>(`api/requests-management/skills`);
+    }
 }
