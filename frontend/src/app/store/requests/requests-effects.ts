@@ -1,19 +1,19 @@
-import {HttpErrorResponse, HttpResponse} from "@angular/common/http";
-import {Injectable} from "@angular/core";
-import {Router} from "@angular/router";
-import {Actions, createEffect, ofType} from "@ngrx/effects";
-import {Store} from "@ngrx/store";
-import {BsModalService} from "ngx-bootstrap/modal";
-import {catchError, map, mergeMap, switchMap, take, tap, withLatestFrom} from 'rxjs/operators';
-import {of} from "rxjs";
-import {ApplicationState} from "../../app.module";
-import {RequestsManagementService} from "../../endpoint/requests-management.service";
-import {globalModalConfig} from "../../types/data-types";
-import {AddRequestModalComponent} from "../../pages/requester/add-request-modal/add-request-modal.component";
-import {EditDetailsModalComponent} from "../../pages/requester/edit-details-modal/edit-details-modal.component";
-import {DeleteRequestModalComponent} from "../../pages/requester/delete-request-modal/delete-request-modal.component";
-import {getCurrentPage, getFilters, getRequestById} from "./requests-reducer";
-import {CloseRequestModalComponent} from "../../pages/requester/close-request-modal/close-request-modal.component";
+import { HttpErrorResponse, HttpResponse } from "@angular/common/http";
+import { Injectable } from "@angular/core";
+import { Router } from "@angular/router";
+import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Store } from "@ngrx/store";
+import { BsModalService } from "ngx-bootstrap/modal";
+import { catchError, map, mergeMap, switchMap, take, tap, withLatestFrom } from 'rxjs/operators';
+import { of } from "rxjs";
+import { ApplicationState } from "../../app.module";
+import { RequestsManagementService } from "../../endpoint/requests-management.service";
+import { globalModalConfig } from "../../types/data-types";
+import { AddRequestModalComponent } from "../../pages/requester/add-request-modal/add-request-modal.component";
+import { EditDetailsModalComponent } from "../../pages/requester/edit-details-modal/edit-details-modal.component";
+import { DeleteRequestModalComponent } from "../../pages/requester/delete-request-modal/delete-request-modal.component";
+import { getCurrentPage, getFilters, getRequestById } from "./requests-reducer";
+import { CloseRequestModalComponent } from "../../pages/requester/close-request-modal/close-request-modal.component";
 import {
   addNewRequest,
   addRequestFailure,
@@ -33,6 +33,7 @@ import {
   openCloseRequestModal,
   openDeleteRequestModal,
   openEditRequestModal,
+  openEditResourceModal,
   openViewDetailsModal,
   requestData,
   resetRequestFilters, setAreaOfInterests,
@@ -42,23 +43,24 @@ import {
   updateRequestFailure,
   updateRequestSuccess
 } from "./requests-actions";
-import {ViewDetailsModalComponent} from "src/app/pages/requester/view-details-modal/view-details-modal.component";
-import {TranslateService} from "@ngx-translate/core";
-import {RequestDetails} from "../../types/request-types";
-import {filterTransform, parsePaginationResponseHeader} from "../../endpoint/http-rest-utils";
-import {globalError, globalSuccess} from "../common/common-actions";
-import {RequestHistoryModalComponent} from "src/app/pages/administrator/admin-requests/request-history-modal/request-history-modal.component";
-import {ChangeStatusModalComponent} from "src/app/pages/administrator/admin-requests/change-status-modal/change-status-modal.component";
+import { ViewDetailsModalComponent } from "src/app/pages/requester/view-details-modal/view-details-modal.component";
+import { TranslateService } from "@ngx-translate/core";
+import { RequestDetails } from "../../types/request-types";
+import { filterTransform, parsePaginationResponseHeader } from "../../endpoint/http-rest-utils";
+import { globalError, globalSuccess } from "../common/common-actions";
+import { RequestHistoryModalComponent } from "src/app/pages/administrator/admin-requests/request-history-modal/request-history-modal.component";
+import { ChangeStatusModalComponent } from "src/app/pages/administrator/admin-requests/change-status-modal/change-status-modal.component";
+import { EditResourceModalComponent } from "src/app/pages/requester/edit-details-modal/edit-resources/edit-resource-modal/edit-resource-modal.component";
 
 @Injectable()
 export class RequesterEffects {
 
   constructor(private actions$: Actions,
-              private store: Store<ApplicationState>,
-              private modalService: BsModalService,
-              private router: Router,
-              private translate: TranslateService,
-              private requestsService: RequestsManagementService) {
+    private store: Store<ApplicationState>,
+    private modalService: BsModalService,
+    private router: Router,
+    private translate: TranslateService,
+    private requestsService: RequestsManagementService) {
   }
 
   onRequestData$ = createEffect(() => this.actions$.pipe(
@@ -67,11 +69,11 @@ export class RequesterEffects {
     switchMap(([action, filters]) => {
       // const filter = composeFilter();
       const transFilters = filterTransform(filters);
-      const newAction = {...action};
+      const newAction = { ...action };
       if (!newAction.hasOwnProperty('query')) {
-        newAction['query'] = {page: 0};
+        newAction['query'] = { page: 0 };
       }
-      return this.requestsService.getRequests({...newAction.query, ...transFilters})
+      return this.requestsService.getRequests({ ...newAction.query, ...transFilters })
         .pipe(
           map((res: HttpResponse<RequestDetails[]>) => {
             const dataFromHeader = parsePaginationResponseHeader(res.headers);
@@ -82,8 +84,8 @@ export class RequesterEffects {
             });
           }),
           catchError((error: HttpErrorResponse) =>
-            of(setDataFailure({errorMessage: error.message}),
-              globalError({error: 'global-errors.request-data-failure'})
+            of(setDataFailure({ errorMessage: error.message }),
+              globalError({ error: 'global-errors.request-data-failure' })
             ))
         )
     })
@@ -100,7 +102,7 @@ export class RequesterEffects {
         }
       });
     })
-  ), {dispatch: false});
+  ), { dispatch: false });
 
   onAddNewRequest$ = createEffect(() => this.actions$.pipe(
     ofType(addNewRequest),
@@ -109,12 +111,12 @@ export class RequesterEffects {
         .pipe(
           mergeMap(res => [
             addRequestSuccess(),
-            requestData({query: {page: 0}}),
-            globalSuccess({message: 'global-success.add-request-success'})
+            requestData({ query: { page: 0 } }),
+            globalSuccess({ message: 'global-success.add-request-success' })
           ]),
           catchError((error: HttpErrorResponse) =>
-            of(addRequestFailure({errorMessage: error.message}),
-              globalError({error: 'global-errors.add-request-failure'})
+            of(addRequestFailure({ errorMessage: error.message }),
+              globalError({ error: 'global-errors.add-request-failure' })
             ))
         );
     })
@@ -130,11 +132,12 @@ export class RequesterEffects {
       closeRequestSuccess,
       closeRequestFailure,
       changeRequestSuccess,
-      changeRequestFailure),
+      changeRequestFailure,
+      updateRequestFailure),
     tap(() => {
       this.modalService.hide();
     })
-  ), {dispatch: false});
+  ), { dispatch: false });
 
 
   openEditRequestModal$ = createEffect(() => this.actions$.pipe(
@@ -149,7 +152,21 @@ export class RequesterEffects {
         }
       });
     })
-  ), {dispatch: false});
+  ), { dispatch: false });
+
+  openEditResourceModal$ = createEffect(() => this.actions$.pipe(
+    ofType(openEditResourceModal),
+    tap((action) => {
+      this.modalService.show(EditResourceModalComponent, {
+        ...globalModalConfig,
+        class: 'modal-dialog modal-dialog-centered',
+        initialState: {
+          resource: action.resource,
+          index: action.index
+        }
+      });
+    })
+  ), { dispatch: false });
 
   onRequestUpdate$ = createEffect(() => this.actions$.pipe(
     ofType(updateRequest),
@@ -159,11 +176,11 @@ export class RequesterEffects {
         .pipe(
           mergeMap(res => [
             updateRequestSuccess(),
-            requestData({query: {page: 0}}),
-            globalSuccess({message: 'global-success.update-request-success'})]),
+            requestData({ query: { page: 0 } }),
+            globalSuccess({ message: 'global-success.update-request-success' })]),
           catchError((error: HttpErrorResponse) =>
-            of(updateRequestFailure({errorMessage: error.message}),
-              globalError({error: 'global-errors.update-request-failure'})
+            of(updateRequestFailure({ errorMessage: error.message }),
+              globalError({ error: 'global-errors.update-request-failure' })
             ))
         );
     })
@@ -172,14 +189,14 @@ export class RequesterEffects {
   onFiltersApplied$ = createEffect(() => this.actions$.pipe(
     ofType(addRequestFilters),
     map((action) => {
-      return requestData({query: {page: 0}})
+      return requestData({ query: { page: 0 } })
     })
   ));
 
   onFiltersResetd$ = createEffect(() => this.actions$.pipe(
     ofType(resetRequestFilters),
     map((action) => {
-      return requestData({query: {page: 0}})
+      return requestData({ query: { page: 0 } })
     })
   ));
 
@@ -196,7 +213,7 @@ export class RequesterEffects {
         }
       });
     })
-  ), {dispatch: false});
+  ), { dispatch: false });
 
   onDeleteRequest$ = createEffect(() => this.actions$.pipe(
     ofType(deleteRequest),
@@ -206,12 +223,12 @@ export class RequesterEffects {
         .pipe(
           mergeMap(res => [
             deleteRequestSuccess(),
-            requestData({query: {page: 0}}),
-            globalSuccess({message: 'global-success.delete-request-success'})
+            requestData({ query: { page: 0 } }),
+            globalSuccess({ message: 'global-success.delete-request-success' })
           ]),
           catchError((error: HttpErrorResponse) =>
-            of(deleteRequestFailure({errorMessage: error.message}),
-              globalError({error: 'global-errors.delete-request-failure'})
+            of(deleteRequestFailure({ errorMessage: error.message }),
+              globalError({ error: 'global-errors.delete-request-failure' })
             ))
         );
     })
@@ -229,7 +246,7 @@ export class RequesterEffects {
         }
       });
     })
-  ), {dispatch: false});
+  ), { dispatch: false });
 
   onCloseRequest$ = createEffect(() => this.actions$.pipe(
     ofType(closeRequest),
@@ -239,12 +256,12 @@ export class RequesterEffects {
         .pipe(
           mergeMap(res => [
             closeRequestSuccess(),
-            requestData({query: {page}}),
-            globalSuccess({message: 'global-success.close-request-success'})
+            requestData({ query: { page } }),
+            globalSuccess({ message: 'global-success.close-request-success' })
           ]),
           catchError((error: HttpErrorResponse) =>
-            of(closeRequestFailure({errorMessage: error.message}),
-              globalError({error: 'global-errors.close-request-failure'})
+            of(closeRequestFailure({ errorMessage: error.message }),
+              globalError({ error: 'global-errors.close-request-failure' })
             ))
         );
     })
@@ -267,7 +284,7 @@ export class RequesterEffects {
         }
       });
     })
-  ), {dispatch: false});
+  ), { dispatch: false });
 
   onChangeRequestStatus$ = createEffect(() => this.actions$.pipe(
     ofType(changeRequestStatus),
@@ -281,12 +298,12 @@ export class RequesterEffects {
         .pipe(
           mergeMap(res => [
             changeRequestSuccess(),
-            requestData({query: {page: page}}),
-            globalSuccess({message: 'global-success.status-change-success'})
+            requestData({ query: { page: page } }),
+            globalSuccess({ message: 'global-success.status-change-success' })
           ]),
           catchError((error: HttpErrorResponse) =>
-            of(changeRequestFailure({errorMessage: error.message}),
-              globalError({error: 'global-errors.status-change-failure'})
+            of(changeRequestFailure({ errorMessage: error.message }),
+              globalError({ error: 'global-errors.status-change-failure' })
             ))
         );
     })
@@ -304,18 +321,18 @@ export class RequesterEffects {
         }
       });
     })
-  ), {dispatch: false});
+  ), { dispatch: false });
 
   onFetchAreaOfInterests$ = createEffect(() => this.actions$.pipe(
     ofType(fetchAreaOfInterests),
     switchMap((action) => {
       return this.requestsService.getAreaOfInterests().pipe(
         map(data => {
-          return setAreaOfInterests({areaOfInterests: data});
+          return setAreaOfInterests({ areaOfInterests: data });
         }),
         catchError((error: HttpErrorResponse) =>
-          of(setDataFailure({errorMessage: error.message}),
-            globalError({error: 'global-errors.request-areofinterests-failure'})
+          of(setDataFailure({ errorMessage: error.message }),
+            globalError({ error: 'global-errors.request-areofinterests-failure' })
           ))
       );
     })
@@ -326,11 +343,11 @@ export class RequesterEffects {
     switchMap((action) => {
       return this.requestsService.getSkills().pipe(
         map(data => {
-          return setSkills({skills: data});
+          return setSkills({ skills: data });
         }),
         catchError((error: HttpErrorResponse) =>
-          of(setDataFailure({errorMessage: error.message}),
-            globalError({error: 'global-errors.request-skills-failure'})
+          of(setDataFailure({ errorMessage: error.message }),
+            globalError({ error: 'global-errors.request-skills-failure' })
           ))
       );
     })

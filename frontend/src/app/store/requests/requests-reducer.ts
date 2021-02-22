@@ -1,5 +1,5 @@
 import { Action, createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
-import { RequestDetails, RequestFilters } from "../../types/request-types";
+import { RequestDetails, RequestFilters, Resource } from "../../types/request-types";
 import {
   addRequestFilters, setAreaOfInterests, setSkills,
   pageChanged,
@@ -7,7 +7,9 @@ import {
   resetMessage,
   resetRequestFilters,
   setData,
-  setDataFailure
+  setDataFailure,
+  updateResource,
+  openEditRequestModal
 } from "./requests-actions";
 
 export const featureKey = 'requests';
@@ -21,6 +23,10 @@ export interface State {
     errorMessage: string;
     areaOfInterests: string[];
     skills: string[];
+    updatedResource?: {
+        resource: Resource,
+        index: number
+    }
 }
 
 export const initialState: State = {
@@ -52,7 +58,9 @@ const requesterReducer = createReducer(
     on(addRequestFilters, (state, { requestFilters }) => ({ ...state, filters: requestFilters })),
     on(resetRequestFilters, (state) => ({ ...state, filters: initialState.filters })),
     on(setAreaOfInterests, (state, {areaOfInterests}) => ({...state, areaOfInterests})),
-    on(setSkills, (state, {skills}) => ({...state, skills}))
+    on(setSkills, (state, {skills}) => ({...state, skills})),
+    on(openEditRequestModal, (state) => ({...state, updatedResource: null})),
+    on(updateResource, (state, {resource, index}) => ({...state, updatedResource: {resource, index}}))
 );
 
 export function reducer(state: State | undefined, action: Action) {
@@ -72,3 +80,4 @@ export const getRequestById = createSelector(featureState,
 
 export const getAreaOfInterests = createSelector(featureState, state => state.areaOfInterests);
 export const getSkills = createSelector(featureState, state => state.skills);
+export const getUpdatedResource = createSelector(featureState, state => state.updatedResource);

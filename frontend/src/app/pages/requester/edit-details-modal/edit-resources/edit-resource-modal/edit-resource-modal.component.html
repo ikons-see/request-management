@@ -1,0 +1,43 @@
+<app-modal [title]="'Edit resource'" [buttons]="buttons" *ngIf="buttons">
+    <form class="form-group" [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+        <div class="form-group">
+            <label for="total">
+                {{'requester.total' | translate}}
+            </label>
+            <input id="total" type="number" class="form-control" formControlName="total" min="1">
+        </div>
+        <div class="form-control-feedback" *ngIf="submittedForm && total().invalid">
+            {{'edit-request.total-error' | translate}}
+        </div>
+
+        <div class="form-group">
+            <label for="seniority">
+                {{'requester.seniority' | translate}}
+            </label>
+            <ng-select [items]="seniorities" bindLabel="seniority" placeholder="Select item" multiple="false"
+                [searchable]="false" maxSelectedItems='1' formControlName='seniority'>
+            </ng-select>
+        </div>
+        <div class="form-control-feedback" *ngIf="submittedForm && seniority().invalid">
+            {{'edit-request.required-field' | translate}}
+        </div>
+
+        <div class="form-group">
+            <label for="skills">
+                {{'requester.skills' | translate}}
+            </label>
+            <ng-select [items]="skills" bindLabel="skills" placeholder="Select item" multiple="true" [searchable]="true"
+                formControlName="skills">
+            </ng-select>
+        </div>
+        <div class="form-group">
+            <label for="note">
+                {{'requester.notes' | translate}}
+            </label>
+            <textarea id="note" class="form-control" formControlName="note"></textarea>
+        </div>
+        <div class="form-control-feedback" *ngIf="submittedForm && note().invalid">
+            {{'requester.required-field' | translate}}
+        </div>
+    </form>
+</app-modal>

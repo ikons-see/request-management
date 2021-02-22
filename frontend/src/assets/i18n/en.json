@@ -61,7 +61,9 @@
         "general-info": "General Info",
         "resources": "Resources",
         "update-request": "Update Request",
-        "total-error": "*The total input has to be larger or equal to 1"
+        "update-resource": "Update Resource",
+        "total-error": "*The total input has to be larger or equal to 1",
+        "required-field": "*This field is required"
     },
     "close-request": {
         "title": "Close Request #",

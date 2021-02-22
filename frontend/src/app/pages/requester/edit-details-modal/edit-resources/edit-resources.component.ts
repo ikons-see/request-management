@@ -2,8 +2,9 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormGroup, Validators } from '@angular/forms';
 import { Seniority, Skills } from 'src/app/types/data-types';
 import { Resource } from 'src/app/types/request-types';
-import {Store} from "@ngrx/store";
-import {getSkills} from "../../../../store/requests/requests-reducer";
+import { Store } from "@ngrx/store";
+import { getSkills, getUpdatedResource } from "../../../../store/requests/requests-reducer";
+import { openEditResourceModal } from 'src/app/store/requests/requests-actions';
 
 @Component({
   selector: 'app-edit-resources',
@@ -22,12 +23,19 @@ export class EditResourcesComponent implements OnInit {
   skills = [];
   isCollapsed: Array<boolean> = [];
   submittedForm: boolean = false;
-  currentResources: Array<Resource>;
+  currentResources: Array<Resource> = [];
   newResources: Array<Resource> = [];
   deletedResources: Array<number> = [];
+  updatedResource: { resource: Resource, index: number };
 
   constructor(private store: Store) {
     this.store.select(getSkills).subscribe(skills => this.skills = skills);
+    this.store.select(getUpdatedResource).subscribe(value => {
+      this.updatedResource = value;
+      if (value) {
+        this.updateResource();
+      }
+    })
   }
 
   ngOnInit(): void {
@@ -66,17 +74,34 @@ export class EditResourcesComponent implements OnInit {
       ...this.formGroup.value,
       seniority: this.formGroup.value['seniority'][0]
     };
-    if(this.formGroup.valid) {
-      this.isCollapsed.push(true);
-      this.currentResources.push(value);
-      this.newResources.push(value);
+    if (this.formGroup.valid) {
+      this.addResource(value);
     }
   }
 
   removeResource(index: number, item: Resource) {
+    console.log('Item being removed:', item);
     this.isCollapsed.splice(index, 1);
     this.currentResources.splice(index, 1);
-    this.deletedResources.push(item.resourceId);
+    if (item.resourceId) {
+      this.deletedResources.push(item.resourceId);
+    }
+  }
+
+  addResource(item: Resource) {
+    this.isCollapsed.push(true);
+    this.currentResources.push(item);
+    this.newResources.push(item);
+  }
+
+  editResource(index: number, item: Resource) {
+    console.log('Editing resource:', item);
+    this.store.dispatch(openEditResourceModal({ resource: item, index: index }));
+  }
+
+  updateResource() {
+    this.addResource(this.updatedResource.resource);
+    this.removeResource(this.updatedResource.index, this.updatedResource.resource);
   }
 
   getCurrentResources() {

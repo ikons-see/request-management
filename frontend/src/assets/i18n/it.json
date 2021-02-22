@@ -60,7 +60,9 @@
         "general-info": "Informazioni generali",
         "resources": "Risorse",
         "update-request": "Aggiorna la richiesta",
-        "total-error": "*L'input per il totale deve essere maggiore o uguale a 1"
+        "update-resource": "Aggiorna risorsa",
+        "total-error": "*L'input per il totale deve essere maggiore o uguale a 1",
+        "required-field": "*Questo campo è obbligatorio"
     },
     "close-request": {
         "title": "Chiudi la richiesta #",

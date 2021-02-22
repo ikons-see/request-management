@@ -71,8 +71,11 @@
                 </span>
                 <span>{{item.seniority}}</span>
             </div>
+            <button class="btn btn-dark edit" title="Edit">
+                <i class="fa fa-edit" (click)="editResource(i, item); $event.stopPropagation()"></i>
+            </button>
             <button class="btn btn-danger remove" title="Remove">
-                <i class="fa fa-close" (click)="removeResource(i, item)"></i>
+                <i class="fa fa-close" (click)="removeResource(i, item); $event.stopPropagation()"></i>
             </button>
         </div>
         <div id="collapseBasic" [collapse]="isCollapsed[i]">

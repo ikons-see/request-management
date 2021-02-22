@@ -1,5 +1,5 @@
 import { createAction, props } from "@ngrx/store";
-import { AddRequest, RequestDetails, RequestFilters, UpdateRequest } from "../../types/request-types";
+import { AddRequest, RequestDetails, RequestFilters, Resource, UpdateRequest } from "../../types/request-types";
 import {SearchWithPagination} from "../../endpoint/http-rest-utils";
 import { RequestStatus } from "src/app/types/data-types";
 
@@ -17,9 +17,12 @@ export const addRequestSuccess = createAction(`[${featureKey}] requestData`);
 export const addRequestFailure = createAction(`[${featureKey}] addRequestFailure`, props<{ errorMessage: string }>());
 
 export const openEditRequestModal = createAction(`[${featureKey}] openEditRequestModal`, props<{ requestId: number }>());
+export const openEditResourceModal = createAction(`[${featureKey}] openEditResourceModal`, props<{ resource: Resource, index: number }>());
 export const updateRequest = createAction(`[${featureKey}] updateRequest`, props<{ request: Partial<UpdateRequest> }>());
 export const updateRequestSuccess = createAction(`[${featureKey}] updateRequestSuccess`);
 export const updateRequestFailure = createAction(`[${featureKey}] updateRequestFailure`, props<{ errorMessage: string }>());
+
+export const updateResource = createAction(`[${featureKey}] updateResource`, props<{ resource: Resource, index: number }>());
 
 export const pageChanged = createAction(`[${featureKey}] pageChanged`, props<{ page: number }>());
 
