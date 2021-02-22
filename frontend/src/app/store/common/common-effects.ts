@@ -10,6 +10,7 @@ import { Observable, of } from "rxjs";
 import { catchError, flatMap, mergeMap, switchMap, tap } from "rxjs/operators";
 import { ApplicationState } from "../../app.module";
 import { RequestsManagementService } from "../../endpoint/requests-management.service";
+import { fetchAreaOfInterests, fetchSkills } from "../requests/requests-actions";
 import {
     activateAccount,
     activateAccountFailure,
@@ -114,7 +115,9 @@ export class GlobalEffects {
     loadProfileAfterRehydrate$ = createEffect(() => this.actions$.pipe(
         ofType(rehydrateSuccess),
         mergeMap(() => [
-            loadProfile()
+            loadProfile(),
+            fetchSkills(),
+            fetchAreaOfInterests()
         ])
     ));
 

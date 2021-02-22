@@ -80,7 +80,6 @@ export class EditResourcesComponent implements OnInit {
   }
 
   removeResource(index: number, item: Resource) {
-    console.log('Item being removed:', item);
     this.isCollapsed.splice(index, 1);
     this.currentResources.splice(index, 1);
     if (item.resourceId) {
@@ -95,7 +94,6 @@ export class EditResourcesComponent implements OnInit {
   }
 
   editResource(index: number, item: Resource) {
-    console.log('Editing resource:', item);
     this.store.dispatch(openEditResourceModal({ resource: item, index: index }));
   }
 
