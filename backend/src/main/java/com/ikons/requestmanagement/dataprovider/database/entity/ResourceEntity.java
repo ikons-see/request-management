@@ -36,7 +36,7 @@ public class ResourceEntity implements Serializable {
     @JoinColumn(name = "request_id")
     private RequestEntity request;
 
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(name = "ik_resource_skill", joinColumns = @JoinColumn(name = "resource_id"), inverseJoinColumns = @JoinColumn(name = "skill"))
     private Set<SkillEntity> skills;
 
