@@ -17,6 +17,7 @@ public class RequestDetailsDTO {
     private long requestId;
     private String areaOfInterest;
     private String displayName;
+    private String lastModifiedBy;
     private String status;
     private Instant startDate;
     private Instant endDate;

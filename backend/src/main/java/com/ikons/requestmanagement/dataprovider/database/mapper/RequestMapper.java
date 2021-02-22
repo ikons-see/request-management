@@ -9,6 +9,7 @@ import org.mapstruct.Mapping;
 public interface RequestMapper extends EntityMapper<RequestEntity, RequestDetailsDTO> {
 
   @Mapping(source = "createdBy", target = "displayName")
+  @Mapping(source = "lastModifiedBy", target = "lastModifiedBy")
   @Mapping(source = "areaOfInterest.areaOfInterest", target = "areaOfInterest")
   RequestDetailsDTO toDto(RequestEntity entity);
 
