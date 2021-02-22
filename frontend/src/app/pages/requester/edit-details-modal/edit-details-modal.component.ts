@@ -49,7 +49,9 @@ export class EditDetailsModalComponent implements OnInit, OnDestroy {
     this.requestSubscribtion = this.store.select(getRequestById, this.requestId).subscribe(
       value => {
         this.request = value;
-        this.updateForms();
+        if(value) {
+          this.updateForms();
+        }
       }
     );
 
