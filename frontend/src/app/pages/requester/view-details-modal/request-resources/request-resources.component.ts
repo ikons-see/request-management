@@ -35,6 +35,11 @@ export class RequestResourcesComponent implements OnInit, OnDestroy {
         },
         {
           type: ColumnType.STRING,
+          field: 'totalProvided',
+          text: translations['found']
+        },
+        {
+          type: ColumnType.STRING,
           field: 'seniority',
           text: translations['seniority']
         },

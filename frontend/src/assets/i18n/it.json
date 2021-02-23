@@ -35,7 +35,8 @@
         "skills": "Abilità",
         "manage-request": "Gestisci la richiesta",
         "required-field": "*Questo campo è obbligatorio",
-        "add-resource": "Aggiungi risorsa"
+        "add-resource": "Aggiungi risorsa",
+        "found": "Found"
     },
     "add-request": {
         "title": "Aggiungi Richiesta",

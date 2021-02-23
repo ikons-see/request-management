@@ -10,30 +10,21 @@
             <label for="seniority">
                 {{'requester.seniority' | translate}}
             </label>
-            <ng-select [items]="seniorities"
-                       bindLabel="seniority"
-                       placeholder="Select item"
-                       multiple="false"
-                       [searchable]="false"
-                       maxSelectedItems='1'
-                       formControlName='seniority'>
+            <ng-select [items]="seniorities" bindLabel="seniority" placeholder="Select item" multiple="false"
+                [searchable]="false" maxSelectedItems='1' formControlName='seniority'>
             </ng-select>
         </div>
     </div>
     <div class="form-control-feedback" *ngIf="total().errors?.min">
         {{'edit-request.total-error' | translate}}
-     </div>
-    
+    </div>
+
     <div class="form-group">
         <label for="skills">
             {{'requester.skills' | translate}}
         </label>
-        <ng-select [items]="skills" 
-                   bindLabel="skills" 
-                   placeholder="Select item" 
-                   multiple="true"
-                   [searchable]="true" 
-                   formControlName="skills">
+        <ng-select [items]="skills" bindLabel="skills" placeholder="Select item" multiple="true" [searchable]="true"
+            formControlName="skills">
         </ng-select>
     </div>
     <div class="form-group">
@@ -44,15 +35,17 @@
     </div>
     <div class="form-control-feedback" *ngIf="submittedForm && note().invalid">
         {{'requester.required-field' | translate}}
-     </div>
-        <button class="btn btn-outline-secondary" type="submit" [disabled]="!formGroup.valid">
-            {{'requester.add-resource' | translate}}
-        </button>
+    </div>
+    <button class="btn btn-outline-secondary" type="submit" [disabled]="!formGroup.valid">
+        {{'requester.add-resource' | translate}}
+    </button>
 </form>
 
 <div class="resources-container">
     <div class="card" *ngFor="let item of currentResources; let i = index">
-        <div class="card-header" id="headingOne" (click)="isCollapsed[i] = !isCollapsed[i]">
+        <div class="card-header" id="headingOne" (click)="isCollapsed[i] = !isCollapsed[i]"
+            [class.provided]="item.total == item.totalProvided"
+            [class.not-provided]="item.total != item.totalProvided">
             <span class="icon" *ngIf="isCollapsed[i]">
                 <i class="fa fa-angle-down"></i>
             </span>
@@ -64,6 +57,12 @@
                     {{'requester.total' | translate}}:
                 </span>
                 <span>{{item.total}}</span>
+            </div>
+            <div class="attr-holder">
+                <span class="attr-title">
+                    {{'requester.found' | translate}}:
+                </span>
+                <span>{{item.totalProvided}}</span>
             </div>
             <div class="attr-holder">
                 <span class="attr-title">

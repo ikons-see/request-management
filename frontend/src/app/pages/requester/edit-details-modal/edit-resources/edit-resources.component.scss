@@ -106,7 +106,15 @@ form {
 
         .card-block {
             margin-bottom: 0 !important;
-             background-color: white !important;
+            background-color: white !important;
+        }
+
+        .not-provided {
+            border-left: 3px solid #dc3545;
+        }
+
+        .provided {
+            border-left: 3px solid #7BB4A2;
         }
     }
 }
