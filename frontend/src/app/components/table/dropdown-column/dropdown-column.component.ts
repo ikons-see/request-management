@@ -1,4 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { ApplicationState } from 'src/app/app.module';
+import { getCurrentUser } from 'src/app/store/common/common-reducer';
 import { ActionType, ButtonConfiguration, DropdownColumn, RequestStatus } from 'src/app/types/data-types';
 
 @Component({
@@ -14,10 +17,15 @@ export class DropdownColumnComponent implements OnInit {
   @Input()
   dropdown: DropdownColumn;
 
-  constructor() { }
+  signedInUser: string;
 
-  ngOnInit(): void {
+  constructor(private store: Store<ApplicationState>) {
+    this.store.select(getCurrentUser).subscribe(value => {
+      this.signedInUser = value;
+    })
   }
+
+  ngOnInit(): void {}
 
   handleClick(event, btn: ButtonConfiguration) {
     if (!btn.disabled) {
@@ -38,6 +46,11 @@ export class DropdownColumnComponent implements OnInit {
     } else if (this.value.status == RequestStatus.PENDING) {
       if (e == ActionType.pending) {
         return true;
+      }
+    }
+    else if (this.value.status == RequestStatus.ON_GOING) {
+      if (e == ActionType.edit) {
+        return this.value.lastModifiedBy != this.signedInUser;
       }
     }
     else return false;

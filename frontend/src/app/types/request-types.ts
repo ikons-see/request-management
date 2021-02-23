@@ -17,6 +17,7 @@ export interface RequestDetails {
     requestId: number;
     areaOfInterest: string;
     displayName?: string;
+    lastModifiedBy?: string;
     status: string;
     startDate: Date;
     endDate: Date;

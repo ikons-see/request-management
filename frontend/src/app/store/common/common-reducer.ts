@@ -54,3 +54,4 @@ export const getErrorMessage = createSelector(featureState, state => state.error
 export const getAvailableLanguages = createSelector(featureState, state => state.availableLanguages);
 export const getCurrentLanguage = createSelector(featureState, state => state.currentLanguage);
 export const getUserRole = createSelector(featureState, state => state.userData ? state.userData.authorities[0] : null);
+export const getCurrentUser = createSelector(featureState, state => state.userData.login);
