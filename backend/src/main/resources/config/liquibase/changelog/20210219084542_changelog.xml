@@ -54,6 +54,7 @@
             <column name="notes" type="VARCHAR(255)"/>
             <column name="seniority" type="VARCHAR(255)"/>
             <column name="total" type="INT"/>
+            <column name="total_provided" type="INT"/>
             <column name="request_id" type="BIGINT"/>
         </createTable>
     </changeSet>

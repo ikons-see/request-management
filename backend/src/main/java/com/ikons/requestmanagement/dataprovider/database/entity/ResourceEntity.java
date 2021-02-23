@@ -32,6 +32,9 @@ public class ResourceEntity implements Serializable {
     @Column
     private Integer total;
 
+    @Column
+    private Integer totalProvided;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "request_id")
     private RequestEntity request;
