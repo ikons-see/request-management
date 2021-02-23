@@ -16,6 +16,7 @@ public class ResourceDTO {
 
     private long resourceId;
     private int total;
+    private int totalProvided;
     private String seniority;
     private Set<String> skills;
     private String note;
