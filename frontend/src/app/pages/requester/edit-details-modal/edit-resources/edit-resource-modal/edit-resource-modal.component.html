@@ -11,10 +11,10 @@
         </div>
 
         <div class="form-group">
-            <label for="found">
+            <label for="totalProvided">
                 {{'requester.found' | translate}}
             </label>
-            <input id="total" type="number" class="form-control" formControlName="found" min="1">
+            <input id="total" type="number" class="form-control" formControlName="totalProvided" min="1">
         </div>
         <div class="form-control-feedback" *ngIf="submittedForm && found().invalid">
             {{'edit-request.total-error' | translate}}

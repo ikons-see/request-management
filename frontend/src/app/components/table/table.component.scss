@@ -23,6 +23,14 @@
       cursor: pointer;
     }
 
+    .completed {
+      border-left: 5px solid #7BB4A2;
+    }
+
+    .not-completed {
+      border-left: 5px solid #BC8E9D;
+    }
+
     tr>td {
       white-space: nowrap;
       vertical-align: top;

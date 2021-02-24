@@ -11,7 +11,7 @@
                 </thead>
                 <tbody class="datatable__body ps ps--active-y">
                     <tr *ngFor="let datum of data; let rowIndex = index;" class="row-hover"
-                        [class.clickable]="rowClickable">
+                        [class.clickable]="rowClickable" [class]="checkResources(datum)">
                         <td *ngFor="let col of columns;" class="datatable__cell" (click)="onRowClick(datum, col)"
                             [className]="col.type">
                             <ng-container [ngSwitch]="col.type">

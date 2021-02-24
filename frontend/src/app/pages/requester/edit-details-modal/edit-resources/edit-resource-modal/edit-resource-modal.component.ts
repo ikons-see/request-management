@@ -43,7 +43,7 @@ export class EditResourceModalComponent implements OnInit {
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
       total: [this.resource.total, [Validators.required, Validators.min(1)]],
-      found: [this.resource.found ? this.resource.found : 0, [Validators.required, Validators.min(0)]],
+      totalProvided: [this.resource.totalProvided, [Validators.required, Validators.min(0)]],
       seniority: [[this.resource.seniority], Validators.required],
       skills: [this.resource.skills],
       note: [this.resource.note]
@@ -65,7 +65,7 @@ export class EditResourceModalComponent implements OnInit {
   }
 
   found() {
-    return this.formGroup.get('found');
+    return this.formGroup.get('totalProvided');
   }
 
   note() {
