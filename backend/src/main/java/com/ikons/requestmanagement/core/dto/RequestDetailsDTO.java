@@ -19,6 +19,7 @@ public class RequestDetailsDTO {
     private String displayName;
     private String lastModifiedBy;
     private String status;
+    private Instant createdDate;
     private Instant startDate;
     private Instant endDate;
     private String notes;
