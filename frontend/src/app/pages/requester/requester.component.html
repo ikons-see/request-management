@@ -20,7 +20,7 @@
                [data]="requests$ | async" 
                [currentPage]="currentPage$ | async"
                [totalItems]="totalNumber$ | async" 
-               (pageChanged)="pageChanged($event)">
+               (pageChange)="pageChanged($event)">
     </app-table>
 </ng-container>
 

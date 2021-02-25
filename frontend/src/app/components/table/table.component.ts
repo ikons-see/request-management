@@ -24,7 +24,7 @@ export class TableComponent implements OnInit {
   currentPage: number = 1;
 
   @Input()
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 20;
 
   @Output()
   onRowClicked = new EventEmitter<any>();
