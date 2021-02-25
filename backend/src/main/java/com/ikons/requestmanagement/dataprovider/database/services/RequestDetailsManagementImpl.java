@@ -176,6 +176,14 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   }
 
   @Override
+  public List<RequestDetailsDTO> getAllActiveRequests() {
+    final List<RequestEntity> allActiveRequests = requestRepository.findByStatusNot(RequestStatusDTO.CLOSED.toString());
+    return allActiveRequests.stream().filter(Objects::nonNull).map(a -> {
+      return requestMapper.toDto(a);
+    }).collect(Collectors.toList());
+  }
+
+  @Override
   public List<RequestStateHistoryDTO> getStateHistory(long requestId) {
     final List<StateHistoryEntity> stateHistoryEntities = stateHistoryRepository.findByRequestId(requestId);
     return stateHistoryEntities.stream().filter(Objects::nonNull).map(a -> {
@@ -329,11 +337,6 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   @Override
   public Long totalRequests() {
     return requestRepository.count();
-  }
-
-  @Override
-  public List<RequestCsvDTO> requestsCsv() {
-    return requestRepository.requestsCsvDto(RequestStatusDTO.CLOSED.name());
   }
 
   @Override

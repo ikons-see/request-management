@@ -1,11 +1,9 @@
 package com.ikons.requestmanagement.core.dto;
 
 import com.opencsv.bean.CsvBindByName;
-import com.opencsv.bean.CsvBindByPosition;
 import lombok.*;
 
-import java.sql.Date;
-import java.time.Instant;
+import java.util.Date;
 
 @Data
 @Builder
@@ -18,7 +16,7 @@ public class RequestCsvDTO {
   private String projectDescription;
 
   @CsvBindByName(column = "Created Date")
-  private Instant createdDate;
+  private Date createdDate;
 
   @CsvBindByName(column = "Created By")
   private String createdBy;

@@ -30,5 +30,7 @@ public interface RequestDetailsManagement {
 
     void logRequestState(final long requestId, final String user, final RequestStatusDTO status, final String notes);
 
+    List<RequestDetailsDTO> getAllActiveRequests();
+
     List<RequestStateHistoryDTO> getStateHistory(final long requestId);
 }

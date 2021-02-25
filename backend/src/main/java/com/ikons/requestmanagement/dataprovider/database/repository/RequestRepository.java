@@ -20,6 +20,8 @@ public interface RequestRepository extends JpaRepository<RequestEntity, Long>, J
 
   long countByCreatedBy(String userId);
 
+  List<RequestEntity> findByStatusNot(String status);
+
   @Query(nativeQuery = true, value = "SELECT COUNT(*) FROM ik_request req WHERE req.status NOT LIKE :status ")
   long countAllActiveRequests(@Param("status") final String status);
 
@@ -37,10 +39,4 @@ public interface RequestRepository extends JpaRepository<RequestEntity, Long>, J
       + " GROUP BY year(req.startDate), month(req.startDate)")
   List<MonthlyReportsDto> totalResourcesPerMonth();
 
-  @Query("SELECT new com.ikons.requestmanagement.core.dto.RequestCsvDTO(req.projectDescription, req.createdDate, req.createdBy, sum(res.total), sum(res.totalProvided) )"
-      + " FROM RequestEntity req "
-      + " LEFT JOIN req.resources res "
-      + " WHERE req.status NOT LIKE :status"
-      + " GROUP BY req.projectDescription, req.createdDate, req.createdBy")
-  List<RequestCsvDTO> requestsCsvDto(@Param("status") final String status);
 }
