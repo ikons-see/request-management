@@ -129,7 +129,7 @@ export class AdministratorEffects {
     downloadFileSuccess$ = createEffect(() => this.actions$.pipe(
         ofType(downloadReportSuccess),
         tap((action) => {
-             saveAs(action.file)
+             saveAs(action.file, 'request-management.csv')
         })
     ), { dispatch: false })
 }
