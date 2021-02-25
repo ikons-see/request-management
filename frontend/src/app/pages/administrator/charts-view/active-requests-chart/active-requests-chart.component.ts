@@ -9,7 +9,7 @@ import { Tab } from 'src/app/types/data-types';
 import { TotalChartData } from 'src/app/types/response-types';
 import { ApplicationState } from 'src/app/app.module';
 import { Store } from '@ngrx/store';
-import { getTotalChartsData } from 'src/app/store/administrator/administrator-actions';
+import { downloadReportRequest, getTotalChartsData } from 'src/app/store/administrator/administrator-actions';
 import { getTotalChartData } from 'src/app/store/administrator/administrator-reducer';
 
 @Component({
@@ -81,4 +81,7 @@ export class ActiveRequestsChartComponent implements OnInit {
     });
   }
 
+  downloadReport() {
+    this.store.dispatch(downloadReportRequest());
+  }
 }

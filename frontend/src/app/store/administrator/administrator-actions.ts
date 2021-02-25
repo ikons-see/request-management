@@ -12,3 +12,6 @@ export const setResourcesMonthlyData = createAction(`[${featureKey}] setResource
 export const openViewHistoryModal = createAction(`[${featureKey}] openViewHistoryModal`, props<{ requestId: number }>());
 export const requestStatusLogSuccess = createAction(`[${featureKey}] requestStatusLogSuccess`, props<{ events: Array<AuditEvent> }>());
 export const requestStatusLogFailure = createAction(`[${featureKey}] requestStatusLogFailure`, props<{ errorMessage: string }>());
+export const downloadReportRequest = createAction(`[${featureKey}] downloadReportRequest`);
+export const downloadReportSuccess = createAction(`[${featureKey}] downloadReportSuccess`, props<{ file: Blob }>());
+export const downloadReportFailure = createAction(`[${featureKey}] downloadReportFailure`, props<{ errorMessage: string }>());
