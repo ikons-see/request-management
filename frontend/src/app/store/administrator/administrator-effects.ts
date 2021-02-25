@@ -5,13 +5,17 @@ import { Actions, createEffect, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
 import { BsModalService } from "ngx-bootstrap/modal";
 import { of } from "rxjs";
-import { catchError, map, switchMap, tap } from "rxjs/operators";
+import { catchError, map, mergeMap, switchMap, tap } from "rxjs/operators";
 import { RequestHistoryModalComponent } from "src/app/pages/administrator/admin-requests/request-history-modal/request-history-modal.component";
 import { globalModalConfig } from "src/app/types/data-types";
 import { ApplicationState } from "../../app.module";
 import { RequestsManagementService } from "../../endpoint/requests-management.service";
 import { globalError } from "../common/common-actions";
+import { saveAs } from 'file-saver';
 import {
+    downloadReportFailure,
+    downloadReportRequest,
+    downloadReportSuccess,
     getRequestsMonthlyData,
     getResourcesMonthlyData,
     getTotalChartsData,
@@ -105,4 +109,27 @@ export class AdministratorEffects {
             });
         })
     ), { dispatch: false });
+
+    downloadReportRequest$ = createEffect(() => this.actions$.pipe(
+        ofType(downloadReportRequest),
+        switchMap((action) => {
+            return this.requestsService.downloadReport()
+                .pipe(
+                    map(res => downloadReportSuccess({
+                        file: res
+                    })),
+                    catchError((error: HttpErrorResponse) => 
+                        of(downloadReportFailure({ errorMessage: error.message }),
+                        globalError({error: 'global-errors.download-report-error'})
+                        ))
+                );
+        })
+    ));
+
+    downloadFileSuccess$ = createEffect(() => this.actions$.pipe(
+        ofType(downloadReportSuccess),
+        tap((action) => {
+             saveAs(action.file)
+        })
+    ), { dispatch: false })
 }

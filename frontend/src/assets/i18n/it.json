@@ -153,7 +153,8 @@
             "delete-request-failure": "Si è verificato un errore! Impossibile eliminare la richiesta.",
             "close-request-failure": "Si è verificato un errore! Impossibile chiudere la richiesta.",
             "status-change-failure": "Si è verificato un errore! Non è stato possibile modificare lo stato della richiesta.",
-            "user-register-failure": "Si è verificato un errore! L'utente non può essere registrato."
+            "user-register-failure": "Si è verificato un errore! L'utente non può essere registrato.",
+            "download-report-error": "Couldn't download the report"
     },
     "global-success": {
         "add-request-success": "La richiesta è stata aggiunta con successo!",

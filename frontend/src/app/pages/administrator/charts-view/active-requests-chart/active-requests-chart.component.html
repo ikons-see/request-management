@@ -1,3 +1,5 @@
 <div id="activeChartdiv" class="chart" *ngIf="chartData"></div>
 
+<button class="btn btn-dark" (click)="downloadReport()">Download Report</button>
+
 <app-empty-page *ngIf="!chartData"></app-empty-page>

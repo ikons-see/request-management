@@ -1,17 +1,17 @@
 import { Injectable } from "@angular/core";
-import {HttpClient, HttpResponse} from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, of } from "rxjs";
 import { AccountData, AuditEvent, MonthlyChartData, RequestsListResponse, TotalChartData } from "../types/response-types";
 import {
-  AddRequest,
-  ChangeStatusRequest,
-  RegisterUserRequest,
-  RequestDetails,
-  UpdateRequest
+    AddRequest,
+    ChangeStatusRequest,
+    RegisterUserRequest,
+    RequestDetails,
+    UpdateRequest
 } from "../types/request-types";
 import { JWTToken } from "../types/data-types";
 import { tap } from "rxjs/operators";
-import {createRequestOption} from "./http-rest-utils";
+import { createRequestOption } from "./http-rest-utils";
 
 @Injectable({
     providedIn: 'root'
@@ -39,8 +39,8 @@ export class RequestsManagementService {
     }
 
     getRequests(req?: any): Observable<HttpResponse<RequestDetails[]>> {
-      const options = createRequestOption(req);
-      return this.httpClient.get<RequestDetails[]>('api/requests-management/requests', {params: options, observe: 'response'});
+        const options = createRequestOption(req);
+        return this.httpClient.get<RequestDetails[]>('api/requests-management/requests', { params: options, observe: 'response' });
     }
 
     addNewRequest(request: AddRequest): Observable<void> {
@@ -108,7 +108,7 @@ export class RequestsManagementService {
     }
 
     activateAccount(activationKey: string): Observable<void> {
-        return this.httpClient.get<void>(`api/activate`, {params: {key: activationKey}});
+        return this.httpClient.get<void>(`api/activate`, { params: { key: activationKey } });
     }
 
     getTotalChartData() {
@@ -124,9 +124,14 @@ export class RequestsManagementService {
     }
 
     getAreaOfInterests(): Observable<string[]> {
-      return this.httpClient.get<string[]>(`api/requests-management/area-of-interest`);
+        return this.httpClient.get<string[]>(`api/requests-management/area-of-interest`);
     }
+
     getSkills(): Observable<string[]> {
-      return this.httpClient.get<string[]>(`api/requests-management/skills`);
+        return this.httpClient.get<string[]>(`api/requests-management/skills`);
+    }
+
+    downloadReport(): Observable<any> {
+        return this.httpClient.get('api/reports/download-requests-csv', {responseType: 'blob'});
     }
 }

@@ -156,7 +156,8 @@
             "status-change-failure": "An error occurred! The request status couldn't be changed.",
             "user-register-failure": "An error occurred! The user couldn't be registered.",
             "account-activation-failure": "An error occurred! Your account couldn't be activated",
-            "chart-data-error": "Couldn't load data for chart"
+            "chart-data-error": "Couldn't load data for chart",
+            "download-report-error": "Couldn't download the report"
     },
     "global-success": {
         "add-request-success": "The request was successfully added!",
