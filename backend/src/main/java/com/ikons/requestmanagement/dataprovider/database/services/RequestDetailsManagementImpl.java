@@ -332,6 +332,11 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   }
 
   @Override
+  public List<RequestCsvDTO> requestsCsv() {
+    return requestRepository.requestsCsvDto(RequestStatusDTO.CLOSED.name());
+  }
+
+  @Override
   public Set<SkillDTO> getAllSkills() {
     final Iterable<SkillEntity> allSkillEntities = skillRepository.findAll();
     return StreamSupport.stream(allSkillEntities.spliterator(), false)

@@ -96,6 +96,7 @@ dependencies {
 	implementation "org.hibernate:hibernate-entitymanager"
 	implementation "org.hibernate.validator:hibernate-validator"
 	implementation "com.zaxxer:HikariCP"
+	implementation "com.opencsv:opencsv:${openCsvVersion}"
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	liquibaseRuntime "org.mariadb.jdbc:mariadb-java-client"
 	liquibaseRuntime "org.liquibase:liquibase-core"

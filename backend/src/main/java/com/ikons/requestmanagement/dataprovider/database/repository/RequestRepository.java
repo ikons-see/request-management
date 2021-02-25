@@ -1,6 +1,7 @@
 package com.ikons.requestmanagement.dataprovider.database.repository;
 
 import com.ikons.requestmanagement.core.dto.MonthlyReportsDto;
+import com.ikons.requestmanagement.core.dto.RequestCsvDTO;
 import com.ikons.requestmanagement.dataprovider.database.entity.RequestEntity;
 
 import org.springframework.data.domain.Pageable;
@@ -35,4 +36,11 @@ public interface RequestRepository extends JpaRepository<RequestEntity, Long>, J
       + " LEFT JOIN req.resources res "
       + " GROUP BY year(req.startDate), month(req.startDate)")
   List<MonthlyReportsDto> totalResourcesPerMonth();
+
+  @Query("SELECT new com.ikons.requestmanagement.core.dto.RequestCsvDTO(req.projectDescription, req.createdDate, req.createdBy, sum(res.total), sum(res.totalProvided) )"
+      + " FROM RequestEntity req "
+      + " LEFT JOIN req.resources res "
+      + " WHERE req.status NOT LIKE :status"
+      + " GROUP BY req.projectDescription, req.createdDate, req.createdBy")
+  List<RequestCsvDTO> requestsCsvDto(@Param("status") final String status);
 }

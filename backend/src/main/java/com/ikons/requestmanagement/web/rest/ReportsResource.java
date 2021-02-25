@@ -5,14 +5,19 @@ import com.ikons.requestmanagement.core.dto.TotalReportsDto;
 import com.ikons.requestmanagement.core.usecase.reports.TotalRequestsUseCase;
 import com.ikons.requestmanagement.core.usecase.reports.TotalRequestsPerMonthUseCase;
 import com.ikons.requestmanagement.core.usecase.reports.TotalResourcesPerMonthUseCase;
+import com.ikons.requestmanagement.core.usecase.reports.WriteDataToCSVUseCase;
 import com.ikons.requestmanagement.security.AuthoritiesConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.List;
 
 
@@ -25,6 +30,7 @@ public class ReportsResource {
   private final TotalRequestsPerMonthUseCase totalRequestsPerMonthUseCase;
   private final TotalRequestsUseCase totalRequestsUseCase;
   private final TotalResourcesPerMonthUseCase totalResourcesPerMonthUseCase;
+  private final WriteDataToCSVUseCase writeDataToCSVUseCase;
 
   @GetMapping("/total-requests")
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
@@ -43,6 +49,15 @@ public class ReportsResource {
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
   public List<ReportsResponseDto> totalResourcesPerMonth() {
     return totalRequestsPerMonthUseCase.totalRequestsPerMonth();
+  }
+
+  @GetMapping("/download-requests-csv")
+  @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+  public void downloadCSV(HttpServletResponse response) throws Exception {
+    SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy");
+    response.setContentType("text/csv");
+    response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=requests_"+ sdf.format(Calendar.getInstance().getTime()) +".csv");
+    writeDataToCSVUseCase.writeDataToCsv(response.getWriter());
   }
 
 }
