@@ -4,10 +4,10 @@ import { Store } from '@ngrx/store';
 import { TranslateService } from '@ngx-translate/core';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subscription } from 'rxjs';
-import { ApplicationState } from 'src/app/app.module';
-import { updateResource } from 'src/app/store/requests/requests-actions';
-import { getSkills } from 'src/app/store/requests/requests-reducer';
-import { Resource } from 'src/app/types/request-types';
+import { ApplicationState } from '../../../../../app.module';
+import { updateResource } from '../../../../../store/requests/requests-actions';
+import { getSkills } from '../../../../../store/requests/requests-reducer';
+import { Resource } from '../../../../../types/request-types';
 import { ButtonConfiguration, ButtonType, Seniority } from '../../../../../types/data-types';
 
 @Component({
@@ -43,7 +43,8 @@ export class EditResourceModalComponent implements OnInit {
   ngOnInit(): void {
     this.formGroup = this.formBuilder.group({
       total: [this.resource.total, [Validators.required, Validators.min(1)]],
-      totalProvided: [this.resource.totalProvided, [Validators.required, Validators.min(0)]],
+      totalProvided: [this.resource.totalProvided, 
+        [Validators.required, Validators.min(0), Validators.max(this.resource.total)]],
       seniority: [[this.resource.seniority], Validators.required],
       skills: [this.resource.skills],
       note: [this.resource.note]

@@ -64,7 +64,8 @@
         "update-request": "Update Request",
         "update-resource": "Update Resource",
         "total-error": "*The total input has to be larger or equal to 1",
-        "required-field": "*This field is required"
+        "required-field": "*This field is required",
+        "provided-max-error": "*The number of found resources cannot exceed the required total"
     },
     "close-request": {
         "title": "Close Request #",

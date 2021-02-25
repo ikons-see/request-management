@@ -63,7 +63,8 @@
         "update-request": "Aggiorna la richiesta",
         "update-resource": "Aggiorna risorsa",
         "total-error": "*L'input per il totale deve essere maggiore o uguale a 1",
-        "required-field": "*Questo campo è obbligatorio"
+        "required-field": "*Questo campo è obbligatorio",
+        "provided-max-error": "*Il numero di risorse trovate non può superare il totale richiesto"
     },
     "close-request": {
         "title": "Chiudi la richiesta #",
