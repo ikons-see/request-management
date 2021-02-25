@@ -25,7 +25,7 @@ export class PaginationComponent implements OnInit, OnChanges {
 
   setPage(page: number) {
     if (this.isValidPage(page)) {
-      this.pageChanged.emit(page);
+      this.pageChanged.emit(page - 1);
       this.scrollToTop();
     }
   }

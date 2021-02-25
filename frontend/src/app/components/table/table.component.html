@@ -11,7 +11,7 @@
                 </thead>
                 <tbody class="datatable__body ps ps--active-y">
                     <tr *ngFor="let datum of data; let rowIndex = index;" class="row-hover"
-                        [class.clickable]="rowClickable">
+                        [class.clickable]="rowClickable" [class]="checkResources(datum)">
                         <td *ngFor="let col of columns;" class="datatable__cell" (click)="onRowClick(datum, col)"
                             [className]="col.type">
                             <ng-container [ngSwitch]="col.type">
@@ -21,7 +21,7 @@
                                 <app-date-column *ngSwitchCase="columnType.DATE"
                                     [value]="getFormattedValue(datum, col)"></app-date-column>
                                 <app-status-column *ngSwitchCase="columnType.STATUS"
-                                    [value]="getFormattedValue(datum, col)"></app-status-column>
+                                    [value]="datum"></app-status-column>
                                 <app-default-column *ngSwitchDefault [value]="getFormattedValue(datum, col)">
                                 </app-default-column>
                             </ng-container>

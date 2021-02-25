@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { RequestStatus } from 'src/app/types/data-types';
+import { RequestStatus } from '../../../types/data-types';
 
 @Component({
   selector: 'app-status-column',
@@ -17,5 +17,4 @@ export class StatusColumnComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

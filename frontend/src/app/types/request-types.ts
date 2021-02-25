@@ -8,6 +8,7 @@ export interface Pageable {
 export interface Resource {
     resourceId?: number;
     total: number;
+    totalProvided?: number;
     seniority: string;
     skills: Array<string>;
     note?: string;

@@ -1,5 +1,7 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
-import { Column, ColumnType, DropdownColumn } from 'src/app/types/data-types';
+import { Column, ColumnType, DropdownColumn, RequestStatus } from 'src/app/types/data-types';
+import { RequestDetails } from 'src/app/types/request-types';
 
 @Component({
   selector: 'app-table',
@@ -22,7 +24,7 @@ export class TableComponent implements OnInit {
   currentPage: number = 1;
 
   @Input()
-  itemsPerPage: number = 10;
+  itemsPerPage: number = 20;
 
   @Output()
   onRowClicked = new EventEmitter<any>();
@@ -32,6 +34,7 @@ export class TableComponent implements OnInit {
   
   rowClickable: boolean;
   columnType = ColumnType;
+  status = RequestStatus;
   
   constructor() { }
 
@@ -43,10 +46,6 @@ export class TableComponent implements OnInit {
   }
 
   getFormattedValue(datum: any, col: Column): string {
-    // if (!datum.hasOwnProperty(col.field)) {
-    //   console.error('table.configuration.error:', datum, ' has no field:', col.field);
-    //   return null;
-    // }
     let val = datum[col.field];
     return val;
   }
@@ -60,6 +59,21 @@ export class TableComponent implements OnInit {
 
   setPage(page: number) {
     this.pageChange.emit(page);
+  }
+
+  checkResources(data: RequestDetails) {
+    let completed = true;
+    if(data.status != this.status.ON_GOING && data.status != this.status.UPDATED) {
+      completed = false;
+    }
+    else {
+      data.resources.forEach(el => {
+        if(el.total != el.totalProvided) {
+          completed = false;
+        }
+      });
+     return completed ? 'completed' : 'not-completed'
+    }
   }
 
 }

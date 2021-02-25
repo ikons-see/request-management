@@ -35,24 +35,35 @@ export class DropdownColumnComponent implements OnInit {
   }
 
   checkIfHidden(e) {
-    if (this.value.status == RequestStatus.CLOSED) {
-      if (e == ActionType.close || e == ActionType.edit) {
-        return true;
-      }
-    } else if (this.value.status == RequestStatus.REJECTED) {
-      if (e != ActionType.view && e != ActionType.history && e != ActionType.delete) {
-        return true;
-      }
-    } else if (this.value.status == RequestStatus.PENDING) {
-      if (e == ActionType.pending) {
-        return true;
-      }
+    switch(this.value.status) {
+      case RequestStatus.CLOSED:
+        if (e == ActionType.close || e == ActionType.edit) {
+          return true;
+        }
+        break;
+      case RequestStatus.REJECTED:
+        if (e != ActionType.view && e != ActionType.history && e != ActionType.delete) {
+          return true;
+        }
+        break;
+      case RequestStatus.PENDING:
+        if (e == ActionType.pending) {
+          return true;
+        }
+        break;
+      case RequestStatus.ON_GOING:
+        if (e == ActionType.edit) {
+          return this.value.lastModifiedBy != this.signedInUser;
+        }
+        if (e == ActionType.on_going) {
+          return true;
+        }
+        if (e == ActionType.pending) {
+          return true;
+        }
+        break;
+      default:
+        return false;
     }
-    else if (this.value.status == RequestStatus.ON_GOING) {
-      if (e == ActionType.edit) {
-        return this.value.lastModifiedBy != this.signedInUser;
-      }
-    }
-    else return false;
   }
 }

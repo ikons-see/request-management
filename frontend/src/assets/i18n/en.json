@@ -36,7 +36,8 @@
         "skills": "Skills",
         "manage-request": "Manage Request",
         "required-field": "*This field is required",
-        "add-resource": "Add Resource"
+        "add-resource": "Add Resource",
+        "found": "Found"
     },
     "add-request": {
         "title": "Add Request",
