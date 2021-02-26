@@ -30,6 +30,7 @@ public class ReportsResource {
   private final TotalResourcesPerMonthUseCase totalResourcesPerMonthUseCase;
   private final WriteDataToCSVUseCase writeDataToCSVUseCase;
   private final TotalResourcesProvidedUseCase totalResourcesProvidedUseCase;
+  private final WriteResourcesToCsvUseCase writeResourcesToCsvUseCase;
 
   @GetMapping("/total-requests")
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
@@ -62,6 +63,15 @@ public class ReportsResource {
     response.setContentType("text/csv");
     response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=requests_"+ sdf.format(Calendar.getInstance().getTime()) +".csv");
     writeDataToCSVUseCase.writeDataToCsv(response.getWriter());
+  }
+
+  @GetMapping("/download-resources-csv")
+  @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+  public void downloadResourcesCSV(HttpServletResponse response) throws Exception {
+    SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy");
+    response.setContentType("text/csv");
+    response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=resources_"+ sdf.format(Calendar.getInstance().getTime()) +".csv");
+    writeResourcesToCsvUseCase.writeResourcesToCsv(response.getWriter());
   }
 
 }
