@@ -1,11 +1,11 @@
 import { Action, createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
 import { AuditEvent, MonthlyChartData, ProvidedResourcesData, TotalChartData } from "../../types/response-types";
 import {
-    getTotalChartsData,
-    requestStatusLogSuccess,
-    setRequestsMonthlyData,
-    setResourcesMonthlyData,
-    setTotalChartsData
+  getTotalChartsData,
+  requestStatusLogSuccess, setProvidedResources,
+  setRequestsMonthlyData,
+  setResourcesMonthlyData,
+  setTotalChartsData
 } from "./administrator-actions";
 
 export const featureKey = 'administrator';
@@ -33,7 +33,8 @@ const requesterReducer = createReducer(
     on(setTotalChartsData, (state, { data }) => ({ ...state, totalChartsData: data, loading: false })),
     on(setRequestsMonthlyData, (state, { data }) => ({ ...state, requestsMonthlyChartData: data })),
     on(setResourcesMonthlyData, (state, { data }) => ({ ...state, resourcesMonthlyChartData: data })),
-    on(requestStatusLogSuccess, (state, { events }) => ({ ...state, statusLog: events }))
+    on(requestStatusLogSuccess, (state, { events }) => ({ ...state, statusLog: events })),
+    on(setProvidedResources, (state, { data }) => ({ ...state, providedResourcesChartData: data, loading: false  }))
 );
 
 export function reducer(state: State | undefined, action: Action) {

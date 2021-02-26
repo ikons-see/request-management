@@ -1,4 +1,4 @@
-import { Component, Inject, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
+import {AfterViewInit, Component, Inject, NgZone, OnInit, PLATFORM_ID} from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 // amCharts imports
@@ -17,7 +17,7 @@ import { getProvidedResourcesChartData } from 'src/app/store/administrator/admin
   templateUrl: './provided-resources-chart.component.html',
   styleUrls: ['./provided-resources-chart.component.scss']
 })
-export class ProvidedResourcesChartComponent implements OnInit {
+export class ProvidedResourcesChartComponent implements OnInit, AfterViewInit {
   totalRequests: number = 16;
   totalActiveRequests: number = 12;
   totalAssignedRequests: number = 2;
@@ -25,12 +25,9 @@ export class ProvidedResourcesChartComponent implements OnInit {
 
   private chart: am4charts.XYChart;
 
-  constructor(@Inject(PLATFORM_ID) private platformId, private zone: NgZone, private store: Store<ApplicationState>) { 
+  constructor(@Inject(PLATFORM_ID) private platformId, private zone: NgZone, private store: Store<ApplicationState>) {
     this.store.select(getProvidedResourcesChartData).pipe().subscribe(value => {
       this.chartData = value;
-      if(value) {
-        this.initChartData();
-      }
     });
   }
 
@@ -46,7 +43,7 @@ export class ProvidedResourcesChartComponent implements OnInit {
     }
   }
 
-  initChartData() {
+  ngAfterViewInit() {
 
     let activeChart = am4core.create("providedResourcesChart", am4charts.PieChart);
 
