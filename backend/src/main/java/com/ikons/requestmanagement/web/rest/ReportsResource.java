@@ -2,10 +2,8 @@ package com.ikons.requestmanagement.web.rest;
 
 import com.ikons.requestmanagement.core.dto.ReportsResponseDto;
 import com.ikons.requestmanagement.core.dto.TotalReportsDto;
-import com.ikons.requestmanagement.core.usecase.reports.TotalRequestsUseCase;
-import com.ikons.requestmanagement.core.usecase.reports.TotalRequestsPerMonthUseCase;
-import com.ikons.requestmanagement.core.usecase.reports.TotalResourcesPerMonthUseCase;
-import com.ikons.requestmanagement.core.usecase.reports.WriteDataToCSVUseCase;
+import com.ikons.requestmanagement.core.dto.TotalResourcesProvidedDTO;
+import com.ikons.requestmanagement.core.usecase.reports.*;
 import com.ikons.requestmanagement.security.AuthoritiesConstants;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
@@ -31,6 +29,7 @@ public class ReportsResource {
   private final TotalRequestsUseCase totalRequestsUseCase;
   private final TotalResourcesPerMonthUseCase totalResourcesPerMonthUseCase;
   private final WriteDataToCSVUseCase writeDataToCSVUseCase;
+  private final TotalResourcesProvidedUseCase totalResourcesProvidedUseCase;
 
   @GetMapping("/total-requests")
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
@@ -38,6 +37,11 @@ public class ReportsResource {
     return totalRequestsUseCase.getActiveRequests();
   }
 
+  @GetMapping("/provided-resources")
+  @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")
+  public TotalResourcesProvidedDTO totalResourcesProvided() {
+    return totalResourcesProvidedUseCase.totalResourcesProvided();
+  }
 
   @GetMapping("/total-resources-per-month")
   @PreAuthorize("hasAuthority(\"" + AuthoritiesConstants.ADMIN + "\")")

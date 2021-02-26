@@ -198,7 +198,9 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
 
     requestEntity.ifPresent(entity -> {
       entity.setAreaOfInterest(createAreaOfInterestEntity(requestUpdate.getAreaOfInterest()));
-      entity.setStatus(String.valueOf(RequestStatusDTO.UPDATED));
+      if (!entity.getStatus().equals(RequestStatusDTO.ON_GOING.name())) {
+        entity.setStatus(String.valueOf(RequestStatusDTO.UPDATED));
+      }
       entity.setStartDate(requestUpdate.getStartDate());
       entity.setEndDate(requestUpdate.getEndDate());
       entity.setNotes(requestUpdate.getNotes());
@@ -352,10 +354,6 @@ public class RequestDetailsManagementImpl extends QueryService<RequestEntity>
   @Override
   public Set<AreaOfInterestDTO> getAllAreaOfInterests() {
     final Iterable<AreaOfInterestEntity> allAreaOfInterestEntities = areaOfInterestRepository.findAll();
-//    StreamSupport.stream(allAreaOfInterestEntities.spliterator(), false)
-//        .filter(Objects::nonNull)
-//        .map(AreaOfInterestEntity::getAreaOfInterest)
-//        .collect(Collectors.toList());
     return StreamSupport.stream(allAreaOfInterestEntities.spliterator(), false)
         .filter(Objects::nonNull)
         .map(entity -> {
