@@ -1,7 +1,7 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, of } from "rxjs";
-import { AccountData, AuditEvent, MonthlyChartData, RequestsListResponse, TotalChartData } from "../types/response-types";
+import { AccountData, AuditEvent, MonthlyChartData, ProvidedResourcesData, RequestsListResponse, TotalChartData } from "../types/response-types";
 import {
     AddRequest,
     ChangeStatusRequest,
@@ -121,6 +121,10 @@ export class RequestsManagementService {
 
     getResourcesMonthlyChartData() {
         return this.httpClient.get<Array<MonthlyChartData>>(`api/reports/total-resources-per-month`);
+    }
+
+    getProvidedResourcesChartData() {
+        return this.httpClient.get<ProvidedResourcesData>(`api/reports/provided-resources`);
     }
 
     getAreaOfInterests(): Observable<string[]> {
