@@ -1,5 +1,5 @@
 import { Action, createFeatureSelector, createReducer, createSelector, on } from "@ngrx/store";
-import { AuditEvent, MonthlyChartData, TotalChartData } from "../../types/response-types";
+import { AuditEvent, MonthlyChartData, ProvidedResourcesData, TotalChartData } from "../../types/response-types";
 import {
     getTotalChartsData,
     requestStatusLogSuccess,
@@ -16,6 +16,7 @@ export interface State {
     auditErrorMessage: string;
     statusLog?: Array<AuditEvent>;
     totalChartsData?: TotalChartData;
+    providedResourcesChartData?: ProvidedResourcesData;
     requestsMonthlyChartData?: Array<MonthlyChartData>;
     resourcesMonthlyChartData?: Array<MonthlyChartData>;
 }
@@ -48,3 +49,4 @@ export const getAuditError = createSelector(featureState, state => state.auditEr
 export const getTotalChartData = createSelector(featureState, state => state.totalChartsData);
 export const getRequestsChartData = createSelector(featureState, state => state.requestsMonthlyChartData);
 export const getResourcesChartData = createSelector(featureState, state => state.resourcesMonthlyChartData);
+export const getProvidedResourcesChartData = createSelector(featureState, state => state.providedResourcesChartData);

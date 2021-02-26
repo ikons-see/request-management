@@ -36,6 +36,11 @@ export interface TotalChartData {
     totalRequests: number
 }
 
+export interface ProvidedResourcesData {
+    totalRequiredResources: number;
+    totalProvidedResources: number;
+}
+
 export interface MonthlyChartData {
     period: Date,
     total: number

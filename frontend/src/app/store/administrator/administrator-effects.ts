@@ -16,12 +16,14 @@ import {
     downloadReportFailure,
     downloadReportRequest,
     downloadReportSuccess,
+    getProvidedResources,
     getRequestsMonthlyData,
     getResourcesMonthlyData,
     getTotalChartsData,
     openViewHistoryModal,
     requestStatusLogFailure,
     requestStatusLogSuccess,
+    setProvidedResources,
     setRequestsMonthlyData,
     setResourcesMonthlyData,
     setTotalChartsData
@@ -58,6 +60,21 @@ export class AdministratorEffects {
             return this.requestsService.getRequestsMonthlyChartData()
                 .pipe(
                     map(res => setRequestsMonthlyData({
+                        data: res
+                    })),
+                    catchError((error: HttpErrorResponse) =>
+                        of(globalError({ error: 'global-errors.chart-data-error' }),
+                        ))
+                );
+        })
+    ));
+
+    getProvidedResourcesChartData$ = createEffect(() => this.actions$.pipe(
+        ofType(getProvidedResources),
+        switchMap((action) => {
+            return this.requestsService.getProvidedResourcesChartData()
+                .pipe(
+                    map(res => setProvidedResources({
                         data: res
                     })),
                     catchError((error: HttpErrorResponse) =>
