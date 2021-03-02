@@ -21,6 +21,9 @@ public class RequestCsvDTO {
   @CsvBindByName(column = "Created By")
   private String createdBy;
 
+  @CsvBindByName(column = "Status")
+  private String status;
+
   @CsvBindByName(column = "Total resources")
   private Long total;
 

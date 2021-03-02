@@ -21,7 +21,7 @@ export class ChartsViewComponent implements OnInit {
     this.tabs = [
       {
         id: '0',
-        name: 'Active Requests',
+        name: 'Total Requests',
         onClick: (e) => this.tabChanged(e)
       },
       {

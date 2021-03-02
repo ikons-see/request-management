@@ -28,7 +28,7 @@ public class ReportsResource {
   private final TotalRequestsPerMonthUseCase totalRequestsPerMonthUseCase;
   private final TotalRequestsUseCase totalRequestsUseCase;
   private final TotalResourcesPerMonthUseCase totalResourcesPerMonthUseCase;
-  private final WriteDataToCSVUseCase writeDataToCSVUseCase;
+  private final WriteRequestsToCSVUseCase writeRequestsToCSVUseCase;
   private final TotalResourcesProvidedUseCase totalResourcesProvidedUseCase;
   private final WriteResourcesToCsvUseCase writeResourcesToCsvUseCase;
 
@@ -62,7 +62,7 @@ public class ReportsResource {
     SimpleDateFormat sdf = new SimpleDateFormat("dd_MM_yyyy");
     response.setContentType("text/csv");
     response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=requests_"+ sdf.format(Calendar.getInstance().getTime()) +".csv");
-    writeDataToCSVUseCase.writeDataToCsv(response.getWriter());
+    writeRequestsToCSVUseCase.writeDataToCsv(response.getWriter());
   }
 
   @GetMapping("/download-resources-csv")
