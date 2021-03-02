@@ -1,15 +1,13 @@
-import {AfterViewInit, Component, Inject, NgZone, OnInit, PLATFORM_ID} from '@angular/core';
+import { AfterViewInit, Component, Inject, NgZone, OnInit, PLATFORM_ID } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 
 // amCharts imports
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
-import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import { Tab } from 'src/app/types/data-types';
-import { ProvidedResourcesData, TotalChartData } from 'src/app/types/response-types';
+import { ProvidedResourcesData } from 'src/app/types/response-types';
 import { ApplicationState } from 'src/app/app.module';
 import { Store } from '@ngrx/store';
-import { downloadReportRequest } from 'src/app/store/administrator/administrator-actions';
+import { downloadResourcesReport } from 'src/app/store/administrator/administrator-actions';
 import { getProvidedResourcesChartData } from 'src/app/store/administrator/administrator-reducer';
 
 @Component({
@@ -81,6 +79,6 @@ export class ProvidedResourcesChartComponent implements OnInit, AfterViewInit {
   }
 
   downloadReport() {
-    this.store.dispatch(downloadReportRequest());
+    this.store.dispatch(downloadResourcesReport());
   }
 }

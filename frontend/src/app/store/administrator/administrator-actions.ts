@@ -17,3 +17,6 @@ export const requestStatusLogFailure = createAction(`[${featureKey}] requestStat
 export const downloadReportRequest = createAction(`[${featureKey}] downloadReportRequest`);
 export const downloadReportSuccess = createAction(`[${featureKey}] downloadReportSuccess`, props<{ file: Blob }>());
 export const downloadReportFailure = createAction(`[${featureKey}] downloadReportFailure`, props<{ errorMessage: string }>());
+export const downloadResourcesReport = createAction(`[${featureKey}] downloadResourcesReport`);
+export const downloadResourcesReportSuccess = createAction(`[${featureKey}] downloadResourcesReportSuccess`, props<{ file: Blob }>());
+export const downloadResourcesReportFailure = createAction(`[${featureKey}] downloadResourcesReportFailure`, props<{ errorMessage: string }>());

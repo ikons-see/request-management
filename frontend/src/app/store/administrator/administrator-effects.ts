@@ -11,11 +11,14 @@ import { globalModalConfig } from "src/app/types/data-types";
 import { ApplicationState } from "../../app.module";
 import { RequestsManagementService } from "../../endpoint/requests-management.service";
 import { globalError } from "../common/common-actions";
-import { saveAs } from 'file-saver';
+import { saveAs } from 'file-saver-es';
 import {
     downloadReportFailure,
     downloadReportRequest,
     downloadReportSuccess,
+    downloadResourcesReport,
+    downloadResourcesReportFailure,
+    downloadResourcesReportSuccess,
     getProvidedResources,
     getRequestsMonthlyData,
     getResourcesMonthlyData,
@@ -147,6 +150,29 @@ export class AdministratorEffects {
         ofType(downloadReportSuccess),
         tap((action) => {
              saveAs(action.file, 'request-management.csv')
+        })
+    ), { dispatch: false });
+
+    downloadResourcesReport$ = createEffect(() => this.actions$.pipe(
+        ofType(downloadResourcesReport),
+        switchMap((action) => {
+            return this.requestsService.downloadResourcesReport()
+                .pipe(
+                    map(res => downloadResourcesReportSuccess({
+                        file: res
+                    })),
+                    catchError((error: HttpErrorResponse) => 
+                        of(downloadResourcesReportFailure({ errorMessage: error.message }),
+                        globalError({error: 'global-errors.download-report-error'})
+                        ))
+                );
+        })
+    ));
+
+    downloadResourcesReportSuccess$ = createEffect(() => this.actions$.pipe(
+        ofType(downloadResourcesReportSuccess),
+        tap((action) => {
+             saveAs(action.file, 'request-management-resources.csv')
         })
     ), { dispatch: false })
 }

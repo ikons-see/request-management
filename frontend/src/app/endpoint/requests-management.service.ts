@@ -138,4 +138,8 @@ export class RequestsManagementService {
     downloadReport(): Observable<any> {
         return this.httpClient.get('api/reports/download-requests-csv', {responseType: 'blob'});
     }
+
+    downloadResourcesReport(): Observable<any> {
+        return this.httpClient.get('api/reports/download-resources-csv', {responseType: 'blob'});
+    }
 }
