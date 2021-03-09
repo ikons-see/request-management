@@ -1,5 +1,4 @@
 jib {
-    println("project path " + file("$projectDir/src/main/jib"));
     from {
         image = "adoptopenjdk:11-jre-hotspot"
     }

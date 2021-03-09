@@ -8,6 +8,7 @@ services:
       - requestmanagement-app
   requestmanagement-app:
     image: requestmanagament:0.0.2-SNAPSHOT
+    restart: always
     environment:
       - _JAVA_OPTIONS=-Xmx512m -Xms256m
       - SPRING_PROFILES_ACTIVE=prod
